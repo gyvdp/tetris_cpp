@@ -21,9 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "tetrimino.hpp"
+#include "model/tetrimino.hpp"
 
-#include "itetrimino.hpp"
+#include "model/itetrimino.hpp"
+#include "model/jtetrimino.hpp"
+#include "model/ltetrimino.hpp"
 
 // TODO @Andrew Method move()
 
@@ -74,10 +76,12 @@ std::unique_ptr<tetris::model::tetrimino::Tetrimino>
 tetris::model::tetrimino::Tetrimino::createTetrimino(Mino mino) {
   switch (static_cast<int>(mino)) {
     case 0:  // L_MINO
-
+      return std::make_unique<tetris::model::tetrimino::LTetrimino>(
+          tetris::model::tetrimino::LTetrimino());
       break;
     case 1:  // J_MINO
-
+      return std::make_unique<tetris::model::tetrimino::JTetrimino>(
+          tetris::model::tetrimino::JTetrimino());
       break;
     case 2:  // Z_MINO
 
