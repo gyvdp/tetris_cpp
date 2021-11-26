@@ -21,25 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/jshape.hpp"
+#include "tshape.hpp"
 
 std::unordered_map<tetris::model::tetrimino::Orientation,
                    std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>
-    tetris::model::shapes::JShape::jShapes = std::unordered_map<
+    tetris::model::shapes::TShape::tShapes = std::unordered_map<
         tetris::model::tetrimino::Orientation,
         std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>{
         {tetris::model::tetrimino::Orientation::NORTH,
          std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
              std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
                  std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::J_MINO,
                      tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
                      tetris::model::tetrimino::Mino::EMPTY,
@@ -57,17 +57,17 @@ std::unordered_map<tetris::model::tetrimino::Orientation,
              std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
                  std::array<tetris::model::tetrimino::Mino, 4>{
                      tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::EMPTY},
-                 std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
                      tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
@@ -80,19 +80,19 @@ std::unordered_map<tetris::model::tetrimino::Orientation,
          std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
              std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
                  std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::EMPTY},
-                 std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
                      tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
                      tetris::model::tetrimino::Mino::EMPTY,
@@ -105,17 +105,17 @@ std::unordered_map<tetris::model::tetrimino::Orientation,
              std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
                  std::array<tetris::model::tetrimino::Mino, 4>{
                      tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::EMPTY,
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
+                     tetris::model::tetrimino::Mino::T_MINO,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
-                     tetris::model::tetrimino::Mino::J_MINO,
-                     tetris::model::tetrimino::Mino::J_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
                  std::array<tetris::model::tetrimino::Mino, 4>{
@@ -124,3 +124,5 @@ std::unordered_map<tetris::model::tetrimino::Orientation,
                      tetris::model::tetrimino::Mino::EMPTY,
                      tetris::model::tetrimino::Mino::EMPTY},
              }}}};
+
+#include "tshape.hpp"

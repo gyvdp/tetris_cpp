@@ -26,6 +26,10 @@
 #include "model/itetrimino.hpp"
 #include "model/jtetrimino.hpp"
 #include "model/ltetrimino.hpp"
+#include "model/otetrimino.hpp"
+#include "model/stetrimino.hpp"
+#include "model/ttetrimino.hpp"
+#include "model/ztetrimino.hpp"
 
 // TODO @Andrew Method move()
 
@@ -84,20 +88,24 @@ tetris::model::tetrimino::Tetrimino::createTetrimino(Mino mino) {
           tetris::model::tetrimino::JTetrimino());
       break;
     case 2:  // Z_MINO
-
+      return std::make_unique<tetris::model::tetrimino::ZTetrimino>(
+          tetris::model::tetrimino::ZTetrimino());
       break;
     case 3:  // S_MINO
-
+      return std::make_unique<tetris::model::tetrimino::STetrimino>(
+          tetris::model::tetrimino::STetrimino());
       break;
     case 4:  // O_MINO
-
+      return std::make_unique<tetris::model::tetrimino::OTetrimino>(
+          tetris::model::tetrimino::OTetrimino());
       break;
     case 5:  // I_MINO
       return std::make_unique<tetris::model::tetrimino::ITetrimino>(
           tetris::model::tetrimino::ITetrimino());
       break;
     case 6:  // T_MINO
-
+      return std::make_unique<tetris::model::tetrimino::TTetrimino>(
+          tetris::model::tetrimino::TTetrimino());
       break;
   }
   throw std::invalid_argument("This Mino doesn't exists");
@@ -109,9 +117,9 @@ std::string tetris::model::tetrimino::Tetrimino::toString() {
   for (auto line : this->minos_) {
     for (auto mino : line) {
       if (mino == Mino::EMPTY) {
-        result.append("o");
+        result.append("o ");
       } else {
-        result.append("x");
+        result.append("x ");
       }
     }
     result.append("\n");

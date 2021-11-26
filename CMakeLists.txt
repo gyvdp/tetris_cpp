@@ -39,7 +39,7 @@ include(CTest)
 # EXECUTABLES
 #########################################################################################
 add_executable(tetris_server src/server/main.cpp)
-add_executable(tetris_client src/client/main.cpp src/model/tetrimino.cpp src/model/tetrimino.hpp src/model/mino.hpp src/model/itetrimino.hpp src/model/ishape.hpp src/model/ishape.cpp src/model/jshape.cpp src/model/jshape.hpp src/model/orientaion.hpp src/model/jtetrimino.hpp src/model/lshape.cpp src/model/lshape.hpp src/model/ltetrimino.hpp)
+add_executable(tetris_client src/client/main.cpp src/model/tetrimino.cpp src/model/tetrimino.hpp src/model/mino.hpp src/model/itetrimino.hpp src/model/ishape.hpp src/model/ishape.cpp src/model/jshape.cpp src/model/jshape.hpp src/model/orientaion.hpp src/model/jtetrimino.hpp src/model/lshape.cpp src/model/lshape.hpp src/model/ltetrimino.hpp src/model/zshape.cpp src/model/zshape.hpp src/model/ztetrimino.hpp src/model/tshape.cpp src/model/tshape.hpp src/model/ttetrimino.hpp src/model/oshape.cpp src/model/oshape.hpp src/model/otetrimino.hpp src/model/sshape.cpp src/model/sshape.hpp src/model/stetrimino.hpp)
 
 target_link_libraries(tetris_client ${REQUIRED_LIBS_QUALIFIED})
 target_link_libraries(tetris_server ${REQUIRED_LIBS_QUALIFIED})

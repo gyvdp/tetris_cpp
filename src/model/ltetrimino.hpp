@@ -38,7 +38,7 @@ class LTetrimino : public tetris::model::tetrimino::Tetrimino {
   LTetrimino() {
     this->minos_ =
         tetris::model::shapes::LShape::lShapes.at(this->orientation_);
-    this->type_ = Mino::I_MINO;
+    this->type_ = Mino::L_MINO;
   }
 
   // TODO Apres avoir fait Orientation
