@@ -27,9 +27,9 @@
 #include <memory>
 
 #include "model/mino.hpp"
+#include "model/orientaion.hpp"
 
 namespace tetris::model::tetrimino {
-enum Orientation { NORTH = 0, EAST, SOUTH, WEST };
 class Tetrimino {
  protected:
   /**
@@ -51,7 +51,10 @@ class Tetrimino {
   /**
    * @brief Initiates default values of all Tetrimino
    */
-  Tetrimino() : y_(0), x_(3), orientation_(NORTH) {}
+  Tetrimino()
+      : y_(0),
+        x_(3),
+        orientation_(tetris::model::tetrimino::Orientation::NORTH) {}
 
   virtual std::array<std::array<Mino, 4>, 4> rotatedShape(bool clockwise) = 0;
 

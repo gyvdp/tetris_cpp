@@ -21,29 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ITETRIMINO_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ITETRIMINO_HPP_
-#include "model/ishape.hpp"
-#include "model/tetrimino.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_JSHAPE_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_JSHAPE_HPP_
+#include <unordered_map>
+
+#include "model/mino.hpp"
+#include "model/orientaion.hpp"
 
 namespace tetris::model::tetrimino {
+class JTetrimino;
+}
 
-class ITetrimino : public tetris::model::tetrimino::Tetrimino {
+namespace tetris::model::shapes {
+class JShape {
+  friend tetris::model::tetrimino::JTetrimino;
+
  private:
- public:
-  ITetrimino() {
-    this->minos_ =
-        tetris::model::shapes::IShape::iShapes.at(this->orientation_);
-    this->type_ = Mino::I_MINO;
-  }
-
-  // TODO Apres avoir fait Orientation
-
-  std::array<std::array<Mino, 4>, 4> rotatedShape(bool clockwise) override {
-    // return iShapes_.get(Orientation.next(orientation_, clockwise));
-    throw std::invalid_argument("A faire apres Orientation");
-  }
+  static std::unordered_map<
+      tetris::model::tetrimino::Orientation,
+      std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>
+      jShapes;
 };
-}  // namespace tetris::model::tetrimino
-
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ITETRIMINO_HPP_
+}  // namespace tetris::model::shapes
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_JSHAPE_HPP_

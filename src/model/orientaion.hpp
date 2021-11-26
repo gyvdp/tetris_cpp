@@ -21,29 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ITETRIMINO_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ITETRIMINO_HPP_
-#include "model/ishape.hpp"
-#include "model/tetrimino.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTAION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTAION_HPP_
 
 namespace tetris::model::tetrimino {
-
-class ITetrimino : public tetris::model::tetrimino::Tetrimino {
- private:
- public:
-  ITetrimino() {
-    this->minos_ =
-        tetris::model::shapes::IShape::iShapes.at(this->orientation_);
-    this->type_ = Mino::I_MINO;
-  }
-
-  // TODO Apres avoir fait Orientation
-
-  std::array<std::array<Mino, 4>, 4> rotatedShape(bool clockwise) override {
-    // return iShapes_.get(Orientation.next(orientation_, clockwise));
-    throw std::invalid_argument("A faire apres Orientation");
-  }
-};
+enum class Orientation { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
 }  // namespace tetris::model::tetrimino
 
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ITETRIMINO_HPP_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTAION_HPP_

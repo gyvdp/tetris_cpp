@@ -26,7 +26,9 @@
 
 #include <unordered_map>
 
-#include "tetrimino.hpp"
+#include "model/mino.hpp"
+#include "model/orientaion.hpp"
+
 namespace tetris::model::tetrimino {
 class ITetrimino;
 }  // namespace tetris::model::tetrimino
