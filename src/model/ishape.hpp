@@ -39,7 +39,7 @@ class IShape {
   static std::unordered_map<
       tetris::model::tetrimino::Orientation,
       std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>
-      iShape;
+      iShapes;
 };
 }  // namespace tetris::model::shapes
 
