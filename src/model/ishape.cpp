@@ -22,118 +22,104 @@
 // SOFTWARE.
 
 #include "model/ishape.hpp"
-namespace tetris::model::shapes {
-tetris::model::shapes::IShape::IShape() {
-  // NORTH Orientation
-  this->iShapes_.insert(
-      std::pair<tetris::model::tetrimino::Orientation,
-                std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>{
-          tetris::model::tetrimino::Orientation::NORTH,
-          std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::I_MINO},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-          }});
-
-  // SOUTH Orientation
-  this->iShapes_.insert(
-      std::pair<tetris::model::tetrimino::Orientation,
-                std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>{
-          tetris::model::tetrimino::Orientation::SOUTH,
-          std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::I_MINO},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-          }});
-
-  // EAST Orientation
-  this->iShapes_.insert(
-      std::pair<tetris::model::tetrimino::Orientation,
-                std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>{
-          tetris::model::tetrimino::Orientation::EAST,
-          std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY},
-          }});
-
-  // WEST Orientation
-  this->iShapes_.insert(
-      std::pair<tetris::model::tetrimino::Orientation,
-                std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>{
-          tetris::model::tetrimino::Orientation::WEST,
-          std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-              std::array<tetris::model::tetrimino::Mino, 4>{
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::I_MINO,
-                  tetris::model::tetrimino::Mino::EMPTY,
-                  tetris::model::tetrimino::Mino::EMPTY},
-          }});
-}
-}  // namespace tetris::model::shapes
+std::unordered_map<tetris::model::tetrimino::Orientation,
+                   std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>
+    tetris::model::shapes::IShape::iShape = std::unordered_map<
+        tetris::model::tetrimino::Orientation,
+        std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>{
+        {tetris::model::tetrimino::Orientation::NORTH,
+         std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+             std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::I_MINO},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+             }}},
+        {tetris::model::tetrimino::Orientation::EAST,
+         std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+             std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY},
+             }}},
+        {tetris::model::tetrimino::Orientation::SOUTH,
+         std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+             std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::I_MINO},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+             }}},
+        {tetris::model::tetrimino::Orientation::WEST,
+         std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+             std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>{
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+                 std::array<tetris::model::tetrimino::Mino, 4>{
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::I_MINO,
+                     tetris::model::tetrimino::Mino::EMPTY,
+                     tetris::model::tetrimino::Mino::EMPTY},
+             }}}};

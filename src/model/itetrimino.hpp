@@ -30,12 +30,9 @@ namespace tetris::model::tetrimino {
 
 class ITetrimino : public tetris::model::tetrimino::Tetrimino {
  private:
-  tetris::model::shapes::IShape shapes;
-
  public:
   ITetrimino() {
-    this->shapes = tetris::model::shapes::IShape();
-    this->minos_ = this->shapes.iShapes_.at(orientation_);
+    this->minos_ = tetris::model::shapes::IShape::iShape.at(this->orientation_);
     this->type_ = Mino::I_MINO;
   }
 
@@ -43,7 +40,7 @@ class ITetrimino : public tetris::model::tetrimino::Tetrimino {
 
   std::array<std::array<Mino, 4>, 4> rotatedShape(bool clockwise) override {
     // return iShapes_.get(Orientation.next(orientation_, clockwise));
-    throw std::invalid_argument("A faire apre Orientation");
+    throw std::invalid_argument("A faire apres Orientation");
   }
 };
 }  // namespace tetris::model::tetrimino

@@ -23,10 +23,10 @@
 
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ISHAPE_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ISHAPE_HPP_
+
 #include <unordered_map>
 
-#include "model/tetrimino.hpp"
-
+#include "tetrimino.hpp"
 namespace tetris::model::tetrimino {
 class ITetrimino;
 }  // namespace tetris::model::tetrimino
@@ -36,11 +36,10 @@ class IShape {
   friend tetris::model::tetrimino::ITetrimino;
 
  private:
-  IShape();
-  std::unordered_map<
+  static std::unordered_map<
       tetris::model::tetrimino::Orientation,
       std::array<std::array<tetris::model::tetrimino::Mino, 4>, 4>>
-      iShapes_;
+      iShape;
 };
 }  // namespace tetris::model::shapes
 
