@@ -17,6 +17,7 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall")
 endif ()
 
+include_directories(include)
 include_directories(src)
 
 #########################################################################################
@@ -36,11 +37,21 @@ endif ()
 include(CTest)
 
 #########################################################################################
+# MODEL LIBRARY
+#########################################################################################
+set(MODEL_SOURCES
+        src/model/game/matrix.cpp
+        src/model/tetrimino/tetrimino.cpp)
+
+add_library(MODEL_LIB ${MODEL_SOURCES})
+
+
+#########################################################################################
 # EXECUTABLES
 #########################################################################################
 add_executable(tetris_server src/server/main.cpp)
 add_executable(tetris_client src/client/main.cpp)
 
-target_link_libraries(tetris_client ${REQUIRED_LIBS_QUALIFIED})
-target_link_libraries(tetris_server ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_client ${REQUIRED_LIBS_QUALIFIED} ${MODEL_LIB})
+target_link_libraries(tetris_server ${REQUIRED_LIBS_QUALIFIED} ${MODEL_LIB})
 
