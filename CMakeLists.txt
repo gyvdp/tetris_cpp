@@ -41,7 +41,9 @@ include(CTest)
 #########################################################################################
 set(MODEL_SOURCES
         src/model/game/matrix.cpp
-        src/model/tetrimino/tetrimino.cpp)
+        src/model/game/player.cpp
+        src/model/tetrimino/tetrimino.cpp
+        )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
