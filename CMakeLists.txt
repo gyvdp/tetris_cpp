@@ -45,8 +45,15 @@ set(MODEL_SOURCES
         src/model/tetrimino/tetrimino.cpp
         )
 
+set(MODEL_TESTS
+        test/main_test.cpp
+        test/model/terimino/orientation_test.cpp
+        )
+
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
+add_executable(model_test ${MODEL_TESTS})
+target_link_libraries(model_test Catch2)
 
 #########################################################################################
 # EXECUTABLES
@@ -56,4 +63,3 @@ add_executable(tetris_client src/client/main.cpp)
 
 target_link_libraries(tetris_client ${REQUIRED_LIBS_QUALIFIED} ${MODEL_LIB})
 target_link_libraries(tetris_server ${REQUIRED_LIBS_QUALIFIED} ${MODEL_LIB})
-
