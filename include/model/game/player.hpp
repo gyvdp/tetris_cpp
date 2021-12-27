@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_PLAYER_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_PLAYER_HPP_
 
@@ -28,11 +27,13 @@
 #include <utility>
 
 namespace tetris::model::game {
+
 /**
  * @brief The Player class handles all the attributes of a Player (name,
  * high-score)
  */
 class Player {
+
  private:
   /**
    * @brief The name of the Player
@@ -73,6 +74,7 @@ class Player {
    * @param score The new high-score of the Player
    */
   inline void highScore(unsigned long score);
+
 };
 
 /******************************************************************************
@@ -89,5 +91,4 @@ unsigned long Player::highScore() const { return highScore_; }
 void Player::highScore(unsigned long score) { highScore_ = score; }
 
 }  // namespace tetris::model::game
-
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_PLAYER_HPP_

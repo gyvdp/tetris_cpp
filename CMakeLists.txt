@@ -43,10 +43,11 @@ set(MODEL_SOURCES
         src/model/game/matrix.cpp
         src/model/game/player.cpp
         src/model/tetrimino/tetrimino.cpp
-        )
+        test/model/game/player_test.cpp)
 
 set(MODEL_TESTS
         test/main_test.cpp
+        test/model/game/player_test.cpp
         test/model/terimino/orientation_test.cpp
         ###############REPLACE AT GOOD PLACE
         test/utils/coordinate_test.cpp
