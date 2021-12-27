@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_COORDINATE_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_COORDINATE_HPP_
 
@@ -29,6 +28,7 @@ namespace tetris::utils {
  * @brief Representation of a 2D Coordinate
  */
 class Coordinate {
+
  private:
   /**
    * @brief x coordinate
@@ -90,5 +90,4 @@ constexpr Coordinate Coordinate::operator+(Coordinate rhs) const {
 }
 
 }  // namespace tetris::utils
-
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_COORDINATE_HPP_

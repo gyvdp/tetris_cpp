@@ -48,6 +48,8 @@ set(MODEL_SOURCES
 set(MODEL_TESTS
         test/main_test.cpp
         test/model/terimino/orientation_test.cpp
+        ###############REPLACE AT GOOD PLACE
+        test/utils/coordinate_test.cpp
         )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
