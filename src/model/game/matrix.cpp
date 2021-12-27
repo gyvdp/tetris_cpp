@@ -26,12 +26,38 @@
 namespace tetris::model::game {
 
 OptionalMino Matrix::get(utils::Coordinate position) const {
-  // TODO
-  return OptionalMino();
+  return minos_.at(position.x()).at(position.y());
 }
 
-void Matrix::add(tetrimino::Tetrimino tetrimino) {
-  // TODO
+void Matrix::add(const tetrimino::Tetrimino& tetrimino) {
+  auto minoTemplate = tetrimino.minos();
+  for (auto i = 0; i < minoTemplate.size(); i++) {
+    for (auto j = 0; j < minoTemplate.at(i).size(); j++) {
+      if (minoTemplate[i][j] == std::nullopt) continue;
+      auto line = tetrimino.Y() + i;
+      auto col = tetrimino.X() + j;
+      if (!(line < 0 || col < 0) && line < minoTemplate.size() &&
+          col < minoTemplate[line].size()) {
+        minos_[line][col] = minoTemplate[i][j];
+      }
+    }
+  }
+}
+
+void Matrix::removeLines(const std::vector<unsigned long>& linesToRemove) {
+  for (auto& line : linesToRemove)
+    for (auto& mino : minos_.at(line)) mino = std::nullopt;
+}
+
+std::vector<unsigned long> Matrix::getCompletedLines() {
+  std::vector<unsigned long> completedLines;
+  for (auto i = 0; i < minos_.size(); i++) {
+    bool isComplete = true;
+    for (auto j = 0; j < minos_.at(i).size(); j++)
+      if (minos_[i][j] == std::nullopt) isComplete = false;
+    if (isComplete) completedLines.push_back(i);
+  }
+  return completedLines;
 }
 
 }  // namespace tetris::model::game

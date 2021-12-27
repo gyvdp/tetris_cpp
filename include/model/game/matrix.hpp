@@ -37,7 +37,7 @@ using OptionalMino = std::optional<tetris::model::tetrimino::Mino>;
 namespace tetris::model::game {
 /**
  * @brief The matrix class handles all the operations that can be done on the
- * tetris matrix (add a locked tetrimino, get/remove full lines
+ * tetris matrix (add a locked tetrimino, get/remove full lines)
  */
 class Matrix {
  private:
@@ -88,7 +88,20 @@ class Matrix {
    * @brief Add a Tetrimino to the Matrix (when locked down for example)
    * @param tetrimino The Tetrimino to place in the Matrix
    */
-  void add(tetrimino::Tetrimino tetrimino);
+  void add(const tetrimino::Tetrimino& tetrimino);
+
+  /**
+   * @brief Remove given lines in the matrix.
+   * @param linesToRemove All lines that need to be removed in the matrix.
+   */
+  void removeLines(const std::vector<unsigned long>& linesToRemove);
+
+  /**
+   * @brief Gets all lines that are completed. Meaning that there is a mino in
+   * every case of the row.
+   * @return Vector of all rows that are completed.
+   */
+  std::vector<unsigned long> getCompletedLines();
 };
 
 /******************************************************************************

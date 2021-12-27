@@ -80,6 +80,23 @@ class Tetrimino {
    * TODO : Surrounding AREA
    */
   virtual void rotate(bool clockwise) = 0;
+
+  /**
+   * @brief Gets the coordinates of the tetrimino.
+   * @return Coordinates parameter of the tetrimino.
+   */
+  [[nodiscard]] utils::Coordinate getCoordinates() const;
+
+  /**
+   * Gets the X coordinate of the tetrimino.
+   * @return X coordinate value.
+   */
+  [[nodiscard]] long X() const;
+  /**
+   * @brief Gets the Y coordinate of the tetrimino.
+   * @return Y coordinate value.
+   */
+  [[nodiscard]] long Y() const;
 };
 
 /******************************************************************************
@@ -91,7 +108,12 @@ Tetrimino::Tetrimino() : orientation_{NORTH}, coordinate_{} {}
 std::array<std::array<OptionalMino, 4>, 4> Tetrimino::minos() const {
   return minos_;
 }
+long Tetrimino::X() const { return coordinate_.x(); }
 
-}  // namespace tetris::model::tetrimino
+utils::Coordinate Tetrimino::getCoordinates() const { return coordinate_; }
+
+long Tetrimino::Y() const { return coordinate_.y(); }
+// namespace tetris::model::tetrimino
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_TETRIMINO_HPP_
+}
