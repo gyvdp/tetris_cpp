@@ -43,7 +43,14 @@ set(MODEL_SOURCES
         src/model/game/matrix.cpp
         src/model/game/player.cpp
         src/model/tetrimino/tetrimino.cpp
-        test/model/game/player_test.cpp)
+        src/model/tetrimino/type/itetrimino.cpp
+        src/model/tetrimino/type/jtetrimino.cpp
+        src/model/tetrimino/type/ltetrimino.cpp
+        src/model/tetrimino/type/otetrimino.cpp
+        src/model/tetrimino/type/stetrimino.cpp
+        src/model/tetrimino/type/ttetrimino.cpp
+        src/model/tetrimino/type/ztetrimino.cpp
+        )
 
 set(MODEL_TESTS
         test/main_test.cpp
@@ -64,5 +71,5 @@ target_link_libraries(model_test Catch2)
 add_executable(tetris_server src/server/main.cpp)
 add_executable(tetris_client src/client/main.cpp)
 
-target_link_libraries(tetris_client ${REQUIRED_LIBS_QUALIFIED} ${MODEL_LIB})
-target_link_libraries(tetris_server ${REQUIRED_LIBS_QUALIFIED} ${MODEL_LIB})
+target_link_libraries(tetris_client PUBLIC MODEL_LIB)
+target_link_libraries(tetris_server PUBLIC MODEL_LIB)

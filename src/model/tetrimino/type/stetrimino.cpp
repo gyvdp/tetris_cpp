@@ -21,43 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
+#include "model/tetrimino/type/stetrimino.hpp"
 
-#include <array>
 namespace tetris::model::tetrimino {
-
-/**
- * @brief Enumeration of different Orientations of a Tetrimino (for rotations)
- */
-enum Orientation { NORTH, EAST, SOUTH, WEST };
-
-/**
- * @brief Array with all the possible Orientations
- */
-static constexpr std::array ORIENTATIONS{NORTH, EAST, SOUTH, WEST};
-
-/**
- * @brief Compute the next Orientation after a rotation
- *
- * @param start The start Orientation
- * @param clockwise true if clockwise, false if anticlockwise
- * @return The Orientation after the rotation
- */
-static constexpr Orientation rotate(Orientation start, bool clockwise) {
-  int delta = clockwise ? 1 : -1;
-  unsigned long startIndex = static_cast<int>(start);
-  unsigned long endIndex = startIndex + delta;
-
-  if (endIndex < 0) {
-    endIndex = ORIENTATIONS.size() - endIndex;
-  } else {
-    endIndex = endIndex % ORIENTATIONS.size();
-  }
-
-  return static_cast<Orientation>(endIndex);
+void STetrimino::rotate(bool clockwise) {
+  this->minos_ =
+      shape::sShapes.at(tetrimino::rotate(this->orientation_, clockwise));
 }
-
 }  // namespace tetris::model::tetrimino
-
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_

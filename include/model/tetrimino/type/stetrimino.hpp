@@ -21,43 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_STETRIMINO_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_STETRIMINO_HPP_
 
-#include <array>
+#include "model/tetrimino/shape/sshape.hpp"
+#include "model/tetrimino/tetrimino.hpp"
+
 namespace tetris::model::tetrimino {
+class STetrimino : public Tetrimino {
+ private:
+ public:
+  explicit inline STetrimino();
 
-/**
- * @brief Enumeration of different Orientations of a Tetrimino (for rotations)
- */
-enum Orientation { NORTH, EAST, SOUTH, WEST };
+  ~STetrimino() {}
 
-/**
- * @brief Array with all the possible Orientations
- */
-static constexpr std::array ORIENTATIONS{NORTH, EAST, SOUTH, WEST};
+  void rotate(bool clockwise) override;
+};
 
-/**
- * @brief Compute the next Orientation after a rotation
- *
- * @param start The start Orientation
- * @param clockwise true if clockwise, false if anticlockwise
- * @return The Orientation after the rotation
- */
-static constexpr Orientation rotate(Orientation start, bool clockwise) {
-  int delta = clockwise ? 1 : -1;
-  unsigned long startIndex = static_cast<int>(start);
-  unsigned long endIndex = startIndex + delta;
-
-  if (endIndex < 0) {
-    endIndex = ORIENTATIONS.size() - endIndex;
-  } else {
-    endIndex = endIndex % ORIENTATIONS.size();
-  }
-
-  return static_cast<Orientation>(endIndex);
-}
+STetrimino::STetrimino() : Tetrimino{shape::sShapes.at(NORTH)} {}
 
 }  // namespace tetris::model::tetrimino
 
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_STETRIMINO_HPP_

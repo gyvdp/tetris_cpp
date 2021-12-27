@@ -27,9 +27,9 @@
 #include <array>
 #include <optional>
 
-#include "direction.hpp"
-#include "mino.hpp"
-#include "orientation.hpp"
+#include "model/tetrimino/direction.hpp"
+#include "model/tetrimino/mino.hpp"
+#include "model/tetrimino/orientation.hpp"
 #include "utils/coordinate.hpp"
 
 using OptionalMino = std::optional<tetris::model::tetrimino::Mino>;
@@ -39,7 +39,7 @@ namespace tetris::model::tetrimino {
  * @brief Class that represent a Tetrimino in general
  */
 class Tetrimino {
- private:
+ protected:
   /**
    * @brief The actual Orientation of the Tetrimino
    */
@@ -48,7 +48,7 @@ class Tetrimino {
   /**
    * @brief The top-left Coordinate of the Tetrimino
    */
-  utils::Coordinate coordinate_;
+  std::optional<utils::Coordinate> coordinate_;
 
   /**
    * @brief The abstract representation of the Tetrimino in an 2D array of minos
@@ -59,7 +59,13 @@ class Tetrimino {
   /**
    * @brief Default constructor of a Tetrimino
    */
-  inline Tetrimino();
+  inline explicit Tetrimino(
+      const std::array<std::array<OptionalMino, 4>, 4> &minos);
+
+  /**
+   * @brief Destructor of the Tetrimino
+   */
+  virtual ~Tetrimino() = default;
 
   /**
    * @brief Getter of the Mino 2D array representation of the Tetrimino
@@ -103,17 +109,20 @@ class Tetrimino {
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-Tetrimino::Tetrimino() : orientation_{NORTH}, coordinate_{} {}
+Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos)
+    : orientation_{NORTH}, coordinate_{{3, 0}}, minos_{minos} {}
 
 std::array<std::array<OptionalMino, 4>, 4> Tetrimino::minos() const {
   return minos_;
 }
-long Tetrimino::X() const { return coordinate_.x(); }
 
-utils::Coordinate Tetrimino::getCoordinates() const { return coordinate_; }
+long Tetrimino::X() const { return coordinate_->x(); }
 
-long Tetrimino::Y() const { return coordinate_.y(); }
-// namespace tetris::model::tetrimino
+utils::Coordinate Tetrimino::getCoordinates() const {
+  return coordinate_.value();
+}
+
+long Tetrimino::Y() const { return coordinate_->y(); }
+}  // namespace tetris::model::tetrimino
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_TETRIMINO_HPP_
-}

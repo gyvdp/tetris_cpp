@@ -26,7 +26,8 @@
 namespace tetris::model::tetrimino {
 
 void Tetrimino::move(Direction direction) {
-  // TODO
+  tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
+  coordinate_.emplace(newCoordinate);
 }
 
 }  // namespace tetris::model::tetrimino

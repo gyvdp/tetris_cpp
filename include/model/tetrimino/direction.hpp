@@ -24,6 +24,8 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_DIRECTION_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_DIRECTION_HPP_
 
+#include <array>
+
 #include "utils/coordinate.hpp"
 
 namespace tetris::model::tetrimino {
@@ -64,7 +66,8 @@ static constexpr utils::Coordinate delta(Direction direction) {
  * @param direction The direction to apply to the Coordinate
  * @return The moved Coordinate
  */
-utils::Coordinate operator+(utils::Coordinate start, Direction direction) {
+static utils::Coordinate operator+(utils::Coordinate start,
+                                   Direction direction) {
   return start + delta(direction);
 }
 
