@@ -36,8 +36,8 @@ void Matrix::add(const tetrimino::Tetrimino& tetrimino) {
       if (minoTemplate[i][j] == std::nullopt) continue;
       auto line = tetrimino.Y() + i;
       auto col = tetrimino.X() + j;
-      if (!(line < 0 || col < 0) && line < minoTemplate.size() &&
-          col < minoTemplate[line].size()) {
+      if (!(line < 0 || col < 0) && line < minos_.size() &&
+          col < minos_[line].size()) {
         minos_[line][col] = minoTemplate[i][j];
       }
     }
@@ -58,6 +58,11 @@ std::vector<unsigned long> Matrix::getCompletedLines() {
     if (isComplete) completedLines.push_back(i);
   }
   return completedLines;
+}
+const OptionalMino& Matrix::operator()(int x, int y) { return minos_[x][y]; }
+
+void Matrix::set(tetris::model::tetrimino::Mino m, int line, int col) {
+  minos_[line][col] = m;
 }
 
 }  // namespace tetris::model::game

@@ -98,6 +98,7 @@ class Tetrimino {
    * @return X coordinate value.
    */
   [[nodiscard]] inline long X() const;
+
   /**
    * @brief Gets the Y coordinate of the tetrimino.
    * @return Y coordinate value.

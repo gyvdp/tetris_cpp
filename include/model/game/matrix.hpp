@@ -102,6 +102,22 @@ class Matrix {
    * @return Vector of all rows that are completed.
    */
   std::vector<unsigned long> getCompletedLines();
+
+  /**
+   * @brief Gets a specific case in the matrix.
+   * @param x Index of x axis.
+   * @param y Index of y axis.
+   * @return Value at given index.
+   */
+  const OptionalMino& operator()(int x, int y);
+
+  /**
+   * @brief Sets a mino at a specific location.
+   * @param m Mino to set at location.
+   * @param line Line coordinates.
+   * @param col Column coordinates.
+   */
+  void set(tetris::model::tetrimino::Mino m, int line, int col);
 };
 
 /******************************************************************************
