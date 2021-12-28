@@ -49,7 +49,7 @@ static constexpr std::array DIRECTIONS{DOWN, RIGHT, LEFT};
 static constexpr utils::Coordinate delta(Direction direction) {
   switch (direction) {
     case DOWN:
-      return utils::Coordinate{0, -1};
+      return utils::Coordinate{0, 1};
     case RIGHT:
       return utils::Coordinate{1, 0};
     case LEFT:
