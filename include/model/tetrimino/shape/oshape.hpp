@@ -25,13 +25,18 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_SHAPE_OSHAPE_HPP_
 #include <array>
 #include <map>
+#include <optional>
 
-#include "model/tetrimino/tetrimino.hpp"
+#include "model/tetrimino/mino.hpp"
+#include "model/tetrimino/orientation.hpp"
 
 namespace tetris::model::tetrimino::shape {
 
-using line = std::array<OptionalMino, 4>;
+using line = std::array<std::optional<Mino>, 4>;
 
+/**
+ * @brief Map with all the shapes for OTetrimino based on his orientation
+ */
 static std::map<Orientation, std::array<line, 4>> oShapes{
     {NORTH,
      {line{std::nullopt, O_MINO, O_MINO, std::nullopt},

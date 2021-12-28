@@ -28,10 +28,20 @@
 #include "model/tetrimino/tetrimino.hpp"
 
 namespace tetris::model::tetrimino {
+
+/**
+ * @brief Class representing ITetrimino which is a child of Tetrimino
+ */
 class ITetrimino : public Tetrimino {
  public:
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
   explicit ITetrimino();
 
+  /**
+   * @copydoc
+   */
   void rotate(bool clockwise) override;
 };
 

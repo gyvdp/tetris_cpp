@@ -21,27 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//
-// Created by Thoma on 27-12-21.
-//
-
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_ZTETRIMINO_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_ZTETRIMINO_HPP_
+
 #include "model/tetrimino/shape/zshape.hpp"
 #include "model/tetrimino/tetrimino.hpp"
 
 namespace tetris::model::tetrimino {
+
+/**
+ * @brief Class representing ZTetrimino which is a child of Tetrimino
+ */
 class ZTetrimino : public Tetrimino {
- private:
  public:
-  explicit inline ZTetrimino();
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  explicit ZTetrimino();
 
-  ~ZTetrimino() {}
-
+  /**
+   * @copydoc
+   */
   void rotate(bool clockwise) override;
 };
-
-ZTetrimino::ZTetrimino() : Tetrimino{shape::zShapes.at(NORTH)} {}
 
 }  // namespace tetris::model::tetrimino
 

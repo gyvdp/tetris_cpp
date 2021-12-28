@@ -24,6 +24,9 @@
 #include "model/tetrimino/type/ztetrimino.hpp"
 
 namespace tetris::model::tetrimino {
+
+ZTetrimino::ZTetrimino() : Tetrimino{shape::zShapes.at(NORTH)} {}
+
 void ZTetrimino::rotate(bool clockwise) {
   this->minos_ =
       shape::zShapes.at(tetrimino::rotate(this->orientation_, clockwise));

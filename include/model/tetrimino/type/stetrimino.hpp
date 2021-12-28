@@ -28,17 +28,22 @@
 #include "model/tetrimino/tetrimino.hpp"
 
 namespace tetris::model::tetrimino {
+
+/**
+ * @brief Class representing STetrimino which is a child of Tetrimino
+ */
 class STetrimino : public Tetrimino {
- private:
  public:
-  explicit inline STetrimino();
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  explicit STetrimino();
 
-  ~STetrimino() {}
-
+  /**
+   * @copydoc
+   */
   void rotate(bool clockwise) override;
 };
-
-STetrimino::STetrimino() : Tetrimino{shape::sShapes.at(NORTH)} {}
 
 }  // namespace tetris::model::tetrimino
 

@@ -23,21 +23,27 @@
 
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_OTETRIMINO_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_OTETRIMINO_HPP_
+
 #include "model/tetrimino/shape/oshape.hpp"
 #include "model/tetrimino/tetrimino.hpp"
 
 namespace tetris::model::tetrimino {
+
+/**
+ * @brief Class representing OTetrimino which is a child of Tetrimino
+ */
 class OTetrimino : public Tetrimino {
- private:
  public:
-  explicit inline OTetrimino();
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  explicit OTetrimino();
 
-  ~OTetrimino() {}
-
+  /**
+   * @copydoc
+   */
   void rotate(bool clockwise) override;
 };
-
-OTetrimino::OTetrimino() : Tetrimino{shape::oShapes.at(NORTH)} {}
 
 }  // namespace tetris::model::tetrimino
 

@@ -26,13 +26,18 @@
 
 #include <array>
 #include <map>
+#include <optional>
 
-#include "model/tetrimino/tetrimino.hpp"
+#include "model/tetrimino/mino.hpp"
+#include "model/tetrimino/orientation.hpp"
 
 namespace tetris::model::tetrimino::shape {
 
-using line = std::array<OptionalMino, 4>;
+using line = std::array<std::optional<Mino>, 4>;
 
+/**
+ * @brief Map with all the shapes for JTetrimino based on his orientation
+ */
 static std::map<Orientation, std::array<line, 4>> jShapes{
     {NORTH,
      {line{J_MINO, std::nullopt, std::nullopt, std::nullopt},

@@ -28,17 +28,22 @@
 #include "model/tetrimino/tetrimino.hpp"
 
 namespace tetris::model::tetrimino {
+
+/**
+ * @brief Class representing JTetrimino which is a child of Tetrimino
+ */
 class JTetrimino : public Tetrimino {
- private:
  public:
-  explicit inline JTetrimino();
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  explicit JTetrimino();
 
-  ~JTetrimino() {}
-
+  /**
+   * @copydoc
+   */
   void rotate(bool clockwise) override;
 };
-
-JTetrimino::JTetrimino() : Tetrimino{shape::jShapes.at(NORTH)} {}
 
 }  // namespace tetris::model::tetrimino
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_JTETRIMINO_HPP_

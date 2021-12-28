@@ -91,18 +91,18 @@ class Tetrimino {
    * @brief Gets the coordinates of the tetrimino.
    * @return Coordinates parameter of the tetrimino.
    */
-  [[nodiscard]] utils::Coordinate getCoordinates() const;
+  [[nodiscard]] inline utils::Coordinate getCoordinates() const;
 
   /**
    * Gets the X coordinate of the tetrimino.
    * @return X coordinate value.
    */
-  [[nodiscard]] long X() const;
+  [[nodiscard]] inline long X() const;
   /**
    * @brief Gets the Y coordinate of the tetrimino.
    * @return Y coordinate value.
    */
-  [[nodiscard]] long Y() const;
+  [[nodiscard]] inline long Y() const;
 };
 
 /******************************************************************************
