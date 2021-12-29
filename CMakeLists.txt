@@ -50,6 +50,7 @@ set(MODEL_SOURCES
         src/model/tetrimino/type/stetrimino.cpp
         src/model/tetrimino/type/ttetrimino.cpp
         src/model/tetrimino/type/ztetrimino.cpp
+        src/model/game/tetriminoGenerator.cpp
         src/model/game/ongoinggame.cpp
         src/model/game/states/notstartedstate.cpp
         )
@@ -69,7 +70,9 @@ set(MODEL_TESTS
         test/model/tetrimino/type/ttetrimino_test.cpp
         test/model/tetrimino/type/ztetrimino_test.cpp
         test/model/game/matrix_test.cpp
-        test/model/tetrimino/direction_test.cpp)
+        test/model/tetrimino/direction_test.cpp
+        test/model/game/tetriminoGenerator_test.cpp
+        )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 

@@ -21,14 +21,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/tetrimino/tetrimino.hpp"
+#include "model/game/tetriminoGenerator.hpp"
 
-#include <vector>
-
-namespace tetris::model::tetrimino {
-
-void Tetrimino::move(Direction direction) {
-  tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
-  coordinate_.emplace(newCoordinate);
+#include "catch2/catch.hpp"
+using namespace tetris::model::tetrimino;
+TEST_CASE("Multi generation") {
+  auto seed = time(nullptr);
+  int i = 0;
+  tetris::mode::game::TetriminoGenerator tetrimino_generator{seed};
+  tetris::mode::game::TetriminoGenerator tetrimino_generatorv2{seed};
+  do {
+    REQUIRE(tetrimino_generator.takeMino() == tetrimino_generatorv2.takeMino());
+    i++;
+  } while (i >= 100);
 }
-}  // namespace tetris::model::tetrimino
+TEST_CASE("Different generation pattern same seed") {
+  int i = 0;
+  tetris::mode::game::TetriminoGenerator tetrimino_generator{time(nullptr)};
+  std::vector<Mino> pattern1;
+  std::vector<Mino> pattern2;
+  do {
+    pattern1.push_back(tetrimino_generator.takeMino());
+    i++;
+  } while (i >= 7);
+  do {
+    pattern2.push_back(tetrimino_generator.takeMino());
+    i++;
+  } while (i >= 14);
+  REQUIRE(pattern1 != pattern2);
+  SECTION("test uniqueness of pattern") {
+    Mino mino = pattern1.at(0);
+    for (int i = 1; i < pattern1.size(); ++i) {
+      REQUIRE_FALSE(mino == pattern1.at(i));
+    }
+  }
+}
