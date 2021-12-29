@@ -23,12 +23,28 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
 
+#include <ctime>
+
 namespace tetris::mode::game {
 
 class TetriminoGenerator {
  private:
+  int seed_;
+
  public:
+  inline TetriminoGenerator();
+
+  inline TetriminoGenerator(int seed);
 };
+
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
+
+TetriminoGenerator::TetriminoGenerator(int seed) : seed_{seed} {}
+TetriminoGenerator::TetriminoGenerator()
+    : seed_{static_cast<int>(time(nullptr))} {}
+
 }  // namespace tetris::mode::game
 
 #endif
