@@ -56,12 +56,17 @@ class Tetrimino {
    */
   std::array<std::array<OptionalMino, 4>, 4> minos_;
 
+  /**
+   * @brief Type of the Tetrimino
+   */
+  const OptionalMino type_;
+
  public:
   /**
    * @brief Default constructor of a Tetrimino
    */
   inline explicit Tetrimino(
-      const std::array<std::array<OptionalMino, 4>, 4> &minos);
+      const std::array<std::array<OptionalMino, 4>, 4> &minos, Mino);
 
   /**
    * @brief Destructor of the Tetrimino
@@ -117,14 +122,21 @@ class Tetrimino {
    * @return Y coordinate value.
    */
   [[nodiscard]] inline long Y() const;
+
+  /**
+   * @brief Gets the type of the tetrimino.
+   * @return type of the tetrimino.
+   */
+  [[nodiscard]] inline Mino type() const;
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos)
-    : orientation_{NORTH}, coordinate_{{3, 0}}, minos_{minos} {}
+Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos,
+                     Mino type)
+    : orientation_{NORTH}, coordinate_{{3, 0}}, minos_{minos}, type_(type) {}
 
 std::array<std::array<OptionalMino, 4>, 4> Tetrimino::minos() const {
   return minos_;
@@ -137,6 +149,8 @@ utils::Coordinate Tetrimino::getCoordinates() const {
 }
 
 long Tetrimino::Y() const { return coordinate_->y(); }
+
+Mino Tetrimino::type() const { return this->type_.value(); }
 }  // namespace tetris::model::tetrimino
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_TETRIMINO_HPP_

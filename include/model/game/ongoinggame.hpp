@@ -129,7 +129,7 @@ class OngoingGame {
    */
   inline OptionalMino next() const;
 
-  inline void next(OptionalMino mino);
+  inline void next(tetrimino::Mino mino);
 
   /**
    * @brief Getter of the held Tetrimino
@@ -138,7 +138,7 @@ class OngoingGame {
    */
   inline OptionalMino hold() const;
 
-  inline void hold(OptionalMino mino);
+  inline void hold(tetrimino::Mino mino);
 
   inline tetrimino::Mino pickMino();
 
@@ -206,11 +206,11 @@ void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
 
 OptionalMino OngoingGame::next() const { return next_; }
 
-void OngoingGame::next(OptionalMino mino) { next_ = mino; }
+void OngoingGame::next(tetrimino::Mino mino) { next_.emplace(mino); }
 
 OptionalMino OngoingGame::hold() const { return hold_; }
 
-void OngoingGame::hold(OptionalMino mino) { hold_ = mino; }
+void OngoingGame::hold(tetrimino::Mino mino) { hold_.emplace(mino); }
 
 void OngoingGame::start() { state_->start(); }
 

@@ -25,7 +25,7 @@
 
 namespace tetris::model::tetrimino {
 
-ZTetrimino::ZTetrimino() : Tetrimino{shape::zShapes.at(NORTH)} {}
+ZTetrimino::ZTetrimino() : Tetrimino{shape::zShapes.at(NORTH), Z_MINO} {}
 
 void ZTetrimino::rotate(bool clockwise) {
   this->minos_ =

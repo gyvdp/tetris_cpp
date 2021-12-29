@@ -24,7 +24,7 @@
 #include "model/tetrimino/type/itetrimino.hpp"
 
 namespace tetris::model::tetrimino {
-ITetrimino::ITetrimino() : Tetrimino{shape::iShapes.at(NORTH)} {}
+ITetrimino::ITetrimino() : Tetrimino{shape::iShapes.at(NORTH), I_MINO} {}
 
 void ITetrimino::rotate(bool clockwise) {
   this->minos_ =

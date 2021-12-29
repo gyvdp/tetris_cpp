@@ -54,24 +54,25 @@ include(CTest)
 # MODEL LIBRARY
 #########################################################################################
 set(MODEL_SOURCES
-        #        src/model/game/matrix.cpp
-        #        src/model/game/player.cpp
-        #        src/model/tetrimino/tetrimino.cpp
-        #        src/model/tetrimino/type/itetrimino.cpp
-        #        src/model/tetrimino/type/jtetrimino.cpp
-        #        src/model/tetrimino/type/ltetrimino.cpp
-        #        src/model/tetrimino/type/otetrimino.cpp
-        #        src/model/tetrimino/type/stetrimino.cpp
-        #        src/model/tetrimino/type/ttetrimino.cpp
-        #        src/model/tetrimino/type/ztetrimino.cpp
-        #        src/model/game/tetriminoGenerator.cpp
-        #        src/model/game/ongoinggame.cpp
-        #        src/model/game/states/notstartedstate.cpp
-        #        src/model/game/states/fallingstate.cpp
-        #        src/model/game/states/lockeddownstate.cpp
-        #        src/model/game/states/lockedoutstate.cpp
-        #        src/model/game/states/stoppedstate.cpp
-        #        src/model/game/states/blockedoutstate.cpp
+        src/model/game/matrix.cpp
+        src/model/game/player.cpp
+        src/model/tetrimino/tetrimino.cpp
+        src/model/tetrimino/type/itetrimino.cpp
+        src/model/tetrimino/type/jtetrimino.cpp
+        src/model/tetrimino/type/ltetrimino.cpp
+        src/model/tetrimino/type/otetrimino.cpp
+        src/model/tetrimino/type/stetrimino.cpp
+        src/model/tetrimino/type/ttetrimino.cpp
+        src/model/tetrimino/type/ztetrimino.cpp
+        src/model/game/tetriminoGenerator.cpp
+        src/model/game/ongoinggame.cpp
+        src/model/game/states/notstartedstate.cpp
+        src/model/notifier/notification.cpp
+        src/model/game/states/fallingstate.cpp
+        src/model/game/states/lockeddownstate.cpp
+        src/model/game/states/lockedoutstate.cpp
+        src/model/game/states/stoppedstate.cpp
+        src/model/game/states/blockedoutstate.cpp
         src/server/tetris_server.cpp
         src/client/client_socket/tetris_client.cpp
         src/server/match.cpp
@@ -97,8 +98,7 @@ set(MODEL_TESTS
         )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
-
-target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(MODEL_LIB PUBLIC jsoncpp_lib ${REQUIRED_LIBS_QUALIFIED})
 
 add_executable(model_test ${MODEL_TESTS})
 target_link_libraries(model_test Catch2 MODEL_LIB)
@@ -109,7 +109,7 @@ target_link_libraries(model_test Catch2 MODEL_LIB)
 add_executable(tetris_server src/server/main.cpp)
 add_executable(tetris_client src/client/main.cpp)
 
-target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED} jsoncpp_lib)
 target_link_libraries(tetris_server PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
 
 if (WIN32)

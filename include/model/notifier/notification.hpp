@@ -21,21 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/tetrimino/type/ltetrimino.hpp"
+//
+// Created by Thoma on 30-12-21.
+//
 
-namespace tetris::model::tetrimino {
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MESSAGES_NOTIFIER_NOTIFICATION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MESSAGES_NOTIFIER_NOTIFICATION_HPP_
 
-LTetrimino::LTetrimino() : Tetrimino{shape::lShapes.at(NORTH), L_MINO} {}
+#include <QByteArray>
 
-void LTetrimino::rotate(bool clockwise) {
-  this->minos_ =
-      shape::lShapes.at(tetrimino::rotate(this->orientation_, clockwise));
-}
+#include "json/json.h"
+#include "model/game/ongoinggame.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
 
-void LTetrimino::rotate(bool clockwise,
-                        std::vector<std::vector<bool>> matrixMask) {
-  rotate(clockwise);
-  //TODO : Prendre en compte la matrice et retrouner une exception si la rotation n'est pas possible
-}
+namespace tetris::model::notifier {
+class Notification {
+ public:
+  static Json::Value hold(model::tetrimino::Mino);
+  static Json::Value next(model::tetrimino::Mino);
+  static Json::Value actual(const model::tetrimino::Tetrimino&);
+  static Json::Value connection(const std::string&);
+  static Json::Value starting_game(model::game::Player& player,
+                                   model::game::Player& opponent, long seed);
+  static Json::Value board(model::game::Matrix&);
+  static void interpreter(QByteArray&, model::game::OngoingGame&);
+};
+}  // namespace tetris::model::notifier
 
-}  // namespace tetris::model::tetrimino
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MESSAGES_NOTIFIER_NOTIFICATION_HPP_
