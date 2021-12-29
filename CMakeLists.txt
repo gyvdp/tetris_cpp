@@ -50,7 +50,7 @@ set(MODEL_SOURCES
         src/model/tetrimino/type/stetrimino.cpp
         src/model/tetrimino/type/ttetrimino.cpp
         src/model/tetrimino/type/ztetrimino.cpp
-        )
+        include/model/game/tetriminoGenerator.hpp src/model/game/tetriminoGenerator.cpp)
 
 set(MODEL_TESTS
         test/main_test.cpp

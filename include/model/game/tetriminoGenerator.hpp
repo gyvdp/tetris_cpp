@@ -20,16 +20,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
 
-#include "model/tetrimino/tetrimino.hpp"
+namespace tetris::mode::game {
 
-#include <vector>
+class TetriminoGenerator {
+ private:
+ public:
+};
+}  // namespace tetris::mode::game
 
-namespace tetris::model::tetrimino {
-
-void Tetrimino::move(Direction direction) {
-  tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
-  coordinate_.emplace(newCoordinate);
-}
-}  // namespace tetris::model::tetrimino
-   // namespace tetris::model::tetrimino
+#endif

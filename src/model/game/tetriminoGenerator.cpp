@@ -21,15 +21,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/tetrimino/tetrimino.hpp"
-
-#include <vector>
-
-namespace tetris::model::tetrimino {
-
-void Tetrimino::move(Direction direction) {
-  tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
-  coordinate_.emplace(newCoordinate);
-}
-}  // namespace tetris::model::tetrimino
-   // namespace tetris::model::tetrimino
+#include "model/game/tetriminoGenerator.hpp"
