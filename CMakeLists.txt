@@ -69,7 +69,7 @@ set(MODEL_TESTS
         test/model/tetrimino/type/ttetrimino_test.cpp
         test/model/tetrimino/type/ztetrimino_test.cpp
         test/model/game/matrix_test.cpp
-        )
+        test/model/tetrimino/direction_test.cpp)
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
