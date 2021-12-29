@@ -60,7 +60,7 @@ set(MODEL_TESTS
         test/model/tetrimino/orientation_test.cpp
         ###############REPLACE AT GOOD PLACE
         test/utils/coordinate_test.cpp
-        #        test/model/tetrimino/tetrimino_test.cpp
+        test/model/tetrimino/tetrimino_test.cpp
         test/model/tetrimino/type/itetrimino_test.cpp
         test/model/tetrimino/type/jtetrimino_test.cpp
         test/model/tetrimino/type/ltetrimino_test.cpp

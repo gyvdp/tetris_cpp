@@ -20,3 +20,71 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
+#include "catch2/catch.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
+
+using namespace tetris::model::tetrimino;
+
+TEST_CASE("") {
+  SECTION("move") {
+    SECTION("Left") {
+      for (auto mino : MINOS) {
+        auto tetrimino = createTetrimino(mino);
+        tetrimino->move(LEFT);
+        REQUIRE(tetrimino->X() == 2);
+        REQUIRE(tetrimino->Y() == 0);
+      }
+    }
+    SECTION("Right") {
+      for (auto mino : MINOS) {
+        auto tetrimino = createTetrimino(mino);
+        tetrimino->move(RIGHT);
+        REQUIRE(tetrimino->X() == 4);
+        REQUIRE(tetrimino->Y() == 0);
+      }
+    }
+    SECTION("Down") {
+      for (auto mino : MINOS) {
+        auto tetrimino = createTetrimino(mino);
+        tetrimino->move(DOWN);
+        REQUIRE(tetrimino->X() == 3);
+        REQUIRE(tetrimino->Y() == 1);
+      }
+    }
+  }
+}
+
+#include "catch2/catch.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
+
+using namespace tetris::model::tetrimino;
+
+TEST_CASE("") {
+  SECTION("move") {
+    SECTION("Left") {
+      for (auto mino : MINOS) {
+        auto tetrimino = createTetrimino(mino);
+        tetrimino->move(LEFT);
+        REQUIRE(tetrimino->X() == 2);
+        REQUIRE(tetrimino->Y() == 0);
+      }
+    }
+    SECTION("Right") {
+      for (auto mino : MINOS) {
+        auto tetrimino = createTetrimino(mino);
+        tetrimino->move(RIGHT);
+        REQUIRE(tetrimino->X() == 4);
+        REQUIRE(tetrimino->Y() == 0);
+      }
+    }
+    SECTION("Down") {
+      for (auto mino : MINOS) {
+        auto tetrimino = createTetrimino(mino);
+        tetrimino->move(DOWN);
+        REQUIRE(tetrimino->X() == 3);
+        REQUIRE(tetrimino->Y() == 1);
+      }
+    }
+  }
+}
