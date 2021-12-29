@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Tetris [client]" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esi_atlir5_atlc_project2" TARGET_NAME="tetris_client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esi_atlir5_atlc_project2" RUN_TARGET_NAME="tetris_client">
+  <configuration default="false" name="Tetris [client]" type="CMakeRunConfiguration" factoryName="Application" folderName="Tetris" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esi_atlir5_atlc_project2" TARGET_NAME="tetris_client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esi_atlir5_atlc_project2" RUN_TARGET_NAME="tetris_client">
     <method v="2">
       <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
     </method>

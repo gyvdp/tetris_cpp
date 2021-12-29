@@ -50,6 +50,8 @@ set(MODEL_SOURCES
         src/model/tetrimino/type/stetrimino.cpp
         src/model/tetrimino/type/ttetrimino.cpp
         src/model/tetrimino/type/ztetrimino.cpp
+        src/model/game/ongoinggame.cpp
+        src/model/game/states/notstartedstate.cpp
         )
 
 set(MODEL_TESTS
@@ -80,5 +82,5 @@ target_link_libraries(model_test Catch2 MODEL_LIB)
 add_executable(tetris_server src/server/main.cpp)
 add_executable(tetris_client src/client/main.cpp)
 
-target_link_libraries(tetris_client PUBLIC MODEL_LIB)
-target_link_libraries(tetris_server PUBLIC MODEL_LIB)
+target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_server PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})

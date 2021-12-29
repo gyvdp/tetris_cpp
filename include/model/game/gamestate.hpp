@@ -21,30 +21,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_
 
-#include <array>
+namespace tetris::model::game {
 
-namespace tetris::model::tetrimino {
+class OngoingGame;
+
 /**
- * @brief Enumeration of the different types of minos
+ * @brief Abstraction of a State in a Ongoing Game
  */
-enum Mino {
-  L_MINO,
-  J_MINO,
-  Z_MINO,
-  S_MINO,
-  O_MINO,
-  I_MINO,
-  T_MINO,
+class GameState {
+ protected:
+  /**
+   * @brief Pointer to the Ongoing Game
+   */
+  OngoingGame *game_;
+
+ public:
+  inline explicit GameState(OngoingGame *game);
+
+  /**
+   * @brief Default destructor
+   */
+  virtual ~GameState() = default;
+
+  /**
+   * @brief This method is used to start a game
+   */
+  virtual void start() = 0;
 };
 
-/**
- * @brief Array with all the different types of minos
- */
-static constexpr std::array MINOS{L_MINO, J_MINO, Z_MINO, S_MINO,
-                                  O_MINO, T_MINO, I_MINO};
-}  // namespace tetris::model::tetrimino
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
+GameState::GameState(OngoingGame *game) : game_{game} {}
 
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+}  // namespace tetris::model::game
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_

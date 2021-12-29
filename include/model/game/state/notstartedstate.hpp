@@ -21,30 +21,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_NOTSTARTEDSTATE_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_NOTSTARTEDSTATE_HPP_
 
-#include <array>
+#include "model/game/gamestate.hpp"
 
-namespace tetris::model::tetrimino {
+namespace tetris::model::game::states {
 /**
- * @brief Enumeration of the different types of minos
+ * @brief This class represents the state when the game is not started yet
  */
-enum Mino {
-  L_MINO,
-  J_MINO,
-  Z_MINO,
-  S_MINO,
-  O_MINO,
-  I_MINO,
-  T_MINO,
+class NotStartedState : public GameState {
+ public:
+  /**
+   * @brief Default constructor of a NotStartedState
+   *
+   * @param game The game that have this state
+   */
+  explicit NotStartedState(OngoingGame *game);
+
+  /**
+   * @inherit
+   */
+  void start() override;
 };
-
-/**
- * @brief Array with all the different types of minos
- */
-static constexpr std::array MINOS{L_MINO, J_MINO, Z_MINO, S_MINO,
-                                  O_MINO, T_MINO, I_MINO};
-}  // namespace tetris::model::tetrimino
-
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+}  // namespace tetris::model::game::states
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_NOTSTARTEDSTATE_HPP_

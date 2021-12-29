@@ -21,30 +21,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+#include "model/game/ongoinggame.hpp"
 
-#include <array>
+#include <iostream>
+#include <stdexcept>
 
-namespace tetris::model::tetrimino {
-/**
- * @brief Enumeration of the different types of minos
- */
-enum Mino {
-  L_MINO,
-  J_MINO,
-  Z_MINO,
-  S_MINO,
-  O_MINO,
-  I_MINO,
-  T_MINO,
-};
+#include "model/game/state/notstartedstate.hpp"
 
-/**
- * @brief Array with all the different types of minos
- */
-static constexpr std::array MINOS{L_MINO, J_MINO, Z_MINO, S_MINO,
-                                  O_MINO, T_MINO, I_MINO};
-}  // namespace tetris::model::tetrimino
+namespace tetris::model::game {
 
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+OngoingGame::OngoingGame(Player *player)
+    : state_{std::make_unique<states::NotStartedState>(this)},
+      player_{player},
+      matrix_{10, 22},
+      falling_{},
+      next_{},
+      hold_{} {
+  if (player == nullptr) {
+    throw std::invalid_argument("Player can not be null");
+  }
+}
+void OngoingGame::state(std::unique_ptr<GameState> state) {
+  state_.swap(state);
+}
+
+}  // namespace tetris::model::game
