@@ -23,7 +23,9 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_PLAYER_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_PLAYER_HPP_
 
-#include <string>
+#include <algorithm>
+#include <regex>
+#include <stdexcept>
 #include <utility>
 
 namespace tetris::model::game {
@@ -33,7 +35,6 @@ namespace tetris::model::game {
  * high-score)
  */
 class Player {
-
  private:
   /**
    * @brief The name of the Player
@@ -74,7 +75,6 @@ class Player {
    * @param score The new high-score of the Player
    */
   inline void highScore(unsigned long score);
-
 };
 
 /******************************************************************************
@@ -82,7 +82,14 @@ class Player {
  ******************************************************************************/
 
 Player::Player(std::string name, unsigned long highScore)
-    : name_{std::move(name)}, highScore_{highScore} {}
+    : name_{std::move(name)}, highScore_{highScore} {
+  // Universal
+  std::string regex =
+      "^[\\w'\\-,.][^0-9_!¡?÷?¿.\\_+=@#$%ˆ&*(){}|~<>;:[\\]]{3,11}$";
+
+  if (!std::regex_match(name_, std::regex(regex)))
+    throw std::invalid_argument("Player name is not valid");
+}
 
 std::string_view Player::name() const { return name_; }
 

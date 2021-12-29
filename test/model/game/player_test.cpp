@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 #include "model/game/player.hpp"
+
 #include "catch2/catch.hpp"
 
 using namespace tetris::model::game;
@@ -36,6 +37,37 @@ TEST_CASE("class Player") {
       auto player = Player("Andrew", 10);
       REQUIRE(player.name() == "Andrew");
       REQUIRE(player.highScore() == 10);
+    }
+    SECTION("Exceptions") {
+      SECTION("Exception message") {
+        try {
+          CHECK_THROWS(new Player("aaaaaaaaaaaaa"));
+        } catch (std::invalid_argument& e) {
+          REQUIRE(std::string(e.what()) == "Player name is not valid");
+        }
+      }
+      SECTION("Exception throws when empty") {
+        try {
+          CHECK_THROWS(new Player(""));
+        } catch (std::invalid_argument& e) {
+          REQUIRE(std::string(e.what()) == "Player name is not valid");
+        }
+      }
+      SECTION("Exception bigger than 13 characters") {
+        CHECK_THROWS(new Player("aaaaaaaaaaaaa"));
+      }
+      SECTION("Exception equals 12 characters") {
+        CHECK_NOTHROW(new Player("aaaaaaaaaaaa"));
+      }
+      SECTION("Exception smaller than 4 characters") {
+        CHECK_THROWS(new Player("aaa"));
+      }
+      SECTION("Exception equals 4 characters") {
+        CHECK_NOTHROW(new Player("aaaa"));
+      }
+      SECTION("Name contains only blanks") {
+        CHECK_THROWS(new Player("        a"));
+      }
     }
   }
 }
