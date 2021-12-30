@@ -30,10 +30,11 @@
 
 namespace tetris::model::game {
 
-OngoingGame::OngoingGame(Player *player)
+OngoingGame::OngoingGame(Player *player, std::uint_fast64_t seed)
     : state_{std::make_unique<states::NotStartedState>(this)},
       player_{player},
       matrix_{10, 22},
+      generator_{seed},
       falling_{},
       next_{},
       hold_{} {
@@ -41,6 +42,7 @@ OngoingGame::OngoingGame(Player *player)
     throw std::invalid_argument("Player can not be null");
   }
 }
+
 void OngoingGame::state(std::unique_ptr<GameState> state) {
   state_.swap(state);
 }

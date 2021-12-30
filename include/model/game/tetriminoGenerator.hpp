@@ -23,7 +23,6 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
 
-#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <model/tetrimino/mino.hpp>
@@ -40,7 +39,7 @@ class TetriminoGenerator {
   /**
    * @brief Mersenne Twister Engine
    */
-  const std::mt19937_64 gen64_;
+  std::mt19937_64 gen64_;
 
   /**
    * @brief Bag of Minos

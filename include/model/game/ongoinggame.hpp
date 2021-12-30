@@ -26,10 +26,12 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 
 #include "gamestate.hpp"
 #include "model/game/matrix.hpp"
 #include "model/game/player.hpp"
+#include "model/game/tetriminoGenerator.hpp"
 #include "model/tetrimino/mino.hpp"
 #include "model/tetrimino/tetrimino.hpp"
 
@@ -49,7 +51,15 @@ class OngoingGame {
    */
   Player *player_;
 
+  /**
+   * @brief The matrix of the game with all placed minos
+   */
   Matrix matrix_;
+
+  /**
+   * @brief The Tetrimino bag generator
+   */
+  TetriminoGenerator generator_;
 
   /**
    * @brief The falling Tetrimino
@@ -73,7 +83,7 @@ class OngoingGame {
    * @param player Pointer to the player of this game
    * @param state The initial state of the game
    */
-  explicit OngoingGame(Player *player);
+  explicit OngoingGame(Player *player, std::uint_fast64_t seed);
 
   /**
    * @brief This method is used to change the state of the actual game
@@ -110,6 +120,8 @@ class OngoingGame {
    */
   inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
+  inline void falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino);
+
   /**
    * @brief Getter of the next Mino
    *
@@ -117,12 +129,18 @@ class OngoingGame {
    */
   inline OptionalMino next() const;
 
+  inline void next(OptionalMino mino);
+
   /**
    * @brief Getter of the held Tetrimino
    *
    * @return The held Tetrimino
    */
   inline OptionalMino hold() const;
+
+  inline void hold(OptionalMino mino);
+
+  inline tetrimino::Mino pickMino();
 
   /**
    * @brief This method start the game
@@ -182,9 +200,17 @@ std::shared_ptr<tetrimino::Tetrimino> OngoingGame::falling() const {
   return falling_;
 }
 
+void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
+  falling_ = std::move(tetrimino);
+}
+
 OptionalMino OngoingGame::next() const { return next_; }
 
+void OngoingGame::next(OptionalMino mino) { next_ = mino; }
+
 OptionalMino OngoingGame::hold() const { return hold_; }
+
+void OngoingGame::hold(OptionalMino mino) { hold_ = mino; }
 
 void OngoingGame::start() { state_->start(); }
 
@@ -203,6 +229,8 @@ void OngoingGame::hardDrop() { state_->hardDrop(); }
 void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 
 void OngoingGame::lock() { state_->lock(); }
+
+tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
 
 }  // namespace tetris::model::game
 

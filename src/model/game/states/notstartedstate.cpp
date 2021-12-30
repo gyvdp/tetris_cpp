@@ -23,41 +23,45 @@
 
 #include "model/game/state/notstartedstate.hpp"
 
+#include <stdexcept>
+
 #include "model/game/state/fallingstate.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
 
 namespace tetris::model::game::states {
 
 void NotStartedState::start() {
+  game_->falling(tetrimino::createTetrimino(game_->pickMino()));
+  game_->next(game_->pickMino());
   game_->state(std::make_unique<FallingState>(game_));
-  // TODO
 }
 
 void NotStartedState::stop() {
-  // TODO
+  throw std::logic_error("You cannot stop the game if he is not started");
 }
 
 void NotStartedState::move(tetrimino::Direction direction) {
-  // TODO
+  throw std::logic_error("You cannot move when the game is not started");
 }
 
 void NotStartedState::holdFalling() {
-  // TODO
+  throw std::logic_error("You cannot hold when the game is not started");
 }
 
 void NotStartedState::softDrop() {
-  // TODO
+  throw std::logic_error("You cannot soft drop when the game is not started");
 }
 
 void NotStartedState::hardDrop() {
-  // TODO
+  throw std::logic_error("You cannot hard drop when the game is not started");
 }
 
 void NotStartedState::rotate(bool clockwise) {
-  // TODO
+  throw std::logic_error("You cannot rotate when the game is not started");
 }
 
 void NotStartedState::lock() {
-  // TODO
+  throw std::logic_error("You cannot lock when the game is not started");
 }
 
 }  // namespace tetris::model::game::states
