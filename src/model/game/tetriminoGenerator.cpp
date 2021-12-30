@@ -26,11 +26,11 @@
 #include <random>
 
 using namespace tetris::model::tetrimino;
+
 namespace tetris::mode::game {
 std::vector<Mino> TetriminoGenerator::generateBag() const {
-  std::vector<Mino> bag{Mino::S_MINO, Mino::O_MINO, Mino::I_MINO, Mino::L_MINO,
-                        Mino::J_MINO, Mino::T_MINO, Mino::Z_MINO};
-  std::shuffle(bag.begin(), bag.end(), std::default_random_engine(seed_));
+  std::vector<Mino> bag(MINOS.begin(), MINOS.end());
+  std::shuffle(bag.begin(), bag.end(), gen64_);
   return bag;
 }
 }  // namespace tetris::mode::game
