@@ -58,7 +58,7 @@ set(MODEL_TESTS
         test/model/terimino/orientation_test.cpp
         ###############REPLACE AT GOOD PLACE
         test/utils/coordinate_test.cpp
-        )
+        test/model/game/tetriminoGenerator_test.cpp)
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 

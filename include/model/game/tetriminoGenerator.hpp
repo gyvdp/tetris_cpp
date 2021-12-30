@@ -24,27 +24,61 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_TETRIMINOGENERATOR_HPP_
 
 #include <ctime>
+#include <model/tetrimino/mino.hpp>
+#include <vector>
 
 namespace tetris::mode::game {
 
 class TetriminoGenerator {
  private:
-  int seed_;
+
+  long seed_{};
+
+  std::vector<tetris::model::tetrimino::Mino> minos_{};
+
+  /**
+   * @brief Generates a bag of seven randomly shuffled minos.
+   * @return The shuffled bag of minos.
+   */
+  [[nodiscard]] std::vector<tetris::model::tetrimino::Mino> generateBag() const;
 
  public:
+  /**
+   * @brief Default constructor of generator. Seed will be the machines time.
+   */
   inline TetriminoGenerator();
 
-  inline TetriminoGenerator(int seed);
+  /**
+   * @brief Constructor of generator with a specific seed to be able to sync two
+   * or more players.
+   * @param seed Seed used to randomize generation of bags.
+   */
+  inline explicit TetriminoGenerator(long seed);
+
+  /**
+   * @brief Retrieves the last mino from the bag. If the bag is empty it will automatically be
+   * replenished.
+   * @return The next upcoming mino.
+   */
+  tetris::model::tetrimino::Mino takeMino();
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-TetriminoGenerator::TetriminoGenerator(int seed) : seed_{seed} {}
-TetriminoGenerator::TetriminoGenerator()
-    : seed_{static_cast<int>(time(nullptr))} {}
+TetriminoGenerator::TetriminoGenerator(long seed)
+    : seed_{seed}, minos_{generateBag()} {}
 
+TetriminoGenerator::TetriminoGenerator() : TetriminoGenerator(time(nullptr)) {}
+
+inline tetris::model::tetrimino::Mino TetriminoGenerator::takeMino() {
+  if (minos_.empty()) {
+    minos_ = generateBag();
+  }
+  auto mino = minos_.end();
+  minos_.pop_back();
+  return *mino;
+}
 }  // namespace tetris::mode::game
-
 #endif
