@@ -44,7 +44,6 @@ if (NOT jsoncpp_FOUND)
             GIT_TAG 1.9.5)
 
     FetchContent_MakeAvailable(jsoncpp)
-
 endif ()
 
 include_directories(${jsoncpp_SOURCE_DIR}/include)

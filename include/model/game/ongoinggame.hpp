@@ -120,8 +120,6 @@ class OngoingGame {
    */
   inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
-  inline void falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino);
-
   /**
    * @brief Getter of the next Mino
    *
@@ -129,18 +127,12 @@ class OngoingGame {
    */
   inline OptionalMino next() const;
 
-  inline void next(tetrimino::Mino mino);
-
   /**
    * @brief Getter of the held Tetrimino
    *
    * @return The held Tetrimino
    */
   inline OptionalMino hold() const;
-
-  inline void hold(tetrimino::Mino mino);
-
-  inline tetrimino::Mino pickMino();
 
   /**
    * @brief This method start the game
