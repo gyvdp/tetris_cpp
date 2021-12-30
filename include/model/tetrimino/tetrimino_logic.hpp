@@ -36,7 +36,7 @@
 #include "model/tetrimino/type/ztetrimino.hpp"
 
 class Tetrimino;
-namespace tetris::model::tetriminotetris::model::tetrimino {
+namespace tetris::model::tetrimino {
 /**
  * @brief Create a tetrimino from a mino
  *
@@ -63,5 +63,5 @@ static std::shared_ptr<Tetrimino> createTetrimino(Mino mino) {
       return nullptr;
   }
 }
-}  // namespace tetris::model::tetriminotetris::model::tetrimino
+}  // namespace tetris::model::tetrimino
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_CREATETETRIMINO_H_
