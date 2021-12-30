@@ -90,6 +90,18 @@ class OngoingGame {
   inline std::string_view name() const;
 
   /**
+   * @brief Sets the hold mino.
+   * @param mino Mino to set as hold mino.
+   */
+  void setHold(tetris::model::tetrimino::Mino mino);
+
+  /**
+   * @brief Sets the falling tetrimino.
+   * @param mino Mino to set as falling tetrimino.
+   */
+  void setFalling(tetrimino::Mino mino);
+
+  /**
    * @brief This method returns the high-score of the player
    *
    * @return The high-score of the player

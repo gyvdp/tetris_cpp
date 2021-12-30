@@ -23,6 +23,8 @@
 
 #include "model/game/state/fallingstate.hpp"
 
+#include "model/tetrimino/tetrimino_logic.hpp"
+
 namespace tetris::model::game::states {
 
 void FallingState::start() {
@@ -34,13 +36,22 @@ void FallingState::stop() {
 }
 
 void FallingState::move(tetrimino::Direction direction) {
-  // TODO
+  game_->falling()->move(direction);
 }
 
 void FallingState::holdFalling() {
-  // TODO
+  if (!hasAlreadyHolded_) {
+    if (game_->hold() == std::nullopt) {
+      game_->setHold(game_->falling()->getType());
+      game_->setFalling(game_->next().value());
+    } else {
+      auto temp = game_->hold().value();
+      game_->setHold(game_->falling()->getType());
+      game_->setFalling(temp);
+    }
+    hasAlreadyHolded_ = true;
+  }
 }
-
 void FallingState::softDrop() {
   // TODO
 }
@@ -50,7 +61,7 @@ void FallingState::hardDrop() {
 }
 
 void FallingState::rotate(bool clockwise) {
-  // TODO
+  game_->falling()->rotate(clockwise);
 }
 
 void FallingState::lock() {

@@ -27,6 +27,7 @@
 #include <stdexcept>
 
 #include "model/game/state/notstartedstate.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
 
 namespace tetris::model::game {
 
@@ -43,6 +44,11 @@ OngoingGame::OngoingGame(Player *player)
 }
 void OngoingGame::state(std::unique_ptr<GameState> state) {
   state_.swap(state);
+}
+void OngoingGame::setHold(tetris::model::tetrimino::Mino mino) { hold_ = mino; }
+
+void OngoingGame::setFalling(tetrimino::Mino mino) {
+  falling_ = tetrimino::createTetrimino(mino);
 }
 
 }  // namespace tetris::model::game

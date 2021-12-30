@@ -41,6 +41,11 @@ namespace tetris::model::tetrimino {
 class Tetrimino {
  protected:
   /**
+   * @brief Type of the mino
+   */
+  Mino type_;
+
+  /**
    * @brief The actual Orientation of the Tetrimino
    */
   Orientation orientation_;
@@ -60,7 +65,7 @@ class Tetrimino {
    * @brief Default constructor of a Tetrimino
    */
   inline explicit Tetrimino(
-      const std::array<std::array<OptionalMino, 4>, 4> &minos);
+      const std::array<std::array<OptionalMino, 4>, 4> &minos, Mino type);
 
   /**
    * @brief Destructor of the Tetrimino
@@ -72,6 +77,12 @@ class Tetrimino {
    * @return 2D array of Mino's
    */
   [[nodiscard]] inline std::array<std::array<OptionalMino, 4>, 4> minos() const;
+
+  /**
+   * @brief Gets the type of the mino.
+   * @return The type of the current mino.
+   */
+  inline Mino getType();
 
   /**
    * @brief Move a Tetrimino in a given direction
@@ -110,8 +121,9 @@ class Tetrimino {
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos)
-    : orientation_{NORTH}, coordinate_{{3, 0}}, minos_{minos} {}
+Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos,
+                     Mino type)
+    : type_{type}, orientation_{NORTH}, coordinate_{{3, 0}}, minos_{minos} {}
 
 std::array<std::array<OptionalMino, 4>, 4> Tetrimino::minos() const {
   return minos_;
@@ -122,6 +134,8 @@ long Tetrimino::X() const { return coordinate_->x(); }
 utils::Coordinate Tetrimino::getCoordinates() const {
   return coordinate_.value();
 }
+
+Mino Tetrimino::getType() { return type_; }
 
 long Tetrimino::Y() const { return coordinate_->y(); }
 }  // namespace tetris::model::tetrimino

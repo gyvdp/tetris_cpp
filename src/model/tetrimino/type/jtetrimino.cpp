@@ -25,7 +25,7 @@
 
 namespace tetris::model::tetrimino {
 
-JTetrimino::JTetrimino() : Tetrimino{shape::jShapes.at(NORTH)} {}
+JTetrimino::JTetrimino() : Tetrimino{shape::jShapes.at(NORTH), J_MINO} {}
 
 void JTetrimino::rotate(bool clockwise) {
   this->minos_ =
