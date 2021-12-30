@@ -24,6 +24,8 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
 
+#include "array"
+
 namespace tetris::model::tetrimino {
 /**
  * @brief Enumeration of the different types of minos

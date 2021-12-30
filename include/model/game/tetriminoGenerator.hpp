@@ -31,7 +31,6 @@ namespace tetris::mode::game {
 
 class TetriminoGenerator {
  private:
-
   long seed_{};
 
   std::vector<tetris::model::tetrimino::Mino> minos_{};
@@ -46,18 +45,18 @@ class TetriminoGenerator {
   /**
    * @brief Default constructor of generator. Seed will be the machines time.
    */
-  inline TetriminoGenerator();
+  TetriminoGenerator();
 
   /**
    * @brief Constructor of generator with a specific seed to be able to sync two
    * or more players.
    * @param seed Seed used to randomize generation of bags.
    */
-  inline explicit TetriminoGenerator(long seed);
+  explicit TetriminoGenerator(long seed);
 
   /**
-   * @brief Retrieves the last mino from the bag. If the bag is empty it will automatically be
-   * replenished.
+   * @brief Retrieves the last mino from the bag. If the bag is empty it will
+   * automatically be replenished.
    * @return The next upcoming mino.
    */
   tetris::model::tetrimino::Mino takeMino();
@@ -67,10 +66,11 @@ class TetriminoGenerator {
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-TetriminoGenerator::TetriminoGenerator(long seed)
+inline TetriminoGenerator::TetriminoGenerator(long seed)
     : seed_{seed}, minos_{generateBag()} {}
 
-TetriminoGenerator::TetriminoGenerator() : TetriminoGenerator(time(nullptr)) {}
+inline TetriminoGenerator::TetriminoGenerator()
+    : TetriminoGenerator(time(nullptr)) {}
 
 inline tetris::model::tetrimino::Mino TetriminoGenerator::takeMino() {
   if (minos_.empty()) {

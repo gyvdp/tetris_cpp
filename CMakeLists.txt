@@ -50,7 +50,7 @@ set(MODEL_SOURCES
         src/model/tetrimino/type/stetrimino.cpp
         src/model/tetrimino/type/ttetrimino.cpp
         src/model/tetrimino/type/ztetrimino.cpp
-        include/model/game/tetriminoGenerator.hpp src/model/game/tetriminoGenerator.cpp)
+        src/model/game/tetriminoGenerator.cpp)
 
 set(MODEL_TESTS
         test/main_test.cpp
@@ -63,7 +63,7 @@ set(MODEL_TESTS
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
 add_executable(model_test ${MODEL_TESTS})
-target_link_libraries(model_test Catch2)
+target_link_libraries(model_test Catch2 MODEL_LIB)
 
 #########################################################################################
 # EXECUTABLES
