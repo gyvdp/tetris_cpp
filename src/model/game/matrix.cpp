@@ -27,11 +27,11 @@ namespace tetris::model::game {
 
 void Matrix::add(const tetrimino::Tetrimino& tetrimino) {
   auto minoTemplate = tetrimino.minos();
-  for (auto i = 0; i < minoTemplate.size(); i++) {
-    for (auto j = 0; j < minoTemplate.at(i).size(); j++) {
+  for (size_t i = 0; i < minoTemplate.size(); i++) {
+    for (size_t j = 0; j < minoTemplate.at(i).size(); j++) {
       if (minoTemplate[i][j] == std::nullopt) continue;
-      auto line = tetrimino.Y() + i;
-      auto col = tetrimino.X() + j;
+      size_t line = tetrimino.Y() + i;
+      size_t col = tetrimino.X() + j;
       if (!(line < 0 || col < 0) && line < minos_.size() &&
           col < minos_[line].size()) {
         minos_[line][col] = minoTemplate[i][j];
@@ -47,9 +47,9 @@ void Matrix::removeLines(const std::vector<unsigned long>& linesToRemove) {
 
 std::vector<unsigned long> Matrix::getCompletedLines() {
   std::vector<unsigned long> completedLines;
-  for (auto i = 0; i < minos_.size(); i++) {
+  for (size_t i = 0; i < minos_.size(); i++) {
     bool isComplete = true;
-    for (auto j = 0; j < minos_.at(i).size(); j++)
+    for (size_t j = 0; j < minos_.at(i).size(); j++)
       if (minos_[i][j] == std::nullopt) isComplete = false;
     if (isComplete) completedLines.push_back(i);
   }
