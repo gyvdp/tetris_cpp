@@ -25,14 +25,17 @@
 
 #include <ctime>
 #include <model/tetrimino/mino.hpp>
+#include <random>
 #include <vector>
 
 namespace tetris::mode::game {
 
+/**
+ * @brief Generates randomly shuffled bags of minos.
+ */
 class TetriminoGenerator {
  private:
-  long seed_{};
-
+  std::mt19937_64 gen64_;
   std::vector<tetris::model::tetrimino::Mino> minos_{};
 
   /**
@@ -52,7 +55,7 @@ class TetriminoGenerator {
    * or more players.
    * @param seed Seed used to randomize generation of bags.
    */
-  explicit TetriminoGenerator(long seed);
+  explicit TetriminoGenerator(unsigned long int seed);
 
   /**
    * @brief Retrieves the last mino from the bag. If the bag is empty it will
@@ -66,8 +69,8 @@ class TetriminoGenerator {
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-inline TetriminoGenerator::TetriminoGenerator(long seed)
-    : seed_{seed}, minos_{generateBag()} {}
+inline TetriminoGenerator::TetriminoGenerator(long unsigned int seed)
+    : gen64_{seed}, minos_{generateBag()} {}
 
 inline TetriminoGenerator::TetriminoGenerator()
     : TetriminoGenerator(time(nullptr)) {}
@@ -76,9 +79,9 @@ inline tetris::model::tetrimino::Mino TetriminoGenerator::takeMino() {
   if (minos_.empty()) {
     minos_ = generateBag();
   }
-  auto mino = minos_.end();
+  auto mino = minos_.at(minos_.size() - 1);
   minos_.pop_back();
-  return *mino;
+  return mino;
 }
 }  // namespace tetris::mode::game
 #endif
