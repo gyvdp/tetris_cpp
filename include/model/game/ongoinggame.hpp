@@ -87,30 +87,122 @@ class OngoingGame {
    *
    * @return The name of the Player
    */
-  inline std::string_view name();
+  inline std::string_view name() const;
 
   /**
    * @brief This method returns the high-score of the player
    *
    * @return The high-score of the player
    */
-  inline unsigned long highScore();
+  inline unsigned long highScore() const;
+
+  /**
+   * @brief Getter of the Matrix
+   *
+   * @return The matrix
+   */
+  inline Matrix matrix() const;
+
+  /**
+   * @brief Getter of the falling Tetrimino
+   *
+   * @return The falling Tetrimino
+   */
+  inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
+
+  /**
+   * @brief Getter of the next Mino
+   *
+   * @return The next Mino (Tetrimino)
+   */
+  inline OptionalMino next() const;
+
+  /**
+   * @brief Getter of the held Tetrimino
+   *
+   * @return The held Tetrimino
+   */
+  inline OptionalMino hold() const;
 
   /**
    * @brief This method start the game
    */
   inline void start();
+
+  /**
+   * @brief This method stops the game (by quitting or error)
+   */
+  inline void stop();
+
+  /**
+   * @brief This method moves the falling Tetrimino in the asked direction
+   *
+   * @param direction
+   */
+  inline void move(tetrimino::Direction direction);
+
+  /**
+   * @brief This method hold the falling Tetrimino (if possible)
+   */
+  inline void holdFalling();
+
+  /**
+   * @brief This method soft-drops the falling Tetrimino
+   */
+  inline void softDrop();
+
+  /**
+   * @brief This method hard-drops the falling Tetrimino
+   */
+  inline void hardDrop();
+
+  /**
+   * @brief This method rotates the falling Tetrimino
+   * @param clockwise true if clockwise, false if anti-clockwise
+   */
+  inline void rotate(bool clockwise);
+
+  /**
+   * @brief This method locks the locked-down falling Tetrimino
+   */
+  inline void lock();
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-std::string_view OngoingGame::name() { return player_->name(); }
+std::string_view OngoingGame::name() const { return player_->name(); }
 
-unsigned long OngoingGame::highScore() { return player_->highScore(); }
+unsigned long OngoingGame::highScore() const { return player_->highScore(); }
+
+Matrix OngoingGame::matrix() const { return matrix_; }
+
+std::shared_ptr<tetrimino::Tetrimino> OngoingGame::falling() const {
+  return falling_;
+}
+
+OptionalMino OngoingGame::next() const { return next_; }
+
+OptionalMino OngoingGame::hold() const { return hold_; }
 
 void OngoingGame::start() { state_->start(); }
+
+void OngoingGame::stop() { state_->stop(); }
+
+void OngoingGame::move(tetrimino::Direction direction) {
+  state_->move(direction);
+}
+
+void OngoingGame::holdFalling() { state_->holdFalling(); }
+
+void OngoingGame::softDrop() { state_->softDrop(); }
+
+void OngoingGame::hardDrop() { state_->hardDrop(); }
+
+void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
+
+void OngoingGame::lock() { state_->lock(); }
 
 }  // namespace tetris::model::game
 

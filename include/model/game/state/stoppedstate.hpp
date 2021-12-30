@@ -21,81 +21,70 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_STOPPEDSTATE_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_STOPPEDSTATE_HPP_
 
-#include "model/tetrimino/direction.hpp"
-namespace tetris::model::game {
+#include "model/game/gamestate.hpp"
+#include "model/game/ongoinggame.hpp"
 
-class OngoingGame;
-
+namespace tetris::model::game::states {
 /**
- * @brief Abstraction of a State in a Ongoing Game
+ * @brief This class represents the state when the game is stopped intentionally
  */
-class GameState {
- protected:
-  /**
-   * @brief Pointer to the Ongoing Game
-   */
-  OngoingGame *game_;
-
+class StoppedState : public GameState {
  public:
-  inline explicit GameState(OngoingGame *game);
-
   /**
-   * @brief Default destructor
-   */
-  virtual ~GameState() = default;
-
-  /**
-   * @brief This method is used to start a game
-   */
-  virtual void start() = 0;
-
-  /**
-   * @brief This method stops the game (by quitting or error)
-   */
-  virtual void stop() = 0;
-
-  /**
-   * @brief This method moves the falling Tetrimino in the asked direction
+   * @brief Default constructor
    *
-   * @param direction
+   * @param game The game that have this state
    */
-  virtual void move(tetrimino::Direction direction) = 0;
+  inline explicit StoppedState(OngoingGame *game);
 
   /**
-   * @brief This method hold the falling Tetrimino (if possible)
+   * @inherit
    */
-  virtual void holdFalling() = 0;
+  void start() override;
 
   /**
-   * @brief This method soft-drops the falling Tetrimino
+   * @inherit
    */
-  virtual void softDrop() = 0;
+  void stop() override;
 
   /**
-   * @brief This method hard-drops the falling Tetrimino
+   * @inherit
    */
-  virtual void hardDrop() = 0;
+  void move(tetrimino::Direction direction) override;
 
   /**
-   * @brief This method rotates the falling Tetrimino
-   * @param clockwise true if clockwise, false if anti-clockwise
+   * @inherit
    */
-  virtual void rotate(bool clockwise) = 0;
+  void holdFalling() override;
 
   /**
-   * @brief This method locks the locked-down falling Tetrimino
+   * @inherit
    */
-  virtual void lock() = 0;
+  void softDrop() override;
+
+  /**
+   * @inherit
+   */
+  void hardDrop() override;
+
+  /**
+   * @inherit
+   */
+  void rotate(bool clockwise) override;
+
+  /**
+   * @inherit
+   */
+  void lock() override;
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
-GameState::GameState(OngoingGame *game) : game_{game} {}
+StoppedState::StoppedState(OngoingGame *game) : GameState{game} {}
+}  // namespace tetris::model::game::states
 
-}  // namespace tetris::model::game
-
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_STOPPEDSTATE_HPP_

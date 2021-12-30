@@ -21,42 +21,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/notstartedstate.hpp"
-
-#include "model/game/state/fallingstate.hpp"
+#include "model/game/state/lockedoutstate.hpp"
 
 namespace tetris::model::game::states {
 
-void NotStartedState::start() {
-  game_->state(std::make_unique<FallingState>(game_));
+void LockedOutState::start() {
   // TODO
 }
 
-void NotStartedState::stop() {
+void LockedOutState::stop() {
   // TODO
 }
 
-void NotStartedState::move(tetrimino::Direction direction) {
+void LockedOutState::move(tetrimino::Direction direction) {
   // TODO
 }
 
-void NotStartedState::holdFalling() {
+void LockedOutState::holdFalling() {
   // TODO
 }
 
-void NotStartedState::softDrop() {
+void LockedOutState::softDrop() {
   // TODO
 }
 
-void NotStartedState::hardDrop() {
+void LockedOutState::hardDrop() {
   // TODO
 }
 
-void NotStartedState::rotate(bool clockwise) {
+void LockedOutState::rotate(bool clockwise) {
   // TODO
 }
 
-void NotStartedState::lock() {
+void LockedOutState::lock() {
   // TODO
 }
 

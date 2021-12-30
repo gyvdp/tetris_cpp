@@ -53,6 +53,11 @@ set(MODEL_SOURCES
         src/model/game/tetriminoGenerator.cpp
         src/model/game/ongoinggame.cpp
         src/model/game/states/notstartedstate.cpp
+        src/model/game/states/fallingstate.cpp
+        src/model/game/states/lockeddownstate.cpp
+        src/model/game/states/lockedoutstate.cpp
+        src/model/game/states/stoppedstate.cpp
+        src/model/game/states/blockedoutstate.cpp
         )
 
 set(MODEL_TESTS

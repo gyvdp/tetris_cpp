@@ -25,6 +25,7 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_NOTSTARTEDSTATE_HPP_
 
 #include "model/game/gamestate.hpp"
+#include "model/game/ongoinggame.hpp"
 
 namespace tetris::model::game::states {
 /**
@@ -37,12 +38,52 @@ class NotStartedState : public GameState {
    *
    * @param game The game that have this state
    */
-  explicit NotStartedState(OngoingGame *game);
+  inline explicit NotStartedState(OngoingGame *game);
 
   /**
    * @inherit
    */
   void start() override;
+
+  /**
+   * @inherit
+   */
+  void stop() override;
+
+  /**
+   * @inherit
+   */
+  void move(tetrimino::Direction direction) override;
+
+  /**
+   * @inherit
+   */
+  void holdFalling() override;
+
+  /**
+   * @inherit
+   */
+  void softDrop() override;
+
+  /**
+   * @inherit
+   */
+  void hardDrop() override;
+
+  /**
+   * @inherit
+   */
+  void rotate(bool clockwise) override;
+
+  /**
+   * @inherit
+   */
+  void lock() override;
 };
+
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
+NotStartedState::NotStartedState(OngoingGame *game) : GameState{game} {}
 }  // namespace tetris::model::game::states
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_NOTSTARTEDSTATE_HPP_
