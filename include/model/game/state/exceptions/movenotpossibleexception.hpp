@@ -21,8 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-int main() {
-  std::cout << "Hello, World!" << std::endl;
-  return 0;
-}
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
+
+namespace tetris::model::game::states::exceptions {
+
+/**
+ * @brief Throws an exception signaling the mouvement is not possible.
+ */
+class moveNotPossibleException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for not started exception.
+   * @param mess Message to display in exception.
+   */
+  explicit moveNotPossibleException(const std::string& mess, const char* file,
+                                    int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
+                         arg) {}
+  virtual ~notStartedException() = default;
+
+}  // namespace tetris::model::game::states::exceptions
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_

@@ -25,10 +25,15 @@
 
 #include <stdexcept>
 
+#include "model/game/state/exceptions/notstartedexception.hpp"
 #include "model/game/state/fallingstate.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
 
 namespace tetris::model::game::states {
+
+#define gameNotStarted(arg)                                       \
+  throw exceptions::notStartedException(arg, __FILE__, __LINE__); \
+  ;
 
 void NotStartedState::start() {
   game_->falling(tetrimino::createTetrimino(game_->pickMino()));
@@ -37,31 +42,31 @@ void NotStartedState::start() {
 }
 
 void NotStartedState::stop() {
-  throw std::logic_error("You cannot stop the game if he is not started");
+  gameNotStarted("You cannot stop an un started game");
 }
 
 void NotStartedState::move(tetrimino::Direction direction) {
-  throw std::logic_error("You cannot move when the game is not started");
+  gameNotStarted("You cannot move in an un started game");
 }
 
 void NotStartedState::holdFalling() {
-  throw std::logic_error("You cannot hold when the game is not started");
+  gameNotStarted("You cannot hold in an un started game");
 }
 
 void NotStartedState::softDrop() {
-  throw std::logic_error("You cannot soft drop when the game is not started");
+  gameNotStarted("You cannot drop an un started game");
 }
 
 void NotStartedState::hardDrop() {
-  throw std::logic_error("You cannot hard drop when the game is not started");
+  gameNotStarted("You cannot drop an un started game");
 }
 
 void NotStartedState::rotate(bool clockwise) {
-  throw std::logic_error("You cannot rotate when the game is not started");
+  gameNotStarted("You cannot rotate an un started game");
 }
 
 void NotStartedState::lock() {
-  throw std::logic_error("You cannot lock when the game is not started");
+  gameNotStarted("You cannot lock an un started game");
 }
 
 }  // namespace tetris::model::game::states

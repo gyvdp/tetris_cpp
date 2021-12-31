@@ -23,38 +23,32 @@
 
 #include "model/game/state/stoppedstate.hpp"
 
+#include "model/game/state/exceptions/stoppedgameexception.hpp"
+
 namespace tetris::model::game::states {
 
-void StoppedState::start() {
-  // TODO
-}
+#define stoppedGame(arg)                                           \
+  throw exceptions::stoppedGameException(arg, __FILE__, __LINE__); \
+  ;
 
-void StoppedState::stop() {
-  // TODO
-}
+void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+
+void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
 
 void StoppedState::move(tetrimino::Direction direction) {
-  // TODO
+  stoppedGame("game cannot move if stopped");
 }
 
-void StoppedState::holdFalling() {
-  // TODO
-}
+void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
 
-void StoppedState::softDrop() {
-  // TODO
-}
+void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
 
-void StoppedState::hardDrop() {
-  // TODO
-}
+void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
 
 void StoppedState::rotate(bool clockwise) {
-  // TODO
+  stoppedGame("game cannot rotate if stopped");
 }
 
-void StoppedState::lock() {
-  // TODO
-}
+void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
 
 }  // namespace tetris::model::game::states
