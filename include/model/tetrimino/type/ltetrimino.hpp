@@ -40,9 +40,16 @@ class LTetrimino : public Tetrimino {
   explicit LTetrimino();
 
   /**
-   * @copydoc
+   * @inherit
    */
   void rotate(bool clockwise) override;
+
+  /**
+   * @inherit
+   */
+  void rotate(bool clockwise,
+              std::vector<std::vector<bool>> matrixMask) override;
+
 };
 
 }  // namespace tetris::model::tetrimino

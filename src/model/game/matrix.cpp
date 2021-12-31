@@ -25,10 +25,6 @@
 
 namespace tetris::model::game {
 
-OptionalMino Matrix::get(utils::Coordinate position) const {
-  return minos_.at(position.x()).at(position.y());
-}
-
 void Matrix::add(const tetrimino::Tetrimino& tetrimino) {
   auto minoTemplate = tetrimino.minos();
   for (auto i = 0; i < minoTemplate.size(); i++) {
@@ -59,10 +55,25 @@ std::vector<unsigned long> Matrix::getCompletedLines() {
   }
   return completedLines;
 }
-const OptionalMino& Matrix::operator()(int x, int y) { return minos_[x][y]; }
 
 void Matrix::set(tetris::model::tetrimino::Mino m, int line, int col) {
   minos_[line][col] = m;
+}
+
+std::vector<std::vector<bool>> Matrix::generateMask() const {
+  std::vector<std::vector<bool>> mask{};
+  mask.reserve(minos_.size());
+
+  for (auto& line : minos_) {
+    std::vector<bool> t{};
+    t.reserve(line.size());
+    for (auto& oMino : line) {
+      t.push_back(!oMino.has_value());
+    }
+    mask.push_back(t);
+  }
+
+  return mask;
 }
 
 }  // namespace tetris::model::game
