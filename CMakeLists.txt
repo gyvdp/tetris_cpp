@@ -58,7 +58,7 @@ set(MODEL_SOURCES
         src/model/game/states/lockedoutstate.cpp
         src/model/game/states/stoppedstate.cpp
         src/model/game/states/blockedoutstate.cpp
-        )
+        include/model/game/state/exceptions/notStartedException.h)
 
 set(MODEL_TESTS
         test/main_test.cpp
