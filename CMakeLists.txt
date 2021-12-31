@@ -61,7 +61,7 @@ set(MODEL_SOURCES
         include/model/game/state/exceptions/notstartedexception.hpp
         include/model/game/state/exceptions/rotationnotpossibleexception.hpp
         include/model/game/state/exceptions/movenotpossibleexception.hpp
-        include/model/game/state/exceptions/stoppedgameexception.hpp)
+        include/model/game/state/exceptions/stoppedgameexception.hpp include/model/game/state/exceptions/ongoinggame.hpp)
 
 set(MODEL_TESTS
         test/main_test.cpp

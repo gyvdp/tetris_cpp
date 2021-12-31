@@ -21,27 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
-
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ONGOINGGAME_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ONGOINGGAME_HPP_
 namespace tetris::model::game::states::exceptions {
 
 /**
- * @brief Throws an exception signaling the movement is not possible.
+ * @brief Throws an exception signaling the game has already started started.
  */
-class moveNotPossibleException : public std::logic_error {
+class onGoingGameException : public std::logic_error {
  public:
   /**
-   * @brief Constructor for not started exception.
+   * @brief Constructor for started game exception.
    * @param mess Message to display in exception.
    */
-  explicit moveNotPossibleException(const std::string& mess, const char* file,
-                                    int line)
+  explicit onGoingGameException(const std::string& mess, const char* file,
+                                int line)
       : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
-                         mess) {}
-  virtual ~moveNotPossibleException() = default;
+                         mess){};
+  ~onGoingGameException() override = default;
 };
 
 }  // namespace tetris::model::game::states::exceptions
-
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ONGOINGGAME_HPP_

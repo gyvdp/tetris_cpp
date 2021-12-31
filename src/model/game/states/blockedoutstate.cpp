@@ -23,10 +23,25 @@
 
 #include "model/game/state/blockedoutstate.hpp"
 
+#include "model/game/state/exceptions/ongoinggame.hpp"
+#include "model/game/state/exceptions/movenotpossibleexception.hpp"
+#include "model/game/state/exceptions/rotationnotpossibleexception.hpp"
+
 namespace tetris::model::game::states {
 
+#define gameNotStarted(arg)                                       \
+  throw exceptions::onGoingGameException(arg, __FILE__, __LINE__); \
+  ;
+#define moveNotAllowed(arg)                                       \
+  throw exceptions::moveNotPossibleException(arg, __FILE__, __LINE__); \
+  ;                                                               \
+
+#define rotationNotAllowed(arg)                                       \
+  throw exceptions::rotationNotPossibleException(arg, __FILE__, __LINE__); \
+  ;
+
 void BlockedOutState::start() {
-  // TODO
+  gameNotStarted("There is already a game started");
 }
 
 void BlockedOutState::stop() {
@@ -34,7 +49,7 @@ void BlockedOutState::stop() {
 }
 
 void BlockedOutState::move(tetrimino::Direction direction) {
-  // TODO
+  moveNotAllowed("Cannot move when blocked out");
 }
 
 void BlockedOutState::holdFalling() {
@@ -50,7 +65,7 @@ void BlockedOutState::hardDrop() {
 }
 
 void BlockedOutState::rotate(bool clockwise) {
-  // TODO
+  rotationNotAllowed("Rotation is not allowed when locked out");
 }
 
 void BlockedOutState::lock() {
