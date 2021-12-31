@@ -33,13 +33,10 @@ TEST_CASE("Matrix tests") {
   Matrix matrix{20, 20};
   SECTION("Adding tetrimino") {
     matrix.add(STetrimino());
-    REQUIRE(matrix(0, 4) == S_MINO);
-    REQUIRE(matrix(0, 5) == S_MINO);
-    REQUIRE(matrix(1, 3) == S_MINO);
-    REQUIRE(matrix(1, 4) == S_MINO);
-    SECTION("Getting mino") {
-      REQUIRE(matrix.get(Coordinate{0, 4}) == S_MINO);
-    }
+    REQUIRE(matrix({4, 0}) == S_MINO);
+    REQUIRE(matrix({5, 0}) == S_MINO);
+    REQUIRE(matrix({3, 1}) == S_MINO);
+    REQUIRE(matrix({4, 1}) == S_MINO);
   }
 
   SECTION("Get completed lines") {
@@ -51,7 +48,7 @@ TEST_CASE("Matrix tests") {
     SECTION("Remove line") {
       matrix.removeLines(lines);
       for (int i = 0; i < matrix.width(); i++) {
-        REQUIRE(matrix(0, i) == std::nullopt);
+        REQUIRE(matrix({0, i}) == std::nullopt);
       }
     }
   }

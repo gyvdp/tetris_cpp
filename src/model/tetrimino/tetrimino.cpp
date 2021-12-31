@@ -31,4 +31,26 @@ void Tetrimino::move(Direction direction) {
   tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
   coordinate_.emplace(newCoordinate);
 }
+
+void Tetrimino::move(Direction direction,
+                     std::vector<std::vector<bool>> matrixMask) {
+  tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
+
+  for (size_t line = 0; line < minos_.size(); ++line) {
+    for(size_t col = 0; col < minos_[line].size(); ++col) {
+      if (minos_[line][col].has_value()) {
+        auto x = newCoordinate.x() + col;
+        auto y = newCoordinate.y() + line;
+
+        if (y >= 0 && y > matrixMask.size() && x >= 0 && x < matrixMask[y].size() ) {
+          throw std::logic_error("This move places the Tetrimino out of bound");
+        } else if (!matrixMask[y][x]) {
+          throw std::logic_error("This move is impossible because there is a Mino in the way");
+        }
+      }
+    }
+  }
+
+  coordinate_.emplace(newCoordinate);
+}
 }  // namespace tetris::model::tetrimino

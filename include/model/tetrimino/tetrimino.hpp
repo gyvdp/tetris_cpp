@@ -26,6 +26,7 @@
 
 #include <array>
 #include <optional>
+#include <vector>
 
 #include "model/tetrimino/direction.hpp"
 #include "model/tetrimino/mino.hpp"
@@ -76,16 +77,28 @@ class Tetrimino {
   /**
    * @brief Move a Tetrimino in a given direction
    * @param direction The direction of the move
-   * TODO : Surrounding AREA
    */
   void move(Direction direction);
 
   /**
-   * @brief Rotate a Tetrimino (if possible)
+   * @brief Move a Tetrimino if possible
+   * @param direction the direction of the move
+   * @param matrixMask The mask of the matrix
+   */
+  void move(Direction direction, std::vector<std::vector<bool>> matrixMask);
+
+  /**
+   * @brief Rotate a Tetrimino
    * @param clockwise true if clockwise, false if anticlockwise
-   * TODO : Surrounding AREA
    */
   virtual void rotate(bool clockwise) = 0;
+
+  /**
+   * @brief Rotate a Tetrimino (if possible)
+   * @param clockwise true if clockwise, false if anticlockwise
+   * @param matrixMask The mask of the matrix
+   */
+  virtual void rotate(bool clockwise, std::vector<std::vector<bool>> matrixMask) = 0;
 
   /**
    * @brief Gets the coordinates of the tetrimino.
