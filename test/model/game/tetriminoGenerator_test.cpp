@@ -26,18 +26,22 @@
 #include "catch2/catch.hpp"
 using namespace tetris::model::tetrimino;
 TEST_CASE("Multi generation") {
-  auto seed = time(nullptr);
+  auto seed = static_cast<std::uint_fast64_t>(
+      std::chrono::system_clock::now().time_since_epoch().count());
   int i = 0;
-  tetris::mode::game::TetriminoGenerator tetrimino_generator{seed};
-  tetris::mode::game::TetriminoGenerator tetrimino_generatorv2{seed};
+  tetris::model::game::TetriminoGenerator tetrimino_generator{seed};
+  tetris::model::game::TetriminoGenerator tetrimino_generatorv2{seed};
   do {
     REQUIRE(tetrimino_generator.takeMino() == tetrimino_generatorv2.takeMino());
     i++;
   } while (i >= 100);
 }
+
 TEST_CASE("Different generation pattern same seed") {
   int i = 0;
-  tetris::mode::game::TetriminoGenerator tetrimino_generator{time(nullptr)};
+  tetris::model::game::TetriminoGenerator tetrimino_generator{
+      static_cast<std::uint_fast64_t>(
+          std::chrono::system_clock::now().time_since_epoch().count())};
   std::vector<Mino> pattern1;
   std::vector<Mino> pattern2;
   do {
@@ -51,7 +55,7 @@ TEST_CASE("Different generation pattern same seed") {
   REQUIRE(pattern1 != pattern2);
   SECTION("test uniqueness of pattern") {
     Mino mino = pattern1.at(0);
-    for (int i = 1; i < pattern1.size(); ++i) {
+    for (size_t i = 1; i < pattern1.size(); ++i) {
       REQUIRE_FALSE(mino == pattern1.at(i));
     }
   }
