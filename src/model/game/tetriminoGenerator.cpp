@@ -23,14 +23,25 @@
 
 #include "model/game/tetriminoGenerator.hpp"
 
+#include <algorithm>
 #include <random>
 
-using namespace tetris::model::tetrimino;
+namespace tetris::model::game {
 
-namespace tetris::mode::game {
-std::vector<Mino> TetriminoGenerator::generateBag() const {
-  std::vector<Mino> bag(MINOS.begin(), MINOS.end());
+std::vector<tetrimino::Mino> TetriminoGenerator::generateBag() {
+  std::vector<tetrimino::Mino> bag(tetrimino::MINOS.begin(),
+                                   tetrimino::MINOS.end());
   std::shuffle(bag.begin(), bag.end(), gen64_);
   return bag;
 }
-}  // namespace tetris::mode::game
+
+tetrimino::Mino TetriminoGenerator::takeMino() {
+  if (minos_.empty()) {
+    minos_ = generateBag();
+  }
+  auto mino = minos_.at(minos_.size() - 1);
+  minos_.pop_back();
+  return mino;
+}
+
+}  // namespace tetris::model::game
