@@ -23,14 +23,13 @@
 
 #include "model/game/ongoinggame.hpp"
 
-#include <iostream>
 #include <stdexcept>
 
 #include "model/game/state/notstartedstate.hpp"
 
 namespace tetris::model::game {
 
-OngoingGame::OngoingGame(Player *player, std::uint_fast64_t seed)
+OngoingGame::OngoingGame(Player* player, std::uint_fast64_t seed)
     : state_{std::make_unique<states::NotStartedState>(this)},
       player_{player},
       matrix_{10, 22},
@@ -46,5 +45,7 @@ OngoingGame::OngoingGame(Player *player, std::uint_fast64_t seed)
 void OngoingGame::state(std::unique_ptr<GameState> state) {
   state_.swap(state);
 }
+
+Matrix& OngoingGame::getMatrix() { return matrix_; }
 
 }  // namespace tetris::model::game

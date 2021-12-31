@@ -23,22 +23,46 @@
 
 #include "model/game/state/fallingstate.hpp"
 
+#include <model/game/state/exceptions/illegalstateexception.hpp>
+
+#include "model/game/state/exceptions/startongoinggameexception.hpp"
+#include "model/game/state/stoppedstate.hpp"
+#include "model/tetrimino/exceptions/movenotpossibleexception.hpp"
+#include "model/tetrimino/exceptions/rotationnotpossibleexception.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
+
 namespace tetris::model::game::states {
 
 void FallingState::start() {
-  // TODO
+  throw exceptions::StartOnGoingGameException(
+      "Cannot start an ongoing "
+      "game",
+      __FILE__, __LINE__);
 }
 
 void FallingState::stop() {
-  // TODO
+  game_->state(std::make_unique<states::StoppedState>(game_));
 }
 
 void FallingState::move(tetrimino::Direction direction) {
-  // TODO
+  try {
+    game_->falling()->move(direction, game_->matrix().generateMask());
+  } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
+  }
 }
 
 void FallingState::holdFalling() {
-  // TODO
+  if (!hasHold_) {
+    if (game_->hold() == std::nullopt) {
+      game_->hold(game_->falling()->type());
+      game_->falling(tetrimino::createTetrimino(game_->next().value()));
+    } else {
+      auto temp = game_->hold().value();
+      game_->hold(game_->falling()->type());
+      game_->falling(tetrimino::createTetrimino(temp));
+    }
+    hasHold_ = true;
+  }
 }
 
 void FallingState::softDrop() {
@@ -50,11 +74,15 @@ void FallingState::hardDrop() {
 }
 
 void FallingState::rotate(bool clockwise) {
-  // TODO
+  try {
+    game_->falling()->rotate(clockwise, game_->matrix().generateMask());
+  } catch (tetrimino::exceptions::RotationNotPossibleException& ignored) {
+  }
 }
 
 void FallingState::lock() {
-  // TODO
+  throw exceptions::IllegalStateException("Cannot lock when falling", __FILE__,
+                                          __LINE__);
 }
 
 }  // namespace tetris::model::game::states

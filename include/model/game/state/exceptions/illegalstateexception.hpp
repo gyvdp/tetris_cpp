@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,22 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/tetrimino/type/jtetrimino.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ILLEGALSTATEEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ILLEGALSTATEEXCEPTION_HPP_
 
-namespace tetris::model::tetrimino {
+namespace tetris::model::game::states::exceptions {
 
-JTetrimino::JTetrimino() : Tetrimino{shape::jShapes.at(NORTH), J_MINO} {}
+/**
+ * @brief Throws an exception signaling the request action is not available in
+ * that state.
+ */
+class IllegalStateException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for not started exception.
+   * @param mess Message to display in exception.
+   */
+  explicit IllegalStateException(const std::string& mess, const char* file,
+                                 int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
+                         mess) {}
 
-void JTetrimino::rotate(bool clockwise) {
-  this->minos_ =
-      shape::jShapes.at(tetrimino::rotate(this->orientation_, clockwise));
-}
+  ~IllegalStateException() override = default;
+};
 
-void JTetrimino::rotate(bool clockwise,
-                        std::vector<std::vector<bool>> matrixMask) {
-  rotate(clockwise);
-  // TODO : Prendre en compte la matrice et retrouner une exception si la
-  // rotation n'est pas possible
-}
+}  // namespace tetris::model::game::states::exceptions
 
-}  // namespace tetris::model::tetrimino
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ILLEGALSTATEEXCEPTION_HPP_

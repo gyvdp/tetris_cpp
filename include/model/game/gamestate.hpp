@@ -30,10 +30,14 @@ namespace tetris::model::game {
 class OngoingGame;
 
 /**
- * @brief Abstraction of a State in a Ongoing Game
+ * @brief Abstraction of a state in a Ongoing Game
  */
 class GameState {
  protected:
+  /**
+   * @brief Keeps track if the player has held during the state.
+   */
+  bool hasHold_ = false;
   /**
    * @brief Pointer to the Ongoing Game
    */

@@ -25,7 +25,7 @@
 
 namespace tetris::model::tetrimino {
 
-OTetrimino::OTetrimino() : Tetrimino{shape::oShapes.at(NORTH)} {}
+OTetrimino::OTetrimino() : Tetrimino{shape::oShapes.at(NORTH), O_MINO} {}
 
 void OTetrimino::rotate(bool clockwise) {
   this->minos_ =
@@ -35,7 +35,8 @@ void OTetrimino::rotate(bool clockwise) {
 void OTetrimino::rotate(bool clockwise,
                         std::vector<std::vector<bool>> matrixMask) {
   rotate(clockwise);
-  //TODO : Prendre en compte la matrice et retrouner une exception si la rotation n'est pas possible
+  // TODO : Prendre en compte la matrice et retrouner une exception si la
+  // rotation n'est pas possible
 }
 
 }  // namespace tetris::model::tetrimino

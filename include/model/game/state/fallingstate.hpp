@@ -32,6 +32,7 @@ namespace tetris::model::game::states {
  * @brief This class represents the state when the tetrimino is falling
  */
 class FallingState : public GameState {
+
  public:
   /**
    * @brief Default constructor

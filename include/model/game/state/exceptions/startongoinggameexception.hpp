@@ -21,22 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/tetrimino/type/jtetrimino.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_STARTONGOINGGAMEEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_STARTONGOINGGAMEEXCEPTION_HPP_
+namespace tetris::model::game::states::exceptions {
 
-namespace tetris::model::tetrimino {
+/**
+ * @brief Throws an exception signaling the game has already started started.
+ */
+class StartOnGoingGameException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for started game exception.
+   * @param mess Message to display in exception.
+   */
+  explicit StartOnGoingGameException(const std::string& mess, const char* file,
+                                     int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
+                         mess){};
+  ~StartOnGoingGameException() override = default;
+};
 
-JTetrimino::JTetrimino() : Tetrimino{shape::jShapes.at(NORTH), J_MINO} {}
-
-void JTetrimino::rotate(bool clockwise) {
-  this->minos_ =
-      shape::jShapes.at(tetrimino::rotate(this->orientation_, clockwise));
-}
-
-void JTetrimino::rotate(bool clockwise,
-                        std::vector<std::vector<bool>> matrixMask) {
-  rotate(clockwise);
-  // TODO : Prendre en compte la matrice et retrouner une exception si la
-  // rotation n'est pas possible
-}
-
-}  // namespace tetris::model::tetrimino
+}  // namespace tetris::model::game::states::exceptions
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_STARTONGOINGGAMEEXCEPTION_HPP_

@@ -23,7 +23,10 @@
 
 #include "model/tetrimino/tetrimino.hpp"
 
+#include <stdexcept>
 #include <vector>
+
+#include "model/tetrimino/exceptions/movenotpossibleexception.hpp"
 
 namespace tetris::model::tetrimino {
 
@@ -37,15 +40,19 @@ void Tetrimino::move(Direction direction,
   tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
 
   for (size_t line = 0; line < minos_.size(); ++line) {
-    for(size_t col = 0; col < minos_[line].size(); ++col) {
+    for (size_t col = 0; col < minos_[line].size(); ++col) {
       if (minos_[line][col].has_value()) {
         auto x = newCoordinate.x() + col;
         auto y = newCoordinate.y() + line;
-
-        if (y >= 0 && y > matrixMask.size() && x >= 0 && x < matrixMask[y].size() ) {
-          throw std::logic_error("This move places the Tetrimino out of bound");
+        if (y >= 0 && y > matrixMask.size() && x >= 0 &&
+            x < matrixMask[y].size()) {
+          throw exceptions::MoveNotPossibleException(
+              "This move places the Tetrimino out of bound", __FILE__,
+              __LINE__);
         } else if (!matrixMask[y][x]) {
-          throw std::logic_error("This move is impossible because there is a Mino in the way");
+          throw exceptions::MoveNotPossibleException(
+              "This move is impossible because there is a Mino in the way",
+              __FILE__, __LINE__);
         }
       }
     }

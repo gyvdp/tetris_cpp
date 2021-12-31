@@ -23,6 +23,8 @@
 
 #include "model/game/state/lockedoutstate.hpp"
 
+#include <model/game/state/stoppedstate.hpp>
+
 namespace tetris::model::game::states {
 
 void LockedOutState::start() {
@@ -30,7 +32,7 @@ void LockedOutState::start() {
 }
 
 void LockedOutState::stop() {
-  // TODO
+  game_->state(std::make_unique<states::StoppedState>(game_));
 }
 
 void LockedOutState::move(tetrimino::Direction direction) {

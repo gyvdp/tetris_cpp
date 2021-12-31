@@ -46,6 +46,8 @@ class Tetrimino {
    */
   Orientation orientation_;
 
+  Mino type_;
+
   /**
    * @brief The top-left Coordinate of the Tetrimino
    */
@@ -61,7 +63,7 @@ class Tetrimino {
    * @brief Default constructor of a Tetrimino
    */
   inline explicit Tetrimino(
-      const std::array<std::array<OptionalMino, 4>, 4> &minos);
+      const std::array<std::array<OptionalMino, 4>, 4> &minos, Mino type);
 
   /**
    * @brief Destructor of the Tetrimino
@@ -98,7 +100,8 @@ class Tetrimino {
    * @param clockwise true if clockwise, false if anticlockwise
    * @param matrixMask The mask of the matrix
    */
-  virtual void rotate(bool clockwise, std::vector<std::vector<bool>> matrixMask) = 0;
+  virtual void rotate(bool clockwise,
+                      std::vector<std::vector<bool>> matrixMask) = 0;
 
   /**
    * @brief Gets the coordinates of the tetrimino.
@@ -117,18 +120,27 @@ class Tetrimino {
    * @return Y coordinate value.
    */
   [[nodiscard]] inline long Y() const;
+
+  /**
+   * @brief Gets the type of tetrimino from a mino.
+   * @return The type of mino
+   */
+  inline Mino type();
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
 
-Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos)
-    : orientation_{NORTH}, coordinate_{{3, 0}}, minos_{minos} {}
+Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos,
+                     Mino type)
+    : orientation_{NORTH}, type_{type}, coordinate_{{3, 0}}, minos_{minos} {}
 
 std::array<std::array<OptionalMino, 4>, 4> Tetrimino::minos() const {
   return minos_;
 }
+
+Mino Tetrimino::type() { return type_; }
 
 long Tetrimino::X() const { return coordinate_->x(); }
 

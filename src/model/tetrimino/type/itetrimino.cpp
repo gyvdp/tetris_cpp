@@ -24,7 +24,7 @@
 #include "model/tetrimino/type/itetrimino.hpp"
 
 namespace tetris::model::tetrimino {
-ITetrimino::ITetrimino() : Tetrimino{shape::iShapes.at(NORTH)} {}
+ITetrimino::ITetrimino() : Tetrimino{shape::iShapes.at(NORTH), I_MINO} {}
 
 void ITetrimino::rotate(bool clockwise) {
   this->minos_ =
@@ -34,7 +34,8 @@ void ITetrimino::rotate(bool clockwise) {
 void ITetrimino::rotate(bool clockwise,
                         std::vector<std::vector<bool>> matrixMask) {
   rotate(clockwise);
-  //TODO : Prendre en compte la matrice et retrouner une exception si la rotation n'est pas possible
+  // TODO : Prendre en compte la matrice et retrouner une exception si la
+  // rotation n'est pas possible
 }
 
 }  // namespace tetris::model::tetrimino

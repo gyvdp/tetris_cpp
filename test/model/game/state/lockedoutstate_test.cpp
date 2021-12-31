@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,36 +20,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#include "model/game/matrix.hpp"
 
 #include "catch2/catch.hpp"
+#include "model/game/ongoinggame.hpp"
+#include "model/game/player.hpp"
+#include "model/game/state/blockedoutstate.hpp"
+#include "model/game/state/exceptions/stoppedgameexception.hpp"
+#include "model/tetrimino/direction.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
-
-using namespace tetris::model::game;
+using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;
-using namespace tetris::utils;
+using namespace tetris::model::game;
 
-TEST_CASE("Matrix tests") {
-  Matrix matrix{20, 20};
-  SECTION("Adding tetrimino") {
-    matrix.add(std::make_shared<STetrimino>());
-    REQUIRE(matrix({4, 0}) == S_MINO);
-    REQUIRE(matrix({5, 0}) == S_MINO);
-    REQUIRE(matrix({3, 1}) == S_MINO);
-    REQUIRE(matrix({4, 1}) == S_MINO);
-  }
-
-  SECTION("Get completed lines") {
-    for (int i = 0; i < matrix.width(); i++) {
-      matrix.set(S_MINO, 0, i);
-    }
-    auto lines = matrix.getCompletedLines();
-    REQUIRE(lines.at(0) == 0);
-    SECTION("Remove line") {
-      matrix.removeLines(lines);
-      for (int i = 0; i < matrix.width(); i++) {
-        REQUIRE(matrix({0, i}) == std::nullopt);
-      }
-    }
-  }
+TEST_CASE("locked out state") {
+  Player player("John", 123);
+  std::unique_ptr<OngoingGame> game =
+      std::make_unique<OngoingGame>(OngoingGame(&player, 1));
+  std::unique_ptr<GameState> gameState =
+      std::make_unique<states::BlockedOutState>(
+          states::BlockedOutState(game.get()));
+  game->state(std::move(gameState));
+  REQUIRE_THROWS_AS(game->start(), exceptions::StoppedGameException);
+  REQUIRE_THROWS_AS(game->holdFalling(), exceptions::StoppedGameException);
+  REQUIRE_THROWS_AS(game->softDrop(), exceptions::StoppedGameException);
+  REQUIRE_THROWS_AS(game->hardDrop(), exceptions::StoppedGameException);
+  REQUIRE_THROWS_AS(game->rotate(true), exceptions::StoppedGameException);
+  REQUIRE_THROWS_AS(game->lock(), exceptions::StoppedGameException);
+  REQUIRE_THROWS_AS(game->move(LEFT), exceptions::StoppedGameException);
 }

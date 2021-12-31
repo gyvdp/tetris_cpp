@@ -25,6 +25,7 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MATRIX_HPP_
 
 #include <array>
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -56,9 +57,14 @@ class Matrix {
    */
   std::vector<std::vector<OptionalMino>> minos_;
 
+ public:
+  /**
+   * @brief Generates a mask of booleans were all occupied spaces (mino or oob)
+   * are true.
+   * @return MAsk of booleans.
+   */
   [[nodiscard]] std::vector<std::vector<bool>> generateMask() const;
 
- public:
   /**
    * @brief Basic constructor of a Matrix
    *
@@ -90,7 +96,7 @@ class Matrix {
    * @brief Add a Tetrimino to the Matrix (when locked down for example)
    * @param tetrimino The Tetrimino to place in the Matrix
    */
-  void add(const tetrimino::Tetrimino& tetrimino);
+  void add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino);
 
   /**
    * @brief Remove given lines in the matrix.

@@ -31,10 +31,6 @@
 
 namespace tetris::model::game::states {
 
-#define gameNotStarted(arg)                                       \
-  throw exceptions::NotStartedException(arg, __FILE__, __LINE__); \
-  ;
-
 void NotStartedState::start() {
   game_->falling(tetrimino::createTetrimino(game_->pickMino()));
   game_->next(game_->pickMino());
@@ -42,31 +38,38 @@ void NotStartedState::start() {
 }
 
 void NotStartedState::stop() {
-  gameNotStarted("You cannot stop an un started game");
+  throw exceptions::NotStartedException("Cannot stop an unstarted game",
+                                        __FILE__, __LINE__);
 }
 
 void NotStartedState::move(tetrimino::Direction direction) {
-  gameNotStarted("You cannot move in an un started game");
+  throw exceptions::NotStartedException("Cannot  move if game is not started",
+                                        __FILE__, __LINE__);
 }
 
 void NotStartedState::holdFalling() {
-  gameNotStarted("You cannot hold in an un started game");
+  throw exceptions::NotStartedException("Cannot hold if game is not started",
+                                        __FILE__, __LINE__);
 }
 
 void NotStartedState::softDrop() {
-  gameNotStarted("You cannot drop an un started game");
+  throw exceptions::NotStartedException(
+      "Cannot soft drop if game is not started", __FILE__, __LINE__);
 }
 
 void NotStartedState::hardDrop() {
-  gameNotStarted("You cannot drop an un started game");
+  throw exceptions::NotStartedException(
+      "Cannot hard drop if game is not started", __FILE__, __LINE__);
 }
 
 void NotStartedState::rotate(bool clockwise) {
-  gameNotStarted("You cannot rotate an un started game");
+  throw exceptions::NotStartedException("Cannot rotate if game is not started",
+                                        __FILE__, __LINE__);
 }
 
 void NotStartedState::lock() {
-  gameNotStarted("You cannot lock an un started game");
+  throw exceptions::NotStartedException("Cannot lock if a game is not started",
+                                        __FILE__, __LINE__);
 }
 
 }  // namespace tetris::model::game::states

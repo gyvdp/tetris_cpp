@@ -57,8 +57,7 @@ set(MODEL_SOURCES
         src/model/game/states/lockeddownstate.cpp
         src/model/game/states/lockedoutstate.cpp
         src/model/game/states/stoppedstate.cpp
-        src/model/game/states/blockedoutstate.cpp
-        )
+        src/model/game/states/blockedoutstate.cpp)
 
 set(MODEL_TESTS
         test/main_test.cpp
@@ -77,7 +76,12 @@ set(MODEL_TESTS
         test/model/game/matrix_test.cpp
         test/model/tetrimino/direction_test.cpp
         test/model/game/tetriminoGenerator_test.cpp
-        )
+        test/model/game/state/fallingstate_test.cpp
+        test/model/game/state/blockedoutstate_test.cpp
+        test/model/game/state/lockedoutstate_test.cpp
+        test/model/game/state/lockeddownstate_test.cpp
+        test/model/game/state/notstartedstate_test.cpp
+        test/model/game/state/stoppedstate_test.cpp)
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 

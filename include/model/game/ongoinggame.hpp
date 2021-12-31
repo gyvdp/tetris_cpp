@@ -120,6 +120,10 @@ class OngoingGame {
    */
   inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
+  /**
+   * @brief Setter for the falling tetrimino.
+   * @param tetrimino Tetrimino to set as the falling one.
+   */
   inline void falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino);
 
   /**
@@ -129,7 +133,11 @@ class OngoingGame {
    */
   inline OptionalMino next() const;
 
-  inline void next(OptionalMino mino);
+  /**
+   * Setter for the next tetrimino.
+   * @param mino Mino to set as next
+   */
+  inline void next(tetrimino::Mino mino);
 
   /**
    * @brief Getter of the held Tetrimino
@@ -138,8 +146,16 @@ class OngoingGame {
    */
   inline OptionalMino hold() const;
 
-  inline void hold(OptionalMino mino);
+  /**
+   * @brief Setter for the hold mino.
+   * @param mino Mino to set as hold.
+   */
+  inline void hold(tetrimino::Mino mino);
 
+  /**
+   * @brief Picks a mino from the bag generator.
+   * @return Mino picked from the bag generator.
+   */
   inline tetrimino::Mino pickMino();
 
   /**
@@ -184,6 +200,12 @@ class OngoingGame {
    * @brief This method locks the locked-down falling Tetrimino
    */
   inline void lock();
+
+  /**
+   * @brief Getter of the matrix by reference.
+   * @return The reference of the matrix.
+   */
+  Matrix &getMatrix();
 };
 
 /******************************************************************************
@@ -206,11 +228,11 @@ void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
 
 OptionalMino OngoingGame::next() const { return next_; }
 
-void OngoingGame::next(OptionalMino mino) { next_ = mino; }
+void OngoingGame::next(tetrimino::Mino mino) { next_ = mino; }
 
 OptionalMino OngoingGame::hold() const { return hold_; }
 
-void OngoingGame::hold(OptionalMino mino) { hold_ = mino; }
+void OngoingGame::hold(tetrimino::Mino mino) { hold_ = mino; }
 
 void OngoingGame::start() { state_->start(); }
 

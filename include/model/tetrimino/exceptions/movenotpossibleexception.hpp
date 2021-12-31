@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,25 +21,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ROTATIONNOTPOSSIBLEEXCEPTION_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ROTATIONNOTPOSSIBLEEXCEPTION_HPP_
-namespace tetris::model::game::states::exceptions {
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
+
+namespace tetris::model::tetrimino::exceptions {
 
 /**
- * @brief Throws an exception signaling the rotation is not possible.
+ * @brief Throws an exception signaling the movement is not possible.
  */
-class rotationNotPossibleException : public std::logic_error {
+class MoveNotPossibleException : public std::logic_error {
  public:
   /**
    * @brief Constructor for not started exception.
    * @param mess Message to display in exception.
    */
-  explicit rotationNotPossibleException(const std::string& mess,
-                                        const char* file, int line)
+  explicit MoveNotPossibleException(const std::string& mess, const char* file,
+                                    int line)
       : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
-                         arg){};
-  virtual ~notStartedException() = default;
+                         mess){};
+  ~MoveNotPossibleException() override = default;
 };
 
 }  // namespace tetris::model::game::states::exceptions
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_ROTATIONNOTPOSSIBLEEXCEPTION_HPP_
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
