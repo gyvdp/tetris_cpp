@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_H_
-#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_H_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_HPP_
 
 namespace tetris::model::game::states::exceptions {
 
@@ -40,14 +40,8 @@ class notStartedException : public std::logic_error {
       : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
                          arg){};
   virtual ~notStartedException() = default;
-
-  /**
-   * @brief Returns the message of the exception.
-   * @return Message of thrown exception.
-   */
-  [[nodiscard]] const char* what() const noexcept { return msg.c_str(); }
 };
 
 }  // namespace tetris::model::game::states::exceptions
 
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_H_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_HPP_

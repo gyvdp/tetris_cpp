@@ -58,7 +58,10 @@ set(MODEL_SOURCES
         src/model/game/states/lockedoutstate.cpp
         src/model/game/states/stoppedstate.cpp
         src/model/game/states/blockedoutstate.cpp
-        include/model/game/state/exceptions/notStartedException.h)
+        include/model/game/state/exceptions/notstartedexception.hpp
+        include/model/game/state/exceptions/rotationnotpossibleexception.hpp
+        include/model/game/state/exceptions/movenotpossibleexception.hpp
+        include/model/game/state/exceptions/stoppedgameexception.hpp)
 
 set(MODEL_TESTS
         test/main_test.cpp
