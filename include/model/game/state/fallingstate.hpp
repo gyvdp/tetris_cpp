@@ -32,6 +32,14 @@ namespace tetris::model::game::states {
  * @brief This class represents the state when the tetrimino is falling
  */
 class FallingState : public GameState {
+
+  /**
+   * @brief Keeps track if the player has held during the state.
+   */
+  bool hasHold_ = false;
+
+  bool outOfBounds();
+
  public:
   /**
    * @brief Default constructor

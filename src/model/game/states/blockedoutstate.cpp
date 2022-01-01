@@ -23,20 +23,20 @@
 
 #include "model/game/state/blockedoutstate.hpp"
 
-#include "model/game/state/exceptions/ongoinggame.hpp"
 #include "model/game/state/exceptions/movenotpossibleexception.hpp"
+#include "model/game/state/exceptions/ongoinggame.hpp"
 #include "model/game/state/exceptions/rotationnotpossibleexception.hpp"
 
 namespace tetris::model::game::states {
 
-#define gameNotStarted(arg)                                       \
+#define gameNotStarted(arg)                                        \
   throw exceptions::onGoingGameException(arg, __FILE__, __LINE__); \
   ;
-#define moveNotAllowed(arg)                                       \
+#define moveNotAllowed(arg)                                            \
   throw exceptions::moveNotPossibleException(arg, __FILE__, __LINE__); \
-  ;                                                               \
+  ;
 
-#define rotationNotAllowed(arg)                                       \
+#define rotationNotAllowed(arg)                                            \
   throw exceptions::rotationNotPossibleException(arg, __FILE__, __LINE__); \
   ;
 
@@ -53,23 +53,21 @@ void BlockedOutState::move(tetrimino::Direction direction) {
 }
 
 void BlockedOutState::holdFalling() {
-  // TODO
+  moveNotAllowed("Cannot hold when blocked out");
 }
 
 void BlockedOutState::softDrop() {
-  // TODO
+  moveNotAllowed("Cannot soft when blocked out");
 }
 
 void BlockedOutState::hardDrop() {
-  // TODO
+  moveNotAllowed("Cannot drop when blocked out");
 }
 
 void BlockedOutState::rotate(bool clockwise) {
   rotationNotAllowed("Rotation is not allowed when locked out");
 }
 
-void BlockedOutState::lock() {
-  // TODO
-}
+void BlockedOutState::lock() { moveNotAllowed("Cannot lock when blocked out"); }
 
 }  // namespace tetris::model::game::states

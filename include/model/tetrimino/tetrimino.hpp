@@ -46,6 +46,8 @@ class Tetrimino {
    */
   Orientation orientation_;
 
+  Mino type_;
+
   /**
    * @brief The top-left Coordinate of the Tetrimino
    */
@@ -117,6 +119,14 @@ class Tetrimino {
    * @return Y coordinate value.
    */
   [[nodiscard]] inline long Y() const;
+
+  /**
+   * @brief Gets the type of tetrimino from a mino.
+   * @return The type of mino
+   */
+  inline Mino type(){
+    return type_;
+  }
 };
 
 /******************************************************************************

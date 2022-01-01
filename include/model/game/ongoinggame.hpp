@@ -120,6 +120,11 @@ class OngoingGame {
    */
   inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
+
+  /**
+   * @brief Setter for the falling tetrimino.
+   * @param tetrimino Tetrimino to set as the falling one.
+   */
   inline void falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino);
 
   /**
@@ -129,6 +134,10 @@ class OngoingGame {
    */
   inline OptionalMino next() const;
 
+  /**
+   * Setter for the next tetrimino.
+   * @param mino Mino to set as next
+   */
   inline void next(tetrimino::Mino mino);
 
   /**
@@ -138,8 +147,16 @@ class OngoingGame {
    */
   inline OptionalMino hold() const;
 
+  /**
+   * @brief Setter for the hold mino.
+   * @param mino Mino to set as hold.
+   */
   inline void hold(tetrimino::Mino mino);
 
+  /**
+   * @brief Picks a mino from the bag generator.
+   * @return Mino picked from the bag generator.
+   */
   inline tetrimino::Mino pickMino();
 
   /**

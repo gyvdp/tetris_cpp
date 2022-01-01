@@ -23,6 +23,8 @@
 
 #include "model/game/state/lockeddownstate.hpp"
 
+#include <model/tetrimino/tetrimino_logic.hpp>
+
 namespace tetris::model::game::states {
 
 void LockedDownState::start() {

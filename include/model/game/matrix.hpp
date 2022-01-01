@@ -56,9 +56,15 @@ class Matrix {
    */
   std::vector<std::vector<OptionalMino>> minos_;
 
+ public:
+
+  /**
+   * @brief Generates a mask of booleans were all occupied spaces (mino or oob)
+   * are true.
+   * @return MAsk of booleans.
+   */
   [[nodiscard]] std::vector<std::vector<bool>> generateMask() const;
 
- public:
   /**
    * @brief Basic constructor of a Matrix
    *
