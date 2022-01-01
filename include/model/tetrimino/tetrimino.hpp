@@ -98,8 +98,11 @@ class Tetrimino {
    * @param clockwise true if clockwise, false if anticlockwise
    * @param matrixMask The mask of the matrix
    */
-  virtual void rotate(bool clockwise, std::vector<std::vector<bool>> matrixMask) = 0;
+  void rotate(bool clockwise,
+                      std::vector<std::vector<bool>> matrixMask);
 
+  virtual std::array<std::array<OptionalMino, 4>, 4> rotateCheck(
+      bool clockwise) = 0;
   /**
    * @brief Gets the coordinates of the tetrimino.
    * @return Coordinates parameter of the tetrimino.

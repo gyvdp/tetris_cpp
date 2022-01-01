@@ -23,6 +23,7 @@
 
 #include "model/tetrimino/tetrimino.hpp"
 
+#include <stdexcept>
 #include <vector>
 
 namespace tetris::model::tetrimino {
@@ -37,20 +38,35 @@ void Tetrimino::move(Direction direction,
   tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
 
   for (size_t line = 0; line < minos_.size(); ++line) {
-    for(size_t col = 0; col < minos_[line].size(); ++col) {
+    for (size_t col = 0; col < minos_[line].size(); ++col) {
       if (minos_[line][col].has_value()) {
         auto x = newCoordinate.x() + col;
         auto y = newCoordinate.y() + line;
 
-        if (y >= 0 && y > matrixMask.size() && x >= 0 && x < matrixMask[y].size() ) {
+        if (y >= 0 && y > matrixMask.size() && x >= 0 &&
+            x < matrixMask[y].size()) {
           throw std::logic_error("This move places the Tetrimino out of bound");
         } else if (!matrixMask[y][x]) {
-          throw std::logic_error("This move is impossible because there is a Mino in the way");
+          throw std::logic_error(
+              "This move is impossible because there is a Mino in the way");
         }
       }
     }
   }
 
   coordinate_.emplace(newCoordinate);
+}
+void Tetrimino::rotate(bool clockwise,
+                       std::vector<std::vector<bool>> matrixMask) {
+  Orientation tempOrientation = tetrimino::rotate(orientation_, clockwise);
+  auto tempMinos = rotateCheck(clockwise);
+  for (int i = 0; i < tempMinos.size(); i++) {
+    for (int j = 0; j < tempMinos.at(i).size(); j++) {
+      if ((!matrixMask[i][j]) && (tempMinos[i][j] != std::nullopt))
+        throw std::logic_error("Rotation not possible");
+    }
+  }
+  minos_ = tempMinos;
+  orientation_ = tempOrientation;
 }
 }  // namespace tetris::model::tetrimino

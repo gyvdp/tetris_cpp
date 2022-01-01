@@ -44,11 +44,7 @@ class ITetrimino : public Tetrimino {
    */
   void rotate(bool clockwise) override;
 
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise,
-              std::vector<std::vector<bool>> matrixMask) override;
+
 
 };
 

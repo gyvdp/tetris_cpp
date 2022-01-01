@@ -32,10 +32,4 @@ void LTetrimino::rotate(bool clockwise) {
       shape::lShapes.at(tetrimino::rotate(this->orientation_, clockwise));
 }
 
-void LTetrimino::rotate(bool clockwise,
-                        std::vector<std::vector<bool>> matrixMask) {
-  rotate(clockwise);
-  //TODO : Prendre en compte la matrice et retrouner une exception si la rotation n'est pas possible
-}
-
 }  // namespace tetris::model::tetrimino

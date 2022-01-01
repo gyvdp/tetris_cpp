@@ -23,6 +23,10 @@
 
 #include "model/tetrimino/type/jtetrimino.hpp"
 
+#include <stdexcept>
+
+#include "model/tetrimino/orientation.hpp"
+
 namespace tetris::model::tetrimino {
 
 JTetrimino::JTetrimino() : Tetrimino{shape::jShapes.at(NORTH)} {}
@@ -32,10 +36,10 @@ void JTetrimino::rotate(bool clockwise) {
       shape::jShapes.at(tetrimino::rotate(this->orientation_, clockwise));
 }
 
-void JTetrimino::rotate(bool clockwise,
-                        std::vector<std::vector<bool>> matrixMask) {
+std::array<std::array<OptionalMino, 4>, 4> JTetrimino::rotateCheck(
+    bool clockwise) {
   rotate(clockwise);
-  //TODO : Prendre en compte la matrice et retrouner une exception si la rotation n'est pas possible
+  return this->minos_;  // Make sure this shit returns a copy lol.
 }
 
 }  // namespace tetris::model::tetrimino
