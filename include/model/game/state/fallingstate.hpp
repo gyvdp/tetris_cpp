@@ -38,8 +38,6 @@ class FallingState : public GameState {
    */
   bool hasHold_ = false;
 
-  bool outOfBounds();
-
  public:
   /**
    * @brief Default constructor

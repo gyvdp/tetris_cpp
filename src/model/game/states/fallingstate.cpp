@@ -23,6 +23,7 @@
 
 #include "model/game/state/fallingstate.hpp"
 
+#include "boost/signals2.hpp"
 #include "model/game/state/exceptions/movenotpossibleexception.hpp"
 #include "model/game/state/exceptions/ongoinggame.hpp"
 #include "model/game/state/exceptions/rotationnotpossibleexception.hpp"
@@ -92,16 +93,6 @@ void FallingState::lock() {
   game_->falling(tetrimino::createTetrimino(game_->next() != std::nullopt
                                                 ? game_->next().value()
                                                 : tetrimino::S_MINO));
-  if (outOfBounds()){
-    // TODO stop game
-  } else {
-    // TODO set next tetrimino to fall.
-  }
 }
-
-bool FallingState::outOfBounds(){
-  //TODO
-}
-
 
 }  // namespace tetris::model::game::states
