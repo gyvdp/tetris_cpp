@@ -28,7 +28,7 @@
 namespace tetris::model::game::states {
 
 #define stoppedGame(arg)                                           \
-  throw exceptions::stoppedGameException(arg, __FILE__, __LINE__); \
+  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
   ;
 
 void StoppedState::start() { stoppedGame("game cannot start if stopped"); }

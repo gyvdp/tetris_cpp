@@ -32,7 +32,7 @@
 namespace tetris::model::game::states {
 
 #define gameNotStarted(arg)                                       \
-  throw exceptions::notStartedException(arg, __FILE__, __LINE__); \
+  throw exceptions::NotStartedException(arg, __FILE__, __LINE__); \
   ;
 
 void NotStartedState::start() {

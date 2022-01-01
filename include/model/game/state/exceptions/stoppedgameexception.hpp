@@ -28,17 +28,17 @@ namespace tetris::model::game::states::exceptions {
 /**
  * @brief Throws an exception signaling the game has not been stopped.
  */
-class stoppedGameException : public std::logic_error {
+class StoppedGameException : public std::logic_error {
  public:
   /**
    * @brief Constructor for not started exception.
    * @param mess Message to display in exception.
    */
-  explicit stoppedGameException(const std::string& mess, const char* file,
+  explicit StoppedGameException(const std::string& mess, const char* file,
                                 int line)
       : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
-                         arg){};
-  virtual ~notStartedException() = default;
+                         mess){};
+  ~StoppedGameException() override = default;
 };
 
 }  // namespace tetris::model::game::states::exceptions

@@ -29,17 +29,16 @@ namespace tetris::model::game::states::exceptions {
 /**
  * @brief Throws an exception signaling the game has not been started.
  */
-class notStartedException : public std::logic_error {
+class NotStartedException : public std::logic_error {
  public:
   /**
    * @brief Constructor for not started exception.
    * @param mess Message to display in exception.
    */
-  explicit notStartedException(const std::string& mess, const char* file,
+  explicit NotStartedException(const std::string& mess, const char* file,
                                int line)
-      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
-                         arg){};
-  virtual ~notStartedException() = default;
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +mess){};
+  ~NotStartedException() override = default;
 };
 
 }  // namespace tetris::model::game::states::exceptions
