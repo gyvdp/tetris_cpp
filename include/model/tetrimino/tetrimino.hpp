@@ -25,6 +25,7 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_TETRIMINO_HPP_
 
 #include <array>
+#include <map>
 #include <optional>
 #include <vector>
 
@@ -46,6 +47,9 @@ class Tetrimino {
    */
   Orientation orientation_;
 
+  /**
+   * @brief Type of mino
+   */
   Mino type_;
 
   /**
@@ -56,14 +60,18 @@ class Tetrimino {
   /**
    * @brief The abstract representation of the Tetrimino in an 2D array of minos
    */
-  std::array<std::array<OptionalMino, 4>, 4> minos_;
+  std::map<Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
+      &minos_;
 
  public:
+
   /**
    * @brief Default constructor of a Tetrimino
    */
   inline explicit Tetrimino(
-      const std::array<std::array<OptionalMino, 4>, 4> &minos, Mino type);
+      std::map<Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
+          &minos,
+      Mino type);
 
   /**
    * @brief Destructor of the Tetrimino
@@ -74,13 +82,21 @@ class Tetrimino {
    * @brief Getter of the Mino 2D array representation of the Tetrimino
    * @return 2D array of Mino's
    */
-  [[nodiscard]] inline std::array<std::array<OptionalMino, 4>, 4> minos() const;
+  [[nodiscard]] inline std::map<
+      Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
+  minos() const;
 
   /**
    * @brief Move a Tetrimino in a given direction
    * @param direction The direction of the move
    */
   void move(Direction direction);
+
+  /**
+   * @brief Getter for the current orientation of the mino.
+   * @return Current orientation of the mino.
+   */
+  inline Orientation orientation();
 
   /**
    * @brief Move a Tetrimino if possible
@@ -90,18 +106,17 @@ class Tetrimino {
   void move(Direction direction, std::vector<std::vector<bool>> matrixMask);
 
   /**
-   * @brief Rotate a Tetrimino
-   * @param clockwise true if clockwise, false if anticlockwise
-   */
-  virtual void rotate(bool clockwise) = 0;
-
-  /**
    * @brief Rotate a Tetrimino (if possible)
    * @param clockwise true if clockwise, false if anticlockwise
    * @param matrixMask The mask of the matrix
    */
-  virtual void rotate(bool clockwise,
-                      std::vector<std::vector<bool>> matrixMask) = 0;
+  void rotate(bool clockwise, const std::vector<std::vector<bool>> &matrixMask);
+
+  /**
+   * @brief Rotate a Tetrimino
+   * @param clockwise true if clockwise, false if anticlockwise
+   */
+  void rotate(bool clockwise);
 
   /**
    * @brief Gets the coordinates of the tetrimino.
@@ -131,12 +146,14 @@ class Tetrimino {
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
-
-Tetrimino::Tetrimino(const std::array<std::array<OptionalMino, 4>, 4> &minos,
-                     Mino type)
+Tetrimino::Tetrimino(
+    std::map<Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
+        &minos,
+    Mino type)
     : orientation_{NORTH}, type_{type}, coordinate_{{3, 0}}, minos_{minos} {}
 
-std::array<std::array<OptionalMino, 4>, 4> Tetrimino::minos() const {
+std::map<Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
+Tetrimino::minos() const {
   return minos_;
 }
 
@@ -149,6 +166,8 @@ utils::Coordinate Tetrimino::getCoordinates() const {
 }
 
 long Tetrimino::Y() const { return coordinate_->y(); }
+
+Orientation Tetrimino::orientation() { return orientation_; }
 }  // namespace tetris::model::tetrimino
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_TETRIMINO_HPP_

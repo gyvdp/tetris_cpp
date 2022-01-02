@@ -37,21 +37,14 @@ class ZTetrimino : public Tetrimino {
   /**
    * @brief Default constructor of a Tetrimino
    */
-  explicit ZTetrimino();
-
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise) override;
-
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise,
-              std::vector<std::vector<bool>> matrixMask) override;
+  inline explicit ZTetrimino();
 
 };
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
 
+ZTetrimino::ZTetrimino() : Tetrimino{shape::zShapes, Z_MINO} {}
 }  // namespace tetris::model::tetrimino
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_ZTETRIMINO_HPP_

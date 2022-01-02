@@ -59,8 +59,11 @@ TEST_CASE("class ZTetrimino") {
     REQUIRE(tetrimino.Y() == 0);
 
     for (int line = 0; line < tetrimino.minos().size(); ++line) {
-      for (int column = 0; column < tetrimino.minos()[line].size(); ++column) {
-        REQUIRE(tetrimino.minos()[line][column] == northShape[line][column]);
+      for (int column = 0;
+           column < tetrimino.minos().at(tetrimino.orientation())[line].size();
+           ++column) {
+        REQUIRE(tetrimino.minos().at(tetrimino.orientation())[line][column] ==
+                northShape[line][column]);
       }
     }
   }
@@ -70,9 +73,12 @@ TEST_CASE("class ZTetrimino") {
       tetrimino.rotate(true);
 
       for (int line = 0; line < tetrimino.minos().size(); ++line) {
-        for (int column = 0; column < tetrimino.minos()[line].size();
+        for (int column = 0;
+             column <
+             tetrimino.minos().at(tetrimino.orientation())[line].size();
              ++column) {
-          REQUIRE(tetrimino.minos()[line][column] == eastShape[line][column]);
+          REQUIRE(tetrimino.minos().at(tetrimino.orientation())[line][column] ==
+                  eastShape[line][column]);
         }
       }
     }
@@ -82,9 +88,12 @@ TEST_CASE("class ZTetrimino") {
       tetrimino.rotate(true);
 
       for (int line = 0; line < tetrimino.minos().size(); ++line) {
-        for (int column = 0; column < tetrimino.minos()[line].size();
+        for (int column = 0;
+             column <
+             tetrimino.minos().at(tetrimino.orientation())[line].size();
              ++column) {
-          REQUIRE(tetrimino.minos()[line][column] == eastShape[line][column]);
+          REQUIRE(tetrimino.minos().at(tetrimino.orientation())[line][column] ==
+                  southShape[line][column]);
         }
       }
     }
@@ -93,9 +102,12 @@ TEST_CASE("class ZTetrimino") {
       tetrimino.rotate(false);
 
       for (int line = 0; line < tetrimino.minos().size(); ++line) {
-        for (int column = 0; column < tetrimino.minos()[line].size();
+        for (int column = 0;
+             column <
+             tetrimino.minos().at(tetrimino.orientation())[line].size();
              ++column) {
-          REQUIRE(tetrimino.minos()[line][column] == westShape[line][column]);
+          REQUIRE(tetrimino.minos().at(tetrimino.orientation())[line][column] ==
+                  westShape[line][column]);
         }
       }
     }

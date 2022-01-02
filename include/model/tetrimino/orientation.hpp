@@ -38,24 +38,22 @@ enum Orientation { NORTH, EAST, SOUTH, WEST };
 static constexpr std::array ORIENTATIONS{NORTH, EAST, SOUTH, WEST};
 
 /**
- * @brief Compute the next Orientation after a rotation
- *
+ * Computes the next orientation after the rotation
  * @param start The start Orientation
- * @param clockwise true if clockwise, false if anticlockwise
+ * @param clockwise true if clockwise, false if counter-clockwise
  * @return The Orientation after the rotation
  */
-static constexpr Orientation rotate(Orientation start, bool clockwise) {
-  int delta = clockwise ? 1 : -1;
-  unsigned long startIndex = static_cast<int>(start);
-  unsigned long endIndex = startIndex + delta;
-
-  if (endIndex < 0) {
-    endIndex = ORIENTATIONS.size() - endIndex;
-  } else {
-    endIndex = endIndex % ORIENTATIONS.size();
+static constexpr Orientation next(Orientation orientation, bool clockwise) {
+  switch (orientation) {
+    case NORTH:
+      return clockwise ? EAST : WEST;
+    case EAST:
+      return clockwise ? SOUTH : NORTH;
+    case SOUTH:
+      return clockwise ? WEST : EAST;
+    case WEST:
+      return clockwise ? NORTH : SOUTH;
   }
-
-  return static_cast<Orientation>(endIndex);
 }
 
 }  // namespace tetris::model::tetrimino

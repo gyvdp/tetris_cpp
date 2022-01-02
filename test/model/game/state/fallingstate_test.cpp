@@ -106,4 +106,16 @@ TEST_CASE("falling state") {
     REQUIRE(tempFalling == game->hold());
     REQUIRE(tempNext == game->falling()->type());
   }
+  SECTION("CLOCKWISE") {
+    game->falling(std::make_shared<LTetrimino>());
+    game->getMatrix().set(T_MINO, 3, 1);
+    game->rotate(true);
+    REQUIRE(game->falling()->orientation() == NORTH);
+  }
+  SECTION("COUNTERCLOCKWISE") {
+    game->falling(std::make_shared<LTetrimino>());
+    game->getMatrix().set(T_MINO, 3, 2);
+    game->rotate(false);
+    REQUIRE(game->falling()->orientation() == NORTH);
+  }
 }

@@ -37,20 +37,13 @@ class OTetrimino : public Tetrimino {
   /**
    * @brief Default constructor of a Tetrimino
    */
-  explicit OTetrimino();
-
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise) override;
-
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise,
-              std::vector<std::vector<bool>> matrixMask) override;
-
+  inline explicit OTetrimino();
 };
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
+
+OTetrimino::OTetrimino() : Tetrimino{shape::oShapes, O_MINO} {}
 
 }  // namespace tetris::model::tetrimino
 

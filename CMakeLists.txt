@@ -43,13 +43,6 @@ set(MODEL_SOURCES
         src/model/game/matrix.cpp
         src/model/game/player.cpp
         src/model/tetrimino/tetrimino.cpp
-        src/model/tetrimino/type/itetrimino.cpp
-        src/model/tetrimino/type/jtetrimino.cpp
-        src/model/tetrimino/type/ltetrimino.cpp
-        src/model/tetrimino/type/otetrimino.cpp
-        src/model/tetrimino/type/stetrimino.cpp
-        src/model/tetrimino/type/ttetrimino.cpp
-        src/model/tetrimino/type/ztetrimino.cpp
         src/model/game/tetriminoGenerator.cpp
         src/model/game/ongoinggame.cpp
         src/model/game/states/notstartedstate.cpp

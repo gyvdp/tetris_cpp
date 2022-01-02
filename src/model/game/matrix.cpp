@@ -28,13 +28,15 @@ namespace tetris::model::game {
 void Matrix::add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino) {
   auto minoTemplate = tetrimino->minos();
   for (size_t i = 0; i < minoTemplate.size(); i++) {
-    for (size_t j = 0; j < minoTemplate.at(i).size(); j++) {
-      if (minoTemplate[i][j] == std::nullopt) continue;
+    for (size_t j = 0;
+         j < minoTemplate.at(tetrimino->orientation()).at(i).size(); j++) {
+      if (minoTemplate.at(tetrimino->orientation())[i][j] == std::nullopt)
+        continue;
       size_t line = tetrimino->Y() + i;
       size_t col = tetrimino->X() + j;
       if (!(line < 0 || col < 0) && line < minos_.size() &&
           col < minos_[line].size()) {
-        minos_[line][col] = minoTemplate[i][j];
+        minos_[line][col] = minoTemplate.at(tetrimino->orientation())[i][j];
       }
     }
   }

@@ -27,19 +27,19 @@ using namespace tetris::model::tetrimino;
 
 TEST_CASE("class Orientation") {
   SECTION("rotate start NORTH") {
-    REQUIRE(rotate(NORTH, true) == EAST);
-    REQUIRE(rotate(NORTH, false) == WEST);
+    REQUIRE(next(NORTH, true) == EAST);
+    REQUIRE(next(NORTH, false) == WEST);
   }
   SECTION("rotate start EAST") {
-    REQUIRE(rotate(EAST, true) == SOUTH);
-    REQUIRE(rotate(EAST, false) == NORTH);
+    REQUIRE(next(EAST, true) == SOUTH);
+    REQUIRE(next(EAST, false) == NORTH);
   }
   SECTION("rotate start SOUTH") {
-    REQUIRE(rotate(SOUTH, true) == WEST);
-    REQUIRE(rotate(SOUTH, false) == EAST);
+    REQUIRE(next(SOUTH, true) == WEST);
+    REQUIRE(next(SOUTH, false) == EAST);
   }
   SECTION("rotate start WEST") {
-    REQUIRE(rotate(WEST, true) == NORTH);
-    REQUIRE(rotate(WEST, false) == SOUTH);
+    REQUIRE(next(WEST, true) == NORTH);
+    REQUIRE(next(WEST, false) == SOUTH);
   }
 }

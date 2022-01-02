@@ -37,20 +37,13 @@ class ITetrimino : public Tetrimino {
   /**
    * @brief Default constructor of a Tetrimino
    */
-  explicit ITetrimino();
-
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise) override;
-
-  /**
-   * @inherit
-   */
-  void rotate(bool clockwise,
-              std::vector<std::vector<bool>> matrixMask) override;
-
+  inline explicit ITetrimino();
 };
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
+
+ITetrimino::ITetrimino() : Tetrimino{shape::iShapes, I_MINO} {}
 
 }  // namespace tetris::model::tetrimino
 

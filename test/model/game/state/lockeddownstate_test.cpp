@@ -47,12 +47,4 @@ TEST_CASE("locked down state") {
   REQUIRE_THROWS_AS(game->hardDrop(), exceptions::IllegalStateException);
   REQUIRE_THROWS_AS(game->rotate(true), exceptions::IllegalStateException);
   REQUIRE_THROWS_AS(game->move(LEFT), exceptions::IllegalStateException);
-  SECTION("LOCK") {
-    auto tempFalling = game->falling();
-    game->lock();
-    REQUIRE(
-        game->matrix()
-            .get(tetris::utils::Coordinate(tempFalling->X(), tempFalling->Y()))
-            .value() == game->falling()->type());
-  }
 }
