@@ -39,13 +39,7 @@ using line = std::array<std::optional<Mino>, 4>;
 
 TEST_CASE("falling state") {
   Player player("John", 123);
-  std::unique_ptr<OngoingGame> game =
-      std::make_unique<OngoingGame>(OngoingGame(&player, 1));
-  std::unique_ptr<GameState> gameState =
-      std::make_unique<states::NotStartedState>(
-          states::NotStartedState(game.get()));
-
-  game->state(std::move(gameState));
+  std::unique_ptr<OngoingGame> game = std::make_unique<OngoingGame>(&player, 1);
   game->start();
   SECTION("Basic errors") {
     REQUIRE_THROWS_AS(game->start(), exceptions::StartOnGoingGameException);

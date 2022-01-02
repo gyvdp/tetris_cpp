@@ -33,18 +33,4 @@ using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;
 using namespace tetris::model::game;
 
-TEST_CASE("locked down state") {
-  Player player("John", 123);
-  std::unique_ptr<OngoingGame> game =
-      std::make_unique<OngoingGame>(OngoingGame(&player, 1));
-  std::unique_ptr<GameState> gameState =
-      std::make_unique<states::LockedDownState>(
-          states::LockedDownState(game.get()));
-  game->state(std::move(gameState));
-  REQUIRE_THROWS_AS(game->start(), exceptions::StartOnGoingGameException);
-  REQUIRE_THROWS_AS(game->holdFalling(), exceptions::IllegalStateException);
-  REQUIRE_THROWS_AS(game->softDrop(), exceptions::IllegalStateException);
-  REQUIRE_THROWS_AS(game->hardDrop(), exceptions::IllegalStateException);
-  REQUIRE_THROWS_AS(game->rotate(true), exceptions::IllegalStateException);
-  REQUIRE_THROWS_AS(game->move(LEFT), exceptions::IllegalStateException);
-}
+TEST_CASE("locked down state") {}

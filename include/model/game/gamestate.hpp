@@ -35,10 +35,6 @@ class OngoingGame;
 class GameState {
  protected:
   /**
-   * @brief Keeps track if the player has held during the state.
-   */
-  bool hasHold_ = false;
-  /**
    * @brief Pointer to the Ongoing Game
    */
   OngoingGame *game_;

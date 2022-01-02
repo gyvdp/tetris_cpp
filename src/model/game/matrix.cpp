@@ -30,13 +30,14 @@ void Matrix::add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino) {
   for (size_t i = 0; i < minoTemplate.size(); i++) {
     for (size_t j = 0;
          j < minoTemplate.at(tetrimino->orientation()).at(i).size(); j++) {
-      if (minoTemplate.at(tetrimino->orientation())[i][j] == std::nullopt)
+      if (minoTemplate.at(tetrimino->orientation()).at(i).at(j) == std::nullopt)
         continue;
       size_t line = tetrimino->Y() + i;
       size_t col = tetrimino->X() + j;
       if (!(line < 0 || col < 0) && line < minos_.size() &&
-          col < minos_[line].size()) {
-        minos_[line][col] = minoTemplate.at(tetrimino->orientation())[i][j];
+          col < minos_.at(line).size()) {
+        minos_.at(line).at(col) =
+            minoTemplate.at(tetrimino->orientation()).at(i).at(j);
       }
     }
   }
@@ -51,15 +52,15 @@ std::vector<unsigned long> Matrix::getCompletedLines() {
   std::vector<unsigned long> completedLines;
   for (size_t i = 0; i < minos_.size(); i++) {
     bool isComplete = true;
-    for (size_t j = 0; j < minos_.at(i).size(); j++)
-      if (minos_[i][j] == std::nullopt) isComplete = false;
+    for (auto& j : minos_.at(i))
+      if (j == std::nullopt) isComplete = false;
     if (isComplete) completedLines.push_back(i);
   }
   return completedLines;
 }
 
 void Matrix::set(tetris::model::tetrimino::Mino m, int line, int col) {
-  minos_[line][col] = m;
+  minos_.at(line).at(col) = m;
 }
 
 std::vector<std::vector<bool>> Matrix::generateMask() const {

@@ -21,8 +21,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <boost/signals2.hpp>
 #include <iostream>
+
+#include "model/game/ongoinggame.hpp"
+#include "model/game/player.hpp"
+#include "model/game/state/notstartedstate.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
+using namespace tetris::model::game::states;
+using namespace tetris::model::tetrimino;
+using namespace tetris::model::game;
+
+class TextView {
+ public:
+  explicit TextView(OngoingGame& doc) : m_document(doc) {
+    doc.connectFalling(boost::bind(&TextView::refresh, this));
+    doc.connectScore(boost::bind(&TextView::score, this));
+  }
+
+  void refresh() const {
+    std::cout << "Y: " << m_document.falling()->Y() << std::endl;
+  }
+
+  void score() const {
+    std::cout << "Score: " << m_document.score() << std::endl;
+  }
+
+ private:
+  OngoingGame& m_document;
+};
+
+void print() {}
+
 int main() {
+  Player player("John", 123);
+  OngoingGame game = OngoingGame(&player, 1);
+  TextView v1(game);
+  game.start();
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   std::cout << "Hello, World!" << std::endl;
+  std::this_thread::sleep_for(std::chrono::seconds(69));
   return 0;
 }
