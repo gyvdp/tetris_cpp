@@ -12,8 +12,8 @@ Match::Match(QTcpSocket* player1, QTcpSocket* player2, unsigned id)
 
     // Write starting Info
     player->write("Début d'un match");
-    qDebug() << "lancement d'un match";
   }
+  qDebug() << "lancement d'un match";
 }
 
 void Match::slot_Disconnected() {
@@ -22,7 +22,7 @@ void Match::slot_Disconnected() {
 }
 
 void Match::slot_Reading() {
-  qDebug() << "reading... : P1 : " << players_[1]->readAll()
-           << "/ P2 : " << players_[2]->readAll();
+  qDebug() << "reading... : P1 : " << players_[0]->readAll()
+           << "/ P2 : " << players_[1]->readAll();
 }
 }  // namespace tetris::server
