@@ -21,17 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/game/state/notstartedstate.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_
 
-TEST_CASE("stopped state") {
+namespace tetris::model::game::states::exceptions {
 
-}
+/**
+ * @brief Throws an exception signaling the request action is not available in
+ * that state.
+ */
+class BlockedOutException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for not started exception.
+   * @param mess Message to display in exception.
+   */
+  explicit BlockedOutException(const std::string& mess, const char* file,
+                               int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
+                         mess) {}
+
+  ~BlockedOutException() override = default;
+};
+
+}  // namespace tetris::model::game::states::exceptions
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_

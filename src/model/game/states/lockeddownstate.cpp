@@ -23,26 +23,32 @@
 
 #include "model/game/state/lockeddownstate.hpp"
 
+#include <model/game/state/blockedoutstate.hpp>
+#include <model/game/state/fallingstate.hpp>
+#include <model/game/state/lockedoutstate.hpp>
 #include <model/game/state/stoppedstate.hpp>
 #include <model/tetrimino/tetrimino_logic.hpp>
 
+#include "model/game/state/exceptions/blockedoutexception.hpp"
 #include "model/game/state/exceptions/illegalstateexception.hpp"
+#include "model/game/state/exceptions/lockedoutexception.hpp"
 #include "model/game/state/exceptions/startongoinggameexception.hpp"
+#include "model/tetrimino/exceptions/movenotpossibleexception.hpp"
+#include "model/tetrimino/exceptions/rotationnotpossibleexception.hpp"
 namespace tetris::model::game::states {
 
 void LockedDownState::start() {
-  throw exceptions::StartOnGoingGameException("Cannot move when blocked out",
+  throw exceptions::StartOnGoingGameException("Cannot start when locked out",
                                               __FILE__, __LINE__);
 }
 
-void LockedDownState::stop() {
-  game_->state(std::make_unique<states::StoppedState>(game_));
-
-}
+void LockedDownState::stop() { game_->state(new StoppedState(game_)); }
 
 void LockedDownState::move(tetrimino::Direction direction) {
-  throw exceptions::IllegalStateException("Cannot move when blocked out",
-                                          __FILE__, __LINE__);
+  try {
+    game_->moveFalling(direction);
+  } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
+  }
 }
 
 void LockedDownState::holdFalling() {
@@ -51,26 +57,22 @@ void LockedDownState::holdFalling() {
 }
 
 void LockedDownState::softDrop() {
-  throw exceptions::IllegalStateException("Cannot move when blocked out",
+  throw exceptions::IllegalStateException("Cannot soft drop when locked down",
                                           __FILE__, __LINE__);
 }
 
 void LockedDownState::hardDrop() {
-  throw exceptions::IllegalStateException("Cannot move when blocked out",
+  throw exceptions::IllegalStateException("Cannot hard drop when locked down",
                                           __FILE__, __LINE__);
 }
 
 void LockedDownState::rotate(bool clockwise) {
-  throw exceptions::IllegalStateException("Cannot move when blocked out",
-                                          __FILE__, __LINE__);
+  try {
+    game_->falling()->rotate(clockwise, game_->matrix().generateMask());
+    // timer
+  } catch (tetrimino::exceptions::RotationNotPossibleException& ignored) {
+  }
 }
 
-void LockedDownState::lock() {
-  game_->matrix().add(game_->falling());
-  hasHold_ = false;
-  game_->falling(tetrimino::createTetrimino(game_->next() != std::nullopt
-                                                ? game_->next().value()
-                                                : tetrimino::S_MINO));
-}
-
+void LockedDownState::lock() {}
 }  // namespace tetris::model::game::states

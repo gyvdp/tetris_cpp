@@ -21,6 +21,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/player.hpp"
+#include <iostream>
 
-namespace tetris::model::game {}  // namespace tetris::model::game
+#include "catch2/catch.hpp"
+#include "model/game/ongoinggame.hpp"
+#include "model/game/player.hpp"
+#include "model/game/state/exceptions/blockedoutexception.hpp"
+#include "model/tetrimino/tetrimino_logic.hpp"
+using namespace tetris::model::tetrimino;
+using namespace tetris::model::game::states::exceptions;
+TEST_CASE("End of game") {
+  tetris::model::game::Player player("John", 123);
+  tetris::model::game::OngoingGame game(&player, 1);
+  for (int i = 1; i < game.getMatrix().height(); i++) {
+    for (int j = 0; j < game.getMatrix().width(); j++) {
+      game.getMatrix().set(S_MINO, i, j);
+    }
+  }
+  REQUIRE_THROWS_AS(createTetrimino(O_MINO, game.getMatrix().generateMask()),
+                    BlockedOutException);
+}

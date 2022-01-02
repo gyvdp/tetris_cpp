@@ -24,6 +24,9 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_ONGOINGGAME_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_ONGOINGGAME_HPP_
 
+#include <boost/asio.hpp>
+#include <boost/signals2.hpp>
+#include <boost/thread/thread.hpp>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -34,6 +37,7 @@
 #include "model/game/tetriminoGenerator.hpp"
 #include "model/tetrimino/mino.hpp"
 #include "model/tetrimino/tetrimino.hpp"
+#include "utils/coordinate.hpp"
 
 namespace tetris::model::game {
 /**
@@ -42,9 +46,17 @@ namespace tetris::model::game {
 class OngoingGame {
  private:
   /**
+   * @brief Defines a signal type.
+   */
+  typedef boost::signals2::signal<void()> signal;
+  typedef boost::signals2::signal<void(
+      std::vector<std::vector<std::optional<tetrimino::Mino>>>)>
+      signalGameBoard;
+
+  /**
    * @brief The state of the game (Not started, Falling, ...)
    */
-  std::unique_ptr<GameState> state_;
+  GameState *state_;
 
   /**
    * @brief The player of the OngoingGame
@@ -76,7 +88,58 @@ class OngoingGame {
    */
   OptionalMino hold_;
 
+  /**
+   * @brief Score of the game.
+   */
+  int score_;
+
+  /**
+   * @brief Level of the game.
+   */
+  int level_;
+
+  /**
+   * @brief Number of lines deleted in the game.
+   */
+  int lines_;
+
  public:
+  boost::mutex mutexFalling_;
+
+  /**
+   * @brief Io context for the timer in each state.
+   */
+  boost::asio::io_context io_;
+
+  /**
+   * @brief Timer of the game.
+   */
+  boost::asio::steady_timer timer_;
+
+  boost::thread a_;
+
+  /**
+   * @brief Signal that alerts any change in the falling tetrimino.
+   */
+  signal signalFalling;
+
+  /**
+   * @brief Signal that alerts any change in the score.
+   */
+  signal signalScore;
+
+  /**
+   * @brief Signal that alerts any change in the next piece.
+   */
+  signal signalNext;
+
+  /**
+   * @brief Signal that alerts any change in the hold piece.
+   */
+  signal signalHold;
+
+  signalGameBoard updateGame;
+
   /**
    * @brief The default constructor of an Ongoing Game
    *
@@ -86,39 +149,85 @@ class OngoingGame {
   explicit OngoingGame(Player *player, std::uint_fast64_t seed);
 
   /**
+   * @brief Connects a subscriber to the falling signal.
+   * @param subscriber Subscriber to connect.
+   */
+  void connectFalling(const signal::slot_type &subscriber);
+
+  /**
+   * @brief Getter for the level.
+   * @return The level of the current game.
+   */
+  inline int level() const;
+
+  /**
+   * @breif Connects a subscriber to the score signal.
+   * @param subscriber Subscriber to connect.
+   */
+  void connectScore(const signal::slot_type &subscriber);
+
+  void connectBoard(const signalGameBoard::slot_type &subscriber);
+
+  /**
+   * @breif Connects a subscriber to the hold signal.
+   * @param subscriber Subscriber to connect.
+   */
+  void connectHold(const signal::slot_type &subscriber);
+
+  /**
+   * @breif Connects a subscriber to the next signal.
+   * @param subscriber Subscriber to connect.
+   */
+  void connectNext(const signal::slot_type &subscriber);
+
+  /**
    * @brief This method is used to change the state of the actual game
    *
    * @param state Pointer to the new state
    */
-  void state(std::unique_ptr<GameState> state);
+  void state(GameState *state);
 
   /**
    * @brief This method returns the username of the playing player
    *
    * @return The name of the Player
    */
-  inline std::string_view name() const;
+  [[nodiscard]] inline std::string_view name() const;
 
   /**
    * @brief This method returns the high-score of the player
    *
    * @return The high-score of the player
    */
-  inline unsigned long highScore() const;
+  [[nodiscard]] inline unsigned long highScore() const;
 
   /**
    * @brief Getter of the Matrix
    *
    * @return The matrix
    */
-  inline Matrix matrix() const;
+  [[nodiscard]] inline Matrix matrix() const;
+
+  /**
+   * @brief Setter for the score.
+   * @param score Score to set.
+   */
+  inline void score(int score);
+
+  /**
+   * @brief Getter for the score.
+   * @return Score of the current game.
+   */
+  [[nodiscard]] inline int score() const;
 
   /**
    * @brief Getter of the falling Tetrimino
    *
    * @return The falling Tetrimino
    */
-  inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
+  [[nodiscard]] inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
+
+  std::vector<std::vector<OptionalMino>> fallingInsideMatrix();
 
   /**
    * @brief Setter for the falling tetrimino.
@@ -131,7 +240,7 @@ class OngoingGame {
    *
    * @return The next Mino (Tetrimino)
    */
-  inline OptionalMino next() const;
+  [[nodiscard]] inline OptionalMino next() const;
 
   /**
    * Setter for the next tetrimino.
@@ -144,7 +253,7 @@ class OngoingGame {
    *
    * @return The held Tetrimino
    */
-  inline OptionalMino hold() const;
+  [[nodiscard]] inline OptionalMino hold() const;
 
   /**
    * @brief Setter for the hold mino.
@@ -162,6 +271,12 @@ class OngoingGame {
    * @brief This method start the game
    */
   inline void start();
+
+  /**
+   * Calculate the number of G to place on the tetrimino.
+   * @return Number of G's tetrimino should feel.
+   */
+  [[nodiscard]] inline int64_t calculateGravity() const;
 
   /**
    * @brief This method stops the game (by quitting or error)
@@ -202,6 +317,25 @@ class OngoingGame {
   inline void lock();
 
   /**
+   * @brief Clears all the completed lines from the matrix.
+   */
+  void clearLines();
+
+  /**
+   * @brief Generates points for number of lines destroyed.
+   * @param lines Number of lines that have been destroyed.
+   */
+  void generatePoints(size_t lines);
+
+  void refreshFallingTimer();
+
+  void refreshLockingTimer();
+
+  void moveFalling(tetrimino::Direction direction);
+
+  void rotateFalling(bool clockwise);
+
+  /**
    * @brief Getter of the matrix by reference.
    * @return The reference of the matrix.
    */
@@ -222,26 +356,44 @@ std::shared_ptr<tetrimino::Tetrimino> OngoingGame::falling() const {
   return falling_;
 }
 
+int OngoingGame::score() const { return score_; }
+
 void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
   falling_ = std::move(tetrimino);
 }
 
+void OngoingGame::score(int score) {
+  score_ += score;
+  signalScore();
+}
+
+int OngoingGame::level() const { return level_; }
+
 OptionalMino OngoingGame::next() const { return next_; }
 
-void OngoingGame::next(tetrimino::Mino mino) { next_ = mino; }
+void OngoingGame::next(tetrimino::Mino mino) {
+  next_ = mino;
+  signalNext();
+}
 
 OptionalMino OngoingGame::hold() const { return hold_; }
 
-void OngoingGame::hold(tetrimino::Mino mino) { hold_ = mino; }
+void OngoingGame::hold(tetrimino::Mino mino) {
+  hold_ = mino;
+  signalHold();
+}
 
-void OngoingGame::start() { state_->start(); }
+void OngoingGame::start() {
+  state_->start();
+  boost::thread a([ObjectPtr = &io_] { ObjectPtr->run(); });
+}
 
 void OngoingGame::stop() { state_->stop(); }
 
 void OngoingGame::move(tetrimino::Direction direction) {
   state_->move(direction);
+  signal();
 }
-
 void OngoingGame::holdFalling() { state_->holdFalling(); }
 
 void OngoingGame::softDrop() { state_->softDrop(); }
@@ -253,6 +405,12 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 void OngoingGame::lock() { state_->lock(); }
 
 tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
+
+int64_t OngoingGame::calculateGravity() const {
+  return static_cast<int64_t>(
+             std::pow((0.8 - ((level_ - 1) * 0.007)), level_ - 1)) *
+         1000;
+}
 
 }  // namespace tetris::model::game
 

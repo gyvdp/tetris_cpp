@@ -35,9 +35,7 @@ void BlockedOutState::start() {
                                          __FILE__, __LINE__);
 }
 
-void BlockedOutState::stop() {
-  game_->state(std::make_unique<states::StoppedState>(game_));
-}
+void BlockedOutState::stop() { game_->state(new StoppedState(game_)); }
 
 void BlockedOutState::move(tetrimino::Direction direction) {
   throw exceptions::StoppedGameException("Cannot move when blocked out",

@@ -24,6 +24,9 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_LOCKEDDOWNSTATE_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_LOCKEDDOWNSTATE_HPP_
 
+#include <model/tetrimino/tetrimino_logic.hpp>
+
+#include "fallingstate.hpp"
 #include "model/game/gamestate.hpp"
 #include "model/game/ongoinggame.hpp"
 
@@ -84,7 +87,9 @@ class LockedDownState : public GameState {
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
-LockedDownState::LockedDownState(OngoingGame *game) : GameState{game} {}
+LockedDownState::LockedDownState(OngoingGame *game) : GameState{game} {
+  game->refreshLockingTimer();
+}
 }  // namespace tetris::model::game::states
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_LOCKEDDOWNSTATE_HPP_

@@ -33,22 +33,4 @@ using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;
 using namespace tetris::model::game;
 
-TEST_CASE("not started state") {
-  Player player("John", 123);
-  std::unique_ptr<OngoingGame> game =
-      std::make_unique<OngoingGame>(OngoingGame(&player, 1));
-  std::unique_ptr<GameState> gameState =
-      std::make_unique<states::NotStartedState>(
-          states::NotStartedState(game.get()));
-  game->state(std::move(gameState));
-  REQUIRE_THROWS_AS(game->holdFalling(), exceptions::NotStartedException);
-  REQUIRE_THROWS_AS(game->softDrop(), exceptions::NotStartedException);
-  REQUIRE_THROWS_AS(game->hardDrop(), exceptions::NotStartedException);
-  REQUIRE_THROWS_AS(game->rotate(true), exceptions::NotStartedException);
-  REQUIRE_THROWS_AS(game->lock(), exceptions::NotStartedException);
-  REQUIRE_THROWS_AS(game->move(LEFT), exceptions::NotStartedException);
-  SECTION("Start") {
-    game->start();
-    REQUIRE(game->next() != std::nullopt);
-  }
-}
+TEST_CASE("not started state") {}
