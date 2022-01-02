@@ -1,34 +1,46 @@
 #include "server/tetris_server.hpp"
 
-#include <memory>
-
 namespace tetris::server {
 
-tetris_server::tetris_server(QObject *parent) : QObject(parent), matchID_{0} {
+Tetris_Server::Tetris_Server(QObject *parent) : QObject(parent), matchID_{0} {
+  // Creating server application
   server_ = new QTcpServer(this);
 
-  connect(server_, SIGNAL(newConnection()), this, SLOT(newConnection()));
+  // Add Settings to serv ? Catch if can't
+  if (!server_->listen(QHostAddress::Any, 9999))
+    throw 1;  // TODO @Gregory need Exception style UwU
+  qDebug() << "Server active on : IP :" << server_->serverAddress()
+           << " , Port : " << server_->serverPort();
 
-  if (!server_->listen(QHostAddress::Any, 9999)) {
-    qDebug() << "Server could not start";
+  // Connect
+  connect(server_, &QTcpServer::newConnection, this,
+          &Tetris_Server::slot_Connected);
+}
+
+void Tetris_Server::slot_Connected() {
+  // Crée un nouveau socket sur la demande du client.
+  QTcpSocket *socket = server_->nextPendingConnection();
+
+  // Ouvre les ports d'écriture.
+  socket->open(QIODevice::ReadWrite);
+
+  if (this->waitingQueue_.empty()) {
+    // Ajout dans la waiting list
+    connect(socket, &QAbstractSocket::disconnected, this,
+            &Tetris_Server::slot_Disconnected);
+    this->waitingQueue_.push(socket);
   } else {
-    qDebug() << "Server started!";
+    // Création d'un match
+    // TO DO PRESENCE SEG FAULT LORS DE LA CREATION D UN MATCH
+    this->waitingQueue_.front()->disconnect();
+    this->matchVector_.push_back(std::make_shared<Match *>(
+        new Match(this->waitingQueue_.front(), socket, ++matchID_)));
+    this->waitingQueue_.pop();
   }
 }
 
-void tetris_server::newConnection() {
-  std::shared_ptr<QTcpSocket> socket =
-      std::make_shared<QTcpSocket>(server_->nextPendingConnection());
-  if (this->waitingQueue_.empty()) {
-    this->waitingQueue_.push(socket);
-    qDebug() << "first Player";
-  } else {
-    matchID_++;
-    this->matchVector_.push_back(
-        std::make_shared<Match>(this->waitingQueue_.front(), socket, matchID_));
-
-    this->waitingQueue_.pop();
-    qDebug() << "second Player";
-  }
+void Tetris_Server::slot_Disconnected() {
+  this->waitingQueue_.pop();
+  qDebug() << "Suppresion de la liste d'attente";
 }
 }  // namespace tetris::server

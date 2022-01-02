@@ -21,13 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 #include <QCoreApplication>
-#include <iostream>
 
 #include "server/tetris_server.hpp"
 
 int main(int argc, char *argv[]) {
   QCoreApplication app(argc, argv);
-
-  tetris::server::tetris_server server;
+  tetris::server::Tetris_Server server;
   return QCoreApplication::exec();
 }

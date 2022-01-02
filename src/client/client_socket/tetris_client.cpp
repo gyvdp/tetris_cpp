@@ -1,89 +1,45 @@
-// namespace tetris::client {
-
-// TetrisClient::TetrisClient(QObject *parent) : QObject(parent) {}
-
-// void TetrisClient::doConnect() {
-//   socket = new QTcpSocket(this);
-
-//  connect(socket, SIGNAL(connected()), this, SLOT(connected()));
-//  connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-//  connect(socket, SIGNAL(bytesWritten(qint64)), this,
-//          SLOT(bytesWritten(qint64)));
-//  connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
-
-//  qDebug() << "connecting...";
-
-//  // this is not blocking call
-//  socket->connectToHost("127.0.0.1", 1234);
-
-//  // we need to wait...
-//  if (!socket->waitForConnected(5000)) {
-//    qDebug() << "Error: " << socket->errorString();
-//  }
-//}
-
-// void TetrisClient::connected() {
-//   qDebug() << "connected...";
-
-//  // Hey server, tell me about you.
-//  socket->write("HEAD / HTTP/1.0\r\n\r\n\r\n\r\n");
-//}
-
-// void TetrisClient::disconnected() { qDebug() << "disconnected..."; }
-
-// void TetrisClient::bytesWritten(qint64 bytes) {
-//   qDebug() << bytes << " bytes written...";
-// }
-
-// void TetrisClient::readyRead() {
-//   qDebug() << "reading...";
-
-//  // read the data from the socket
-//  qDebug() << socket->readAll();
-//}
-
-//}  // namespace tetris::client
 #include "tetris_client.hpp"
 
 namespace tetris::client {
-tetris_client::tetris_client(QObject *parent) : QObject(parent) {}
 
-void tetris_client::doConnect() {
-  socket = new QTcpSocket(this);
+void Tetris_Client::connection(std::string ip, unsigned port) {
+  // Verify ip
+  std::string regex = "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$";
+  if (!std::regex_match(ip, std::regex(regex)))
+    throw std::invalid_argument("ip address is not valid");
 
-  connect(socket, SIGNAL(connected()), this, SLOT(connected()));
-  connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-  connect(socket, SIGNAL(bytesWritten(qint64)), this,
-          SLOT(bytesWritten(qint64)));
-  connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
+  // Open socket
+  socket_->open(QIODevice::ReadWrite);
 
-  qDebug() << "connecting...";
+  // Connect
+  connect(socket_, &QAbstractSocket::connected, this,
+          &Tetris_Client::slot_Connected);
+  connect(socket_, &QAbstractSocket::disconnected, this,
+          &Tetris_Client::slot_Disconnected);
+  connect(socket_, &QAbstractSocket::readyRead, this,
+          &Tetris_Client::slot_Reading);
 
-  socket->connectToHost("127.0.0.1", 9999);
+  // Connection to the server with ip and port
+  socket_->connectToHost(QHostAddress(QString::fromStdString(ip)), port);
 
-  if (!socket->waitForConnected(5000)) {
-    qDebug() << "Error: " << socket->errorString();
+  // Waiting for connection
+  if (!socket_->waitForConnected(5000)) {
+    // Todo exception @Gregory UwU
   }
 }
 
-void tetris_client::connected() {
+void Tetris_Client::slot_Connected() {
   qDebug() << "connected...";
 
-  // Hey server, tell me about you.
-  socket->write("HEAD / HTTP/1.0\r\n\r\n\r\n\r\n");
+  // Writing on connection (ACTION CONNECTION)
+  socket_->write("Hello server");
 }
 
-void tetris_client::disconnected() { qDebug() << "disconnected..."; }
+void Tetris_Client::slot_Disconnected() { qDebug() << "disconnected..."; }
 
-void tetris_client::bytesWritten(qint64 bytes) {
-  qDebug() << bytes << " bytes written...";
-}
-
-void tetris_client::readyRead() {
+void Tetris_Client::slot_Reading() {
   qDebug() << "reading...";
-
-  // read the data from the socket
-  qDebug() << socket->readAll();
+  QString txt = socket_->readAll();
 }
 
 }  // namespace tetris::client

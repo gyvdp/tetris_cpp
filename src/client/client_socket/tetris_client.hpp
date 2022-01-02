@@ -1,31 +1,34 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
-
 #include <QAbstractSocket>
 #include <QDebug>
+#include <QException>
 #include <QObject>
 #include <QTcpSocket>
+#include <regex>
+#include <stdexcept>
 
 namespace tetris::client {
 
-class tetris_client : public QObject {
+class Tetris_Client : public QObject {
   Q_OBJECT
 
  private:
-  QTcpSocket *socket;
+  QTcpSocket *socket_;
 
  public:
-  explicit tetris_client(QObject *parent = nullptr);
+  inline explicit Tetris_Client(QObject *parent = nullptr) : QObject(parent) {
+    this->socket_ = new QTcpSocket(this);
+  }
 
-  void doConnect();
+  void connection(std::string ip, unsigned port);
 
  signals:
 
  public slots:
-  void connected();
-  void disconnected();
-  void bytesWritten(qint64 bytes);
-  void readyRead();
+  void slot_Connected();
+  void slot_Disconnected();
+  void slot_Reading();
 };
 }  // namespace tetris::client
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
