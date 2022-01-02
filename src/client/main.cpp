@@ -23,12 +23,12 @@
 #include <QCoreApplication>
 #include <iostream>
 
-#include "client/TetrisClient.hpp"
-#include "server/server/TetrisServer.hpp"
+#include "client/client_socket/tetris_client.hpp"
+#include "server/tetris_server.hpp"
 
 int main(int argc, char *argv[]) {
   QCoreApplication app(argc, argv);
-  tetris::client::TetrisClient clientSocket;
+  tetris::client::tetris_client clientSocket;
   clientSocket.doConnect();
   return QCoreApplication::exec();
 }

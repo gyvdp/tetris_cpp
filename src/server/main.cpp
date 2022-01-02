@@ -23,12 +23,11 @@
 #include <QCoreApplication>
 #include <iostream>
 
-#include "server/server/TetrisServer.hpp"
+#include "server/tetris_server.hpp"
 
 int main(int argc, char *argv[]) {
   QCoreApplication app(argc, argv);
-  tetris::server::TetrisServer server;
-  QCoreApplication::exec();
-  std::cout << "test apres server exec" << std::endl;
-  return 0;
+
+  tetris::server::tetris_server server;
+  return QCoreApplication::exec();
 }
