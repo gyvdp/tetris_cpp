@@ -27,32 +27,32 @@
 
 using namespace tetris::model::notifier;
 
-Json::Value Notification::actual(const model::tetrimino::Tetrimino& tetrimino) {
+Json::Value Notification::action(Action action, const std::string& username) {
+  if (action != CONNECTION && action != LEAVE)
+    throw std::invalid_argument("Wrong action");
   Json::Value update;
-  update["key"] = "ACTUAL";
-  update["data"]["mino"] = tetrimino.type();
-  update["data"]["coordinate"]["x"] = static_cast<int>(tetrimino.X());
-  update["data"]["coordinate"]["y"] = static_cast<int>(tetrimino.Y());
-  return update;
-}
-Json::Value Notification::connection(const std::string& username) {
-  Json::Value update;
-  update["key"] = "CONNECTION";
+  update["key"] = "ACTION";
+  update["data"]["action"] = action;
   update["data"]["player"]["username"] = username;
   return update;
 }
 
-Json::Value Notification::hold(model::tetrimino::Mino mino) {
+Json::Value Notification::action(Action action,
+                                 tetrimino::Direction direction) {
+  if (action != MOVE) throw std::invalid_argument("Wrong action");
   Json::Value update;
-  update["key"] = "HOLD";
-  update["data"]["mino"] = mino;
+  update["key"] = "ACTION";
+  update["data"]["action"] = action;
+  update["data"]["direction"] = direction;
   return update;
 }
 
-Json::Value Notification::next(model::tetrimino::Mino mino) {
+Json::Value Notification::action(Action action) {
+  if (action != HOLD && action != HARDDROP && action != SOFTDROP)
+    throw std::invalid_argument("Wrong action");
   Json::Value update;
-  update["key"] = "NEXT";
-  update["data"]["mino"] = mino;
+  update["key"] = "ACTION";
+  update["data"]["action"] = action;
   return update;
 }
 
@@ -85,33 +85,32 @@ Json::Value Notification::board(model::game::Matrix& matrix) {
   return update;
 }
 
-/**
- * Le but de ces method est de comprendre la logic et pas de faire comme cela.
- */
 void Notification::interpreter(QByteArray& message,
                                model::game::OngoingGame& game) {
   Json::Value data = message.toStdString();
   std::string key = data["key"].asString();
-  if (key == "HOLD") {
-    game.hold(
-        static_cast<model::tetrimino::Mino>(data["data"]["mino"].asInt()));
-  } else if (key == "NEXT") {
-    game.next(
-        static_cast<model::tetrimino::Mino>(data["data"]["mino"].asInt()));
-  } else if (key == "ACTUAL") {
-    if (game.falling()->type() != data["data"]["mino"].asInt()) {
-      game.falling(tetris::model::tetrimino::createTetrimino(
-          static_cast<model::tetrimino::Mino>(data["data"]["mino"].asInt())));
-    } else {
-      //      game.falling()->coordinate_(
-      //          utils::Coordinate{data["data"]["coordinate"]["x"].asInt(),
-      //                            data["data"]["coordinate"]["y"].asInt()});
+  if (key == "ACTION") {
+    switch (data["action"].asInt()) {
+      case CONNECTION:
+        // A faire via le client
+        break;
+      case LEAVE:
+        // A faire via le client
+        break;
+      case MOVE:
+        game.move(static_cast<tetrimino::Direction>(data["direction"].asInt()));
+        break;
+      case SOFTDROP:
+        game.softDrop();
+        break;
+      case HARDDROP:
+        game.hardDrop();
+        break;
+      case HOLD:
+        game.holdFalling();
+        break;
     }
   } else if (key == "STARTING_GAME") {
-    // game.setPlayerName(data["data"]["player"]["name"]);
-    // game.setPlayerHighScore(data["data"]["player"]["highscore"]);
-    // game.setOpponentName(data["data"]["opponent"]["name"]);
-    // game.setOpponentHighScore(data["data"]["opponent"]["highscore"]);
-    // game.setSeed(data["data"]["bag"]["seed"]);
+    // A Faire une fois que j'ai la classe duel ou autre genre.
   }
 }

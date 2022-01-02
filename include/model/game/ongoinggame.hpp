@@ -129,7 +129,7 @@ class OngoingGame {
    */
   inline OptionalMino next() const;
 
-  inline void next(OptionalMino mino);
+  inline void next(tetrimino::Mino mino);
 
   /**
    * @brief Getter of the held Tetrimino
@@ -138,7 +138,9 @@ class OngoingGame {
    */
   inline OptionalMino hold() const;
 
-  inline void hold(OptionalMino mino);
+  inline void hold(tetrimino::Mino mino);
+
+  unsigned long highScore();
 
   inline tetrimino::Mino pickMino();
 

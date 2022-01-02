@@ -32,19 +32,54 @@
 
 #include "json/json.h"
 #include "model/game/ongoinggame.hpp"
+#include "model/notifier/action.hpp"
+#include "model/tetrimino/direction.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
 
 namespace tetris::model::notifier {
 class Notification {
  public:
-  static Json::Value hold(model::tetrimino::Mino);
-  static Json::Value next(model::tetrimino::Mino);
-  static Json::Value actual(const model::tetrimino::Tetrimino&);
-  static Json::Value connection(const std::string&);
+  /**
+   * @brief Serialize a Action into a Json::Value
+   * @param action Action that you serialize
+   * @return Json::Value of a action
+   */
+  static Json::Value action(Action action);
+
+  /**
+   * @brief Serialize a Action into a Json::Value
+   * @param action Action that you serialize
+   * @param direction direction of the action
+   * @return Json::Value of a action and his additional data
+   */
+  static Json::Value action(Action action, tetrimino::Direction direction);
+
+  /**
+   * @brief Serialize a Action into a Json::Value
+   * @param action Action that you serialize
+   * @param username username of the user
+   * @return Json::Value of a action and his additional data
+   */
+  static Json::Value action(Action action, const std::string& username);
+
+  /**
+   * @brief Serialize all the data that a user need for starting his game
+   * @param player information of the user
+   * @param opponent information of his opponent
+   * @param seed seed of the bag generator
+   * @return return Json::Value of all the data
+   */
   static Json::Value starting_game(model::game::Player& player,
                                    model::game::Player& opponent, long seed);
+
   static Json::Value board(model::game::Matrix&);
-  static void interpreter(QByteArray&, model::game::OngoingGame&);
+
+  /**
+   * @brief Interpret the message and act on the game accordingly
+   * @param message message that the client or server get from the communication
+   * @param game game that message will act on
+   */
+  static void interpreter(QByteArray& message, model::game::OngoingGame& game);
 };
 }  // namespace tetris::model::notifier
 
