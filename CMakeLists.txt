@@ -4,8 +4,8 @@ project(esi_atlir5_atlc_project2)
 set(CMAKE_CXX_STANDARD 20)
 
 set(QT_VERSION 6)
-set(REQUIRED_LIBS Core Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets)
+set(REQUIRED_LIBS Core Widgets Network)
+set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets Qt6::Network)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
@@ -34,6 +34,20 @@ if (NOT Catch2_FOUND)
     FetchContent_MakeAvailable(Catch2)
 endif ()
 
+find_package(jsoncpp QUIET)
+if (NOT jsoncpp_FOUND)
+    message("jsoncpp not found, downloading from git.")
+    Include(FetchContent)
+    FetchContent_Declare(
+            jsoncpp
+            GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
+            GIT_TAG 1.9.5)
+
+    FetchContent_MakeAvailable(jsoncpp)
+
+endif ()
+
+include_directories(${jsoncpp_SOURCE_DIR}/include)
 include(CTest)
 
 #########################################################################################
@@ -58,6 +72,8 @@ set(MODEL_SOURCES
         src/model/game/states/lockedoutstate.cpp
         src/model/game/states/stoppedstate.cpp
         src/model/game/states/blockedoutstate.cpp
+        src/server/server/TetrisServer.cpp
+        src/client/TetrisClient.cpp
         )
 
 set(MODEL_TESTS
@@ -81,6 +97,8 @@ set(MODEL_TESTS
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
+target_link_libraries(MODEL_LIB PUBLIC jsoncpp_lib ${REQUIRED_LIBS_QUALIFIED})
+
 add_executable(model_test ${MODEL_TESTS})
 target_link_libraries(model_test Catch2 MODEL_LIB)
 
@@ -92,3 +110,61 @@ add_executable(tetris_client src/client/main.cpp)
 
 target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
 target_link_libraries(tetris_server PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
+
+if (WIN32)
+    set(DEBUG_SUFFIX)
+    #if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    #    set(DEBUG_SUFFIX "d")
+    #endif()
+    set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
+    if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+        set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+            set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        endif ()
+    endif ()
+    if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
+        add_custom_command(TARGET tetris_client POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory
+                "$<TARGET_FILE_DIR:tetris_client>/tetris_client/plugins/platforms/")
+        add_custom_command(TARGET tetris_client POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:tetris_client>/tetris_client/plugins/platforms/")
+    endif ()
+    foreach (QT_LIB Core Gui Widgets Network)
+        add_custom_command(TARGET tetris_client POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:tetris_client>")
+    endforeach (QT_LIB)
+endif ()
+
+if (WIN32)
+    set(DEBUG_SUFFIX)
+    #if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    #    set(DEBUG_SUFFIX "d")
+    #endif()
+    set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
+    if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+        set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+            set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        endif ()
+    endif ()
+    if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
+        add_custom_command(TARGET tetris_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory
+                "$<TARGET_FILE_DIR:tetris_server>/tetris_server/plugins/platforms/")
+        add_custom_command(TARGET tetris_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:tetris_server>/tetris_server/plugins/platforms/")
+    endif ()
+    foreach (QT_LIB Core Gui Widgets Network)
+        add_custom_command(TARGET tetris_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:tetris_server>/tetris_server")
+    endforeach (QT_LIB)
+endif ()

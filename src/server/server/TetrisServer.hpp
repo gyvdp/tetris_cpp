@@ -18,17 +18,32 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-#include <QCoreApplication>
-#include <iostream>
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
 
-#include "client/TetrisClient.hpp"
-#include "server/server/TetrisServer.hpp"
+#include <QDebug>
+#include <QObject>
+#include <QTcpServer>
+#include <QTcpSocket>
 
-int main(int argc, char *argv[]) {
-  QCoreApplication app(argc, argv);
-  tetris::client::TetrisClient clientSocket;
-  clientSocket.doConnect();
-  return QCoreApplication::exec();
-}
+namespace tetris::server {
+
+class TetrisServer : public QObject {
+  Q_OBJECT
+
+ private:
+  QTcpServer *server;
+
+ public:
+  explicit TetrisServer(QObject *parent = nullptr);
+
+ signals:
+
+ public slots:
+  void NewConnection();
+};
+
+}  // namespace tetris::server
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_

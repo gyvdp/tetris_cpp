@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,17 +18,40 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-#include <QCoreApplication>
-#include <iostream>
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
-#include "client/TetrisClient.hpp"
-#include "server/server/TetrisServer.hpp"
+//
+// Created by Constantin on 30/12/2021.
+//
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRISCLIENT_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRISCLIENT_HPP_
 
-int main(int argc, char *argv[]) {
-  QCoreApplication app(argc, argv);
-  tetris::client::TetrisClient clientSocket;
-  clientSocket.doConnect();
-  return QCoreApplication::exec();
-}
+#include <QAbstractSocket>
+#include <QDebug>
+#include <QObject>
+#include <QTcpSocket>
+
+namespace tetris::client {
+
+class TetrisClient : public QObject {
+  Q_OBJECT
+
+ private:
+  QTcpSocket *socket;
+
+ public:
+  explicit TetrisClient(QObject *parent = nullptr);
+
+  void doConnect();
+
+ signals:
+
+ public slots:
+  void connected();
+  void disconnected();
+  void bytesWritten(qint64 bytes);
+  void readyRead();
+};
+}  // namespace tetris::client
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRISCLIENT_HPP_
