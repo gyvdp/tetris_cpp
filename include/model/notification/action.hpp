@@ -21,12 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QCoreApplication>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_NOTIFIER_ACTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_NOTIFIER_ACTION_HPP_
 
-#include "server/tetris_server.hpp"
+#include <array>
 
-int main(int argc, char *argv[]) {
-  QCoreApplication app(argc, argv);
-  tetris::server::Tetris_Server server;
-  return QCoreApplication::exec();
-}
+namespace tetris::model::notification {
+/**
+ * @brief Enumeration of the different types of actions
+ */
+enum Action {
+  CONNECTION = 0,
+  LEAVE,
+  LOST,
+  MOVE,
+  HOLD,
+  SOFTDROP,
+  HARDDROP,
+};
+
+/**
+ * @brief Array with all the different types of actions
+ */
+static constexpr std::array ACTION{CONNECTION, LEAVE,    MOVE, HOLD,
+                                   SOFTDROP,   HARDDROP, LOST};
+}  // namespace tetris::model::notification
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_NOTIFIER_ACTION_HPP_

@@ -18,11 +18,19 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+#include <QApplication>
 #include <iostream>
-int main() {
-  std::cout << "Hello, World!" << std::endl;
-  return 0;
+
+#include "client/tetris_client.hpp"
+#include "model/game/player.hpp"
+#include "model/notification/notification.hpp"
+#include "server/tetris_server.hpp"
+
+int main(int argc, char* argv[]) {
+  QApplication app(argc, argv);
+  tetris::client::Tetris_Client clientSocket;
+  clientSocket.connection("127.0.0.1", 9999, "Constantin");
+  return QApplication::exec();
 }

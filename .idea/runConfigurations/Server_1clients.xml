@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Server+1clients" type="CompoundRunConfigurationType">
+    <toRun name="Tetris [CLIENT]" type="CMakeRunConfiguration" />
+    <toRun name="Tetris [SERVER]" type="CMakeRunConfiguration" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -21,12 +21,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QCoreApplication>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_PLAYER_SOCKET_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_PLAYER_SOCKET_HPP_
 
-#include "server/tetris_server.hpp"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QTcpSocket>
+#include <utility>
+namespace tetris::server {
+class Player_Socket : QObject {
+  Q_OBJECT
+ private:
+  QTcpSocket* socket_;
+  const std::string name_;
 
-int main(int argc, char *argv[]) {
-  QCoreApplication app(argc, argv);
-  tetris::server::Tetris_Server server;
-  return QCoreApplication::exec();
-}
+ public:
+  Player_Socket(QTcpSocket*& socket, std::string name, QObject* parent)
+      : QObject(parent), socket_{socket}, name_(std::move(name)) {
+    this->socket_->disconnect();
+  }
+
+  [[nodiscard]] QTcpSocket* socket() const { return socket_; }
+
+  [[nodiscard]] const std::string& name() const { return name_; }
+
+  void write(const QJsonDocument& doc) {
+    this->socket_->write(doc.toJson(QJsonDocument::Indented));
+    this->socket_->waitForBytesWritten();
+  }
+
+  void write(const QByteArray& data) {
+    this->socket_->write(data);
+    this->socket_->waitForBytesWritten();
+  }
+
+  void parent(QObject* parent) { this->setParent(parent); }
+};
+}  // namespace tetris::server
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_PLAYER_SOCKET_HPP_

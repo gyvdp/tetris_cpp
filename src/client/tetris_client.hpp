@@ -21,12 +21,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QCoreApplication>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
 
-#include "server/tetris_server.hpp"
+#include <QAbstractSocket>
+#include <QDebug>
+#include <QException>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QObject>
+#include <QTcpSocket>
+#include <regex>
+#include <stdexcept>
 
-int main(int argc, char *argv[]) {
-  QCoreApplication app(argc, argv);
-  tetris::server::Tetris_Server server;
-  return QCoreApplication::exec();
-}
+#include "model/notification/notification.hpp"
+
+namespace tetris::client {
+
+class Tetris_Client : public QObject {
+  Q_OBJECT
+
+ private:
+  QTcpSocket *socket_;
+  std::string username_;
+
+ public:
+  inline explicit Tetris_Client(QObject *parent = nullptr) : QObject(parent) {
+    this->socket_ = new QTcpSocket(this);
+  }
+
+  void sendData(const QJsonDocument &);
+
+  void connection(std::string ip, unsigned port, std::string);
+
+ signals:
+
+ public slots:
+  void slot_Connected();
+  void slot_Disconnected();
+  void slot_Reading();
+};
+}  // namespace tetris::client
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_

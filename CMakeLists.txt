@@ -4,8 +4,8 @@ project(esi_atlir5_atlc_project2)
 set(CMAKE_CXX_STANDARD 20)
 
 set(QT_VERSION 6)
-set(REQUIRED_LIBS Core Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets)
+set(REQUIRED_LIBS Core Widgets Network)
+set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets Qt6::Network)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
@@ -13,8 +13,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-if (NOT WIN32)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall")
+
+if (WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+    set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 endif ()
 
 include_directories(include)
@@ -50,7 +53,9 @@ set(MODEL_SOURCES
         src/model/game/states/lockeddownstate.cpp
         src/model/game/states/lockedoutstate.cpp
         src/model/game/states/stoppedstate.cpp
-        src/model/game/states/blockedoutstate.cpp)
+        src/model/game/states/blockedoutstate.cpp
+        src/model/notification/notification.cpp
+        )
 
 set(MODEL_TESTS
         test/main_test.cpp
@@ -74,12 +79,53 @@ set(MODEL_TESTS
         test/model/game/state/lockedoutstate_test.cpp
         test/model/game/state/lockeddownstate_test.cpp
         test/model/game/state/notstartedstate_test.cpp
-        test/model/game/state/stoppedstate_test.cpp)
+        test/model/game/state/stoppedstate_test.cpp
+        )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
+target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+
 add_executable(model_test ${MODEL_TESTS})
 target_link_libraries(model_test Catch2 MODEL_LIB)
+
+#########################################################################################
+# SERVER LIBRARY
+#########################################################################################
+set(SERVER_SOURCES
+        src/server/tetris_server.cpp
+        src/server/match.cpp
+        src/server/player_socket.hpp
+        )
+
+set(SERVER_TESTS
+        test/main_test.cpp
+        )
+
+add_library(SERVER_LIB ${SERVER_SOURCES} ${MODEL_SOURCES})
+
+target_link_libraries(SERVER_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+
+add_executable(server_test ${SERVER_TESTS})
+target_link_libraries(server_test Catch2 SERVER_LIB)
+
+#########################################################################################
+# CLIENT LIBRARY
+#########################################################################################
+set(CLIENT_SOURCES
+        src/client/tetris_client.cpp
+        )
+
+set(CLIENT_TESTS
+        test/main_test.cpp
+        )
+
+add_library(CLIENT_LIB ${CLIENT_SOURCES} ${MODEL_SOURCES})
+
+target_link_libraries(CLIENT_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+
+add_executable(client_test ${CLIENT_TESTS})
+target_link_libraries(client_test Catch2 CLIENT_LIB)
 
 #########################################################################################
 # EXECUTABLES
@@ -87,5 +133,45 @@ target_link_libraries(model_test Catch2 MODEL_LIB)
 add_executable(tetris_server src/server/main.cpp)
 add_executable(tetris_client src/client/main.cpp)
 
-target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
-target_link_libraries(tetris_server PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_client PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_server PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
+
+if (WIN32)
+    set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
+    if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+        set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+            set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        endif ()
+    endif ()
+    if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
+        add_custom_command(TARGET tetris_client POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory
+                "$<TARGET_FILE_DIR:tetris_client>/plugins/platforms/")
+        add_custom_command(TARGET tetris_client POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:tetris_client>/plugins/platforms/")
+        if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
+            add_custom_command(TARGET tetris_server POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E make_directory
+                    "$<TARGET_FILE_DIR:tetris_server>/plugins/platforms/")
+            add_custom_command(TARGET tetris_server POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy
+                    "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                    "$<TARGET_FILE_DIR:tetris_server>/plugins/platforms/")
+        endif ()
+        foreach (QT_LIB Core Gui Widgets Network)
+            add_custom_command(TARGET tetris_client POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy
+                    "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
+                    "$<TARGET_FILE_DIR:tetris_client>")
+        endforeach (QT_LIB)
+        foreach (QT_LIB Core Gui Widgets Network)
+            add_custom_command(TARGET tetris_server POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy
+                    "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
+                    "$<TARGET_FILE_DIR:tetris_server>")
+        endforeach (QT_LIB)
+    endif ()
+endif ()
