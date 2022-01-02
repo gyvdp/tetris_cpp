@@ -21,19 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_MATRIX_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_MATRIX_HPP_
 
-#include "client/view/view.hpp"
+#include <QGraphicsItemGroup>
+#include <QVector>
+#include <optional>
+#include <vector>
 
-using namespace tetris::model;
+#include "mino.hpp"
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
+using MatrixArray = std::vector<std::vector<OptionalMino>>;
 
-  auto view_ = tetris::view::View{};
-  view_.start();
+namespace tetris::view::component {
+class Matrix : public QGraphicsItemGroup {
+ protected:
+  static constexpr qreal PADDING = 64.0;
+  QGraphicsPixmapItem *bg_;
+  QVector<QVector<Mino *>> minos_;
 
-  return QApplication::exec();
-}
+ public:
+  explicit Matrix(QGraphicsItem *parent = nullptr);
+  void set(MatrixArray matrix);
+  [[nodiscard]] QRectF boundingRect() const override;
+};
+}  // namespace tetris::view::component
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_MATRIX_HPP_

@@ -21,19 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "game.hpp"
+namespace tetris::view::component {
 
-#include "client/view/view.hpp"
+Game::Game(QGraphicsItem *parent)
+    : QGraphicsItemGroup(parent), matrix_{new component::Matrix{this}} {}
 
-using namespace tetris::model;
+void Game::updateMatrix(MatrixArray array) { matrix_->set(std::move(array)); }
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
-
-  auto view_ = tetris::view::View{};
-  view_.start();
-
-  return QApplication::exec();
-}
+}  // namespace tetris::view::component

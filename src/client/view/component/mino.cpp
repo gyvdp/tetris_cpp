@@ -21,19 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "mino.hpp"
 
-#include "client/view/view.hpp"
+namespace tetris::view::component {
 
-using namespace tetris::model;
+Mino::Mino(const OptionalMino type, QGraphicsItem *parent)
+    : QGraphicsPixmapItem{resource(type), parent}, type_{type} {}
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
+QPixmap Mino::resource(const OptionalMino type) {
+  if (!type.has_value()) {
+    return QPixmap{64, 64};
+  }
 
-  auto view_ = tetris::view::View{};
-  view_.start();
-
-  return QApplication::exec();
+  switch (type.value()) {
+    case tetris::model::tetrimino::Mino::T_MINO:
+    case tetris::model::tetrimino::Mino::O_MINO:
+    case tetris::model::tetrimino::Mino::I_MINO:
+      return QPixmap{":/mino/A0.png"};
+    case tetris::model::tetrimino::Mino::L_MINO:
+    case tetris::model::tetrimino::Mino::Z_MINO:
+      return QPixmap{":/mino/B0.png"};
+    case tetris::model::tetrimino::Mino::J_MINO:
+    case tetris::model::tetrimino::Mino::S_MINO:
+    default:
+      return QPixmap{":/mino/C0.png"};
+  }
 }
+
+}  // namespace tetris::view::component

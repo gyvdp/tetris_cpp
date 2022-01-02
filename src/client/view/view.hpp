@@ -21,19 +21,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_VIEW_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_VIEW_HPP_
 
-#include "client/view/view.hpp"
+#include <QDialog>
 
-using namespace tetris::model;
+#include "client/view/window/game_window.hpp"
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
+namespace tetris::view {
+/**
+ * @brief This class is the main View class
+ */
+class View : public QWidget {
+  Q_OBJECT
+ private:
+  /**
+   * @brief Window of the game
+   */
+  window::GameWindow *game_;
 
-  auto view_ = tetris::view::View{};
-  view_.start();
+ public:
+  /**
+   * @brief Default constructor for a View
+   */
+  View();
 
-  return QApplication::exec();
-}
+  /**
+   * @brief Destructor for the view
+   */
+  ~View();
+
+  void start();
+};
+}  // namespace tetris::view
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_VIEW_HPP_

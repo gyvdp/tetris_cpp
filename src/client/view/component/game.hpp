@@ -21,19 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
 
-#include "client/view/view.hpp"
+#include <QGraphicsItemGroup>
 
-using namespace tetris::model;
+#include "matrix.hpp"
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
+namespace tetris::view::component {
+class Game : public QGraphicsItemGroup {
+ protected:
+  /**
+   * @brief The matrix of the game
+   */
+  component::Matrix *matrix_;
 
-  auto view_ = tetris::view::View{};
-  view_.start();
+ public:
+  explicit Game(QGraphicsItem *parent = nullptr);
 
-  return QApplication::exec();
-}
+  void updateMatrix(MatrixArray array);
+};
+}  // namespace tetris::view::component
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

@@ -21,19 +21,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "game_window.hpp"
 
-#include "client/view/view.hpp"
+#include <QKeyEvent>
 
-using namespace tetris::model;
+namespace tetris::view::window {
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
-
-  auto view_ = tetris::view::View{};
-  view_.start();
-
-  return QApplication::exec();
+GameWindow::GameWindow(QWidget *parent)
+    : QGraphicsView(parent), gameScene_{nullptr} {
+  setFrameStyle(QFrame::NoFrame);
+  setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  scale(0.4, 0.4);
 }
+void GameWindow::start(std::string playerName, unsigned long highScore) {
+  player_ = new model::game::Player{playerName, highScore};
+  gameScene_ = new scene::MultiplayerScene{player_, this};
+  setScene(gameScene_);
+}
+
+GameWindow::~GameWindow() {
+  if (player_ != nullptr) {
+    delete player_;
+    player_ = nullptr;
+  }
+}
+
+}  // namespace tetris::view::window

@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -21,19 +21,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
 
-#include "client/view/view.hpp"
+#include <QGraphicsScene>
 
-using namespace tetris::model;
+#include "client/view/component/game.hpp"
+#include "client/view/component/matrix.hpp"
+#include "client/view/component/mino.hpp"
+#include "model/game/ongoinggame.hpp"
+namespace tetris::view::scene {
+/**
+ * @brief This class represents a GameScene
+ */
+class MultiplayerScene : public QGraphicsScene {
+  Q_OBJECT
+ protected:
+  component::Game *player1_;
+  model::game::OngoingGame *player1Game_;
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  Q_INIT_RESOURCE(resources);
+  void keyPressEvent(QKeyEvent *event) override;
 
-  auto view_ = tetris::view::View{};
-  view_.start();
+ public:
+  /**
+   * @brief Default constructor fot a GameScene
+   * @param parent Parent QObject (for memory)
+   */
+  explicit MultiplayerScene(model::game::Player *player1,
+                            QObject *parent = nullptr);
 
-  return QApplication::exec();
-}
+  /**
+   * @brief Destructor of a GameScene
+   */
+  ~MultiplayerScene() override;
+
+ signals:
+  void matrixChanged(MatrixArray matrix);
+};
+}  // namespace tetris::view::scene
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
