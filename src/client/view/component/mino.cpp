@@ -21,15 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "mino.hpp"
 
-#include "client/view/view.hpp"
+namespace tetris::view::component {
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
+Mino::Mino(const OptionalMino type, QGraphicsItem *parent)
+    : QGraphicsPixmapItem{resource(type), parent}, type_{type} {}
 
-  tetris::view::View view_;
+QString Mino::resource(const OptionalMino type) {
+  if (!type.has_value()) {
+    return "";
+  }
 
-  return QApplication::exec();
+  switch (type.value()) {
+    case tetris::model::tetrimino::Mino::T_MINO:
+    case tetris::model::tetrimino::Mino::O_MINO:
+    case tetris::model::tetrimino::Mino::I_MINO:
+      return ":/mino/A0.png";
+    case tetris::model::tetrimino::Mino::L_MINO:
+    case tetris::model::tetrimino::Mino::Z_MINO:
+      return ":/mino/B0.png";
+    case tetris::model::tetrimino::Mino::J_MINO:
+    case tetris::model::tetrimino::Mino::S_MINO:
+    default:
+      return ":/mino/C0.png";
+  }
 }
+
+}  // namespace tetris::view::component

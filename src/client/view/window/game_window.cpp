@@ -21,15 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "game_window.hpp"
 
-#include "client/view/view.hpp"
+namespace tetris::view::window {
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-
-  tetris::view::View view_;
-
-  return QApplication::exec();
+GameWindow::GameWindow(QWidget *parent)
+    : QGraphicsView(parent), gameScene_{new scene::GameScene{this}} {
+  setScene(gameScene_);
+  setFrameStyle(QFrame::NoFrame);
+  setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  scale(0.4, 0.4);
 }
+
+}  // namespace tetris::view::window

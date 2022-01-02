@@ -21,15 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "view.hpp"
 
-#include "client/view/view.hpp"
-
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-
-  tetris::view::View view_;
-
-  return QApplication::exec();
+namespace tetris::view {
+View::View() : game_{new window::GameWindow{}} { game_->show(); }
+View::~View() {
+  if (game_ != nullptr) {
+    delete game_;
+    game_ = nullptr;
+  }
 }
+
+}  // namespace tetris::view

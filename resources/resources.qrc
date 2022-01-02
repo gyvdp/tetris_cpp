@@ -1,0 +1,23 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="mino">
+        <file alias="A0.png">images/mino/A0.png</file>
+        <file alias="B0.png">images/mino/B0.png</file>
+        <file alias="C0.png">images/mino/C0.png</file>
+    </qresource>
+    <qresource prefix="tetrimino">
+        <file alias="I0.png">images/tetrimino/I0.png</file>
+        <file alias="J0.png">images/tetrimino/J0.png</file>
+        <file alias="L0.png">images/tetrimino/L0.png</file>
+        <file alias="O0.png">images/tetrimino/O0.png</file>
+        <file alias="S0.png">images/tetrimino/S0.png</file>
+        <file alias="T0.png">images/tetrimino/T0.png</file>
+        <file alias="Z0.png">images/tetrimino/Z0.png</file>
+    </qresource>
+    <qresource prefix="bg">
+        <file alias="board.png">images/bg/board.png</file>
+        <file alias="infobox.png">images/bg/infobox.png</file>
+        <file alias="score.png">images/bg/score.png</file>
+        <file alias="tetriminoholder.png">images/bg/tetriminoholder.png</file>
+    </qresource>
+</RCC>

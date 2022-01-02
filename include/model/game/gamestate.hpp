@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +30,7 @@ namespace tetris::model::game {
 class OngoingGame;
 
 /**
- * @brief Abstraction of a state in a Ongoing Game
+ * @brief Abstraction of a state in a Ongoing GameScene
  */
 class GameState {
  protected:
@@ -39,7 +39,7 @@ class GameState {
    */
   bool hasHold_ = false;
   /**
-   * @brief Pointer to the Ongoing Game
+   * @brief Pointer to the Ongoing GameScene
    */
   OngoingGame *game_;
 

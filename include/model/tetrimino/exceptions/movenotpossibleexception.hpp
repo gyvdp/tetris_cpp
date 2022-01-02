@@ -24,6 +24,8 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_
 
+#include <string>
+
 namespace tetris::model::tetrimino::exceptions {
 
 /**
@@ -42,6 +44,6 @@ class MoveNotPossibleException : public std::logic_error {
   ~MoveNotPossibleException() override = default;
 };
 
-}  // namespace tetris::model::game::states::exceptions
+}  // namespace tetris::model::tetrimino::exceptions
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_MOVENOTPOSSIBLEEXCEPTION_HPP_

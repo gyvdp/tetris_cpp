@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -78,7 +78,7 @@ class OngoingGame {
 
  public:
   /**
-   * @brief The default constructor of an Ongoing Game
+   * @brief The default constructor of an Ongoing GameScene
    *
    * @param player Pointer to the player of this game
    * @param state The initial state of the game

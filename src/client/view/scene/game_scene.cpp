@@ -21,15 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#include "client/view/scene/game_scene.hpp"
 
-#include "client/view/view.hpp"
-
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-
-  tetris::view::View view_;
-
-  return QApplication::exec();
+namespace tetris::view::scene {
+GameScene::GameScene(QObject *parent)
+    : QGraphicsScene(0, 0, 850, 1590, parent),
+      matrix_{new component::Matrix{}} {
+  addItem(matrix_);
 }
+GameScene::~GameScene() {
+  if (matrix_ != nullptr) {
+    delete matrix_;
+    matrix_ = nullptr;
+  }
+}
+}  // namespace tetris::view::scene

@@ -21,6 +21,7 @@ if (WIN32)
 endif ()
 
 include_directories(include)
+include_directories(resources)
 include_directories(src)
 
 #########################################################################################
@@ -110,6 +111,21 @@ add_executable(server_test ${SERVER_TESTS})
 target_link_libraries(server_test Catch2 SERVER_LIB)
 
 #########################################################################################
+# VIEW
+#########################################################################################
+set(VIEW_SOURCES
+        resources/resources.qrc
+        src/client/view/component/mino.cpp
+        src/client/view/component/matrix.cpp
+        src/client/view/scene/game_scene.cpp
+        src/client/view/window/game_window.cpp
+        src/client/view/view.cpp
+        )
+
+add_library(VIEW_LIB ${VIEW_SOURCES})
+target_link_libraries(VIEW_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+
+#########################################################################################
 # CLIENT LIBRARY
 #########################################################################################
 set(CLIENT_SOURCES
@@ -120,9 +136,9 @@ set(CLIENT_TESTS
         test/main_test.cpp
         )
 
-add_library(CLIENT_LIB ${CLIENT_SOURCES} ${MODEL_SOURCES})
+add_library(CLIENT_LIB ${CLIENT_SOURCES})
 
-target_link_libraries(CLIENT_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(CLIENT_LIB PUBLIC MODEL_LIB VIEW_LIB ${REQUIRED_LIBS_QUALIFIED})
 
 add_executable(client_test ${CLIENT_TESTS})
 target_link_libraries(client_test Catch2 CLIENT_LIB)
@@ -131,7 +147,7 @@ target_link_libraries(client_test Catch2 CLIENT_LIB)
 # EXECUTABLES
 #########################################################################################
 add_executable(tetris_server src/server/main.cpp)
-add_executable(tetris_client src/client/main.cpp)
+add_executable(tetris_client src/client/main.cpp resources/resources.qrc)
 
 target_link_libraries(tetris_client PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
 target_link_libraries(tetris_server PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})

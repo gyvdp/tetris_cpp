@@ -21,15 +21,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <QApplication>
-#include <iostream>
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
 
-#include "client/view/view.hpp"
+#include <QGraphicsScene>
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
+#include "client/view/component/matrix.hpp"
+#include "client/view/component/mino.hpp"
+namespace tetris::view::scene {
+/**
+ * @brief This class represents a GameScene
+ */
+class GameScene : public QGraphicsScene {
+  Q_OBJECT
+ protected:
+  /**
+   * @brief The matrix of the game
+   */
+  component::Matrix *matrix_;
 
-  tetris::view::View view_;
+ public:
+  /**
+   * @brief Default constructor fot a GameScene
+   * @param parent Parent QObject (for memory)
+   */
+  explicit GameScene(QObject *parent = nullptr);
 
-  return QApplication::exec();
-}
+  /**
+   * @brief Destructor of a GameScene
+   */
+  ~GameScene() override;
+};
+}  // namespace tetris::view::scene
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
