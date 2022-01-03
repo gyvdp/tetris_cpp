@@ -1,5 +1,7 @@
 #include "tetris_client.hpp"
 
+#include <iostream>
+
 namespace tetris::client {
 
 void Tetris_Client::connection(std::string ip, unsigned port) {
@@ -28,18 +30,25 @@ void Tetris_Client::connection(std::string ip, unsigned port) {
   }
 }
 
+void Tetris_Client::sendData(const Json::Value& data) {
+  QByteArray arrayData = QByteArray::fromStdString(data.toStyledString());
+  this->socket_->write(arrayData);
+  this->socket_->waitForBytesWritten();
+}
+
 void Tetris_Client::slot_Connected() {
   qDebug() << "connected...";
 
   // Writing on connection (ACTION CONNECTION)
-  socket_->write("Hello server");
+  //  socket_->write("Hello server");
+  //  this->socket_->waitForBytesWritten();
 }
 
 void Tetris_Client::slot_Disconnected() { qDebug() << "disconnected..."; }
 
 void Tetris_Client::slot_Reading() {
-  qDebug() << "reading...";
-  QString txt = socket_->readAll();
+  this->socket_->waitForConnected();
+  qDebug() << "reading..." << socket_->readAll();
 }
 
 }  // namespace tetris::client

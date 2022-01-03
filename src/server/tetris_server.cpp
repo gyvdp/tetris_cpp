@@ -20,8 +20,7 @@ Tetris_Server::Tetris_Server(QObject *parent) : QObject(parent), matchID_{0} {
 void Tetris_Server::slot_Connected() {
   // Crée un nouveau socket sur la demande du client.
   QTcpSocket *socket = server_->nextPendingConnection();
-
-  // Ouvre les ports d'écriture.
+  socket->waitForConnected();
   socket->open(QIODevice::ReadWrite);
 
   if (this->waitingQueue_.empty()) {
