@@ -30,7 +30,8 @@
 
 #include <QByteArray>
 
-#include "json/json.h"
+#include "QJsonDocument"
+#include "QJsonObject"
 #include "model/game/ongoinggame.hpp"
 #include "model/notifier/action.hpp"
 #include "model/tetrimino/direction.hpp"
@@ -44,7 +45,7 @@ class Notification {
    * @param action Action that you serialize
    * @return Json::Value of a action
    */
-  static Json::Value action(Action action);
+  static QJsonDocument action(Action action);
 
   /**
    * @brief Serialize a Action into a Json::Value
@@ -52,7 +53,7 @@ class Notification {
    * @param direction direction of the action
    * @return Json::Value of a action and his additional data
    */
-  static Json::Value action(Action action, tetrimino::Direction direction);
+  static QJsonDocument action(Action action, tetrimino::Direction direction);
 
   /**
    * @brief Serialize a Action into a Json::Value
@@ -60,7 +61,7 @@ class Notification {
    * @param username username of the user
    * @return Json::Value of a action and his additional data
    */
-  static Json::Value action(Action action, const std::string& username);
+  static QJsonDocument action(Action action, const std::string& username);
 
   /**
    * @brief Serialize all the data that a user need for starting his game
@@ -69,10 +70,8 @@ class Notification {
    * @param seed seed of the bag generator
    * @return return Json::Value of all the data
    */
-  static Json::Value starting_game(model::game::Player& player,
-                                   model::game::Player& opponent, long seed);
-
-  static Json::Value board(model::game::Matrix&);
+  static QJsonDocument starting_game(model::game::Player& player,
+                                     model::game::Player& opponent, long seed);
 
   /**
    * @brief Interpret the message and act on the game accordingly

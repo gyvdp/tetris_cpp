@@ -1,10 +1,10 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
-#include <json/json.h>
 
 #include <QAbstractSocket>
 #include <QDebug>
 #include <QException>
+#include <QJsonDocument>
 #include <QObject>
 #include <QTcpSocket>
 #include <regex>
@@ -23,7 +23,7 @@ class Tetris_Client : public QObject {
     this->socket_ = new QTcpSocket(this);
   }
 
-  void sendData(const Json::Value &);
+  void sendData(const QJsonDocument &);
 
   void connection(std::string ip, unsigned port);
 

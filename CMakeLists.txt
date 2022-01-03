@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(QT_VERSION 6)
 set(REQUIRED_LIBS Core Widgets Network)
-set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets Qt6::Network jsoncpp_lib)
+set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets Qt6::Network)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
@@ -34,19 +34,6 @@ if (NOT Catch2_FOUND)
     FetchContent_MakeAvailable(Catch2)
 endif ()
 
-find_package(jsoncpp QUIET)
-if (NOT jsoncpp_FOUND)
-    message("jsoncpp not found, downloading from git.")
-    Include(FetchContent)
-    FetchContent_Declare(
-            jsoncpp
-            GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
-            GIT_TAG 1.9.5)
-
-    FetchContent_MakeAvailable(jsoncpp)
-endif ()
-
-include_directories(${jsoncpp_SOURCE_DIR}/include)
 include(CTest)
 
 #########################################################################################
@@ -97,7 +84,7 @@ set(MODEL_TESTS
         )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
-target_link_libraries(MODEL_LIB PUBLIC jsoncpp_lib ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
 
 add_executable(model_test ${MODEL_TESTS})
 target_link_libraries(model_test Catch2 MODEL_LIB)
@@ -108,7 +95,7 @@ target_link_libraries(model_test Catch2 MODEL_LIB)
 add_executable(tetris_server src/server/main.cpp)
 add_executable(tetris_client src/client/main.cpp)
 
-target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED} jsoncpp_lib)
+target_link_libraries(tetris_client PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
 target_link_libraries(tetris_server PUBLIC MODEL_LIB ${REQUIRED_LIBS_QUALIFIED})
 
 if (WIN32)

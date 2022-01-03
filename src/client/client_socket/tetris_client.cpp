@@ -30,8 +30,8 @@ void Tetris_Client::connection(std::string ip, unsigned port) {
   }
 }
 
-void Tetris_Client::sendData(const Json::Value& data) {
-  QByteArray arrayData = QByteArray::fromStdString(data.toStyledString());
+void Tetris_Client::sendData(const QJsonDocument& data) {
+  QByteArray arrayData = QByteArray(data.toJson(QJsonDocument::Indented));
   this->socket_->write(arrayData);
   this->socket_->waitForBytesWritten();
 }

@@ -20,14 +20,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
-#include <json/json.h>
 
 #include <QCoreApplication>
-#include <iostream>
 
 #include "client/client_socket/tetris_client.hpp"
-#include "model/game/player.hpp"
-#include "server/tetris_server.hpp"
 
 int main(int argc, char* argv[]) {
   QCoreApplication app(argc, argv);

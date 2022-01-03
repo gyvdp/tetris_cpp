@@ -23,93 +23,97 @@
 
 #include "model/notifier/notification.hpp"
 
-#include <QByteArray>
-
 using namespace tetris::model::notifier;
 
-Json::Value Notification::action(Action action, const std::string& username) {
+QJsonDocument Notification::action(Action action, const std::string& username) {
   if (action != CONNECTION && action != LEAVE)
     throw std::invalid_argument("Wrong action");
-  Json::Value update;
-  update["key"] = "ACTION";
-  update["data"]["action"] = action;
-  update["data"]["player"]["username"] = username;
-  return update;
+  QJsonObject object;
+  QJsonObject data;
+  QJsonObject player;
+  object["key"] = "ACTION";
+  data["action"] = action;
+  player["username"] = QString::fromStdString(username);
+  data.insert("player", player);
+  object.insert("data", data);
+  QJsonDocument doc = QJsonDocument(object);
+  return doc;
 }
 
-Json::Value Notification::action(Action action,
-                                 tetrimino::Direction direction) {
+QJsonDocument Notification::action(Action action,
+                                   tetrimino::Direction direction) {
   if (action != MOVE) throw std::invalid_argument("Wrong action");
-  Json::Value update;
-  update["key"] = "ACTION";
-  update["data"]["action"] = action;
-  update["data"]["direction"] = direction;
-  return update;
+  QJsonObject object;
+  QJsonObject data;
+  QJsonObject move;
+  object["key"] = "ACTION";
+  data["action"] = action;
+  move["direction"] = direction;
+  data.insert("direction", move);
+  object.insert("data", data);
+  QJsonDocument doc = QJsonDocument(object);
+  return doc;
 }
 
-Json::Value Notification::action(Action action) {
+QJsonDocument Notification::action(Action action) {
   if (action != HOLD && action != HARDDROP && action != SOFTDROP)
     throw std::invalid_argument("Wrong action");
-  Json::Value update;
-  update["key"] = "ACTION";
-  update["data"]["action"] = action;
-  return update;
+  QJsonObject object;
+  QJsonObject data;
+  object["key"] = "ACTION";
+  data["action"] = action;
+  object.insert("data", data);
+  QJsonDocument doc = QJsonDocument(object);
+  return doc;
 }
 
-Json::Value Notification::starting_game(model::game::Player& player,
-                                        model::game::Player& opponent,
-                                        long seed) {
-  Json::Value update;
-  update["key"] = "STARTING_GAME";
-  update["data"]["player"]["name"] = static_cast<std::string>(player.name());
-  update["data"]["player"]["highScore"] =
-      static_cast<unsigned>(player.highScore());
-  update["data"]["opponent"]["name"] =
-      static_cast<std::string>(opponent.name());
-  update["data"]["opponent"]["highScore"] =
-      static_cast<unsigned>(opponent.highScore());
-  update["data"]["bag"]["seed"] = static_cast<int>(seed);
-  return update;
+QJsonDocument Notification::starting_game(model::game::Player& player,
+                                          model::game::Player& opponent,
+                                          long seed) {
+  QJsonObject object;
+  QJsonObject data;
+  QJsonObject playerObject;
+  QJsonObject opponentObject;
+  object["key"] = "STARTING_GAME";
+  playerObject["name"] = QString::fromLatin1(player.name());
+  playerObject["highscore"] = static_cast<int>(player.highScore());
+  opponentObject["name"] = QString::fromLatin1(opponent.name());
+  opponentObject["highscore"] = static_cast<int>(opponent.highScore());
+  data.insert("player", playerObject);
+  data.insert("opponent", opponentObject);
+  data["seed"] = static_cast<int>(seed);
+  object.insert("data", data);
+  QJsonDocument doc = QJsonDocument(object);
+  return doc;
 }
-
-Json::Value Notification::board(model::game::Matrix& matrix) {
-  Json::Value update;
-  update["key"] = "BOARD";
-  for (int height = 0; height < matrix.height(); height++)
-    for (int width = 0; width < matrix.width(); width++) {
-      update["data"]["board"]["case"]["coordinate"]["x"] = height;
-      update["data"]["board"]["case"]["coordinate"]["y"] = width;
-      update["data"]["board"]["case"]["mino"] =
-          matrix.get(utils::Coordinate(height, width)).value();
-    }
-  return update;
-}
-
 void Notification::interpreter(QByteArray& message,
                                model::game::OngoingGame& game) {
-  Json::Value data = message.toStdString();
-  std::string key = data["key"].asString();
+  QJsonDocument doc = QJsonDocument::fromJson(message);
+  QString key = doc.object()["key"].toString();
   if (key == "ACTION") {
-    switch (data["action"].asInt()) {
-      case CONNECTION:
-        // A faire via le client
-        break;
-      case LEAVE:
-        // A faire via le client
-        break;
-      case MOVE:
-        game.move(static_cast<tetrimino::Direction>(data["direction"].asInt()));
-        break;
-      case SOFTDROP:
-        game.softDrop();
-        break;
-      case HARDDROP:
-        game.hardDrop();
-        break;
-      case HOLD:
-        game.holdFalling();
-        break;
-    }
+    QJsonObject data = doc.object()["data"].toObject();
+    // TODO METHOD A FINI
+
+    //    switch (data["action"].asInt()) {
+    //      case CONNECTION:
+    //        // A faire via le client
+    //        break;
+    //      case LEAVE:
+    //        // A faire via le client
+    //        break;
+    //      case MOVE:
+    //        game.move(static_cast<tetrimino::Direction>(data["direction"].asInt()));
+    //        break;
+    //      case SOFTDROP:
+    //        game.softDrop();
+    //        break;
+    //      case HARDDROP:
+    //        game.hardDrop();
+    //        break;
+    //      case HOLD:
+    //        game.holdFalling();
+    //        break;
+    //    }
   } else if (key == "STARTING_GAME") {
     // A Faire une fois que j'ai la classe duel ou autre genre.
   }
