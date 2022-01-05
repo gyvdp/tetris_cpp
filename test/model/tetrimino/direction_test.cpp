@@ -28,8 +28,6 @@
 using namespace tetris::model::tetrimino;
 using namespace tetris::utils;
 
-//@TODO @Constantin vérifier les valeurs des différentes directions.
-
 TEST_CASE("") {
   SECTION("delta") {
     SECTION("RIGHT") {
@@ -49,7 +47,6 @@ TEST_CASE("") {
     }
   }
 
-  //@TODO @Constantin vérifier les valeurs des différentes directions.
   SECTION("operator") {
     SECTION("RIGHT") {
       tetris::utils::Coordinate baseCoordinate = {4, 4};
