@@ -89,7 +89,7 @@ class LockedDownState : public GameState {
  ******************************************************************************/
 LockedDownState::LockedDownState(OngoingGame *game) : GameState{game} {
   game_->timer_.expires_at(std::chrono::steady_clock::now() +
-                           boost::asio::chrono::seconds(4));
+                           boost::asio::chrono::milliseconds(500));
   game_->timer_.async_wait(boost::bind(&LockedDownState::lock, this));
 }
 }  // namespace tetris::model::game::states

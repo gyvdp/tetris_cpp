@@ -213,6 +213,9 @@ class OngoingGame {
    */
   [[nodiscard]] inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
+
+  std::vector<std::vector<OptionalMino>> fallingInsideMatrix();
+
   /**
    * @brief Setter for the falling tetrimino.
    * @param tetrimino Tetrimino to set as the falling one.
@@ -257,6 +260,12 @@ class OngoingGame {
   inline void start();
 
   /**
+   * Calculate the number of G to place on the tetrimino.
+   * @return Number of G's tetrimino should feel.
+   */
+  [[nodiscard]] inline int64_t calculateGravity() const;
+
+  /**
    * @brief This method stops the game (by quitting or error)
    */
   inline void stop();
@@ -298,6 +307,7 @@ class OngoingGame {
    * @brief Clears all the completed lines from the matrix.
    */
   void clearLines();
+
 
   /**
    * @brief Generates points for number of lines destroyed.
@@ -375,6 +385,10 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 void OngoingGame::lock() { state_->lock(); }
 
 tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
+
+int64_t OngoingGame::calculateGravity() const {
+  return static_cast<int64_t>(std::pow((0.8-((level_-1)*0.007)),level_-1));
+}
 
 }  // namespace tetris::model::game
 

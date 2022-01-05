@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,49 +21,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/signals2.hpp>
 #include <iostream>
 
+#include "catch2/catch.hpp"
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
-#include "model/game/state/notstartedstate.hpp"
+#include "model/game/state/exceptions/blockedoutexception.hpp"
+#include "model/game/state/exceptions/lockedoutexception.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
-using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
-
-class TextView {
- public:
-  explicit TextView(OngoingGame& game) : game(game) {
-    game.connectFalling(boost::bind(&TextView::refresh, this));
-    game.connectScore(boost::bind(&TextView::score, this));
+using namespace tetris::model::game::states::exceptions;
+TEST_CASE("End of game") {
+  tetris::model::game::Player player("John", 123);
+  tetris::model::game::OngoingGame game(&player, 1);
+  for (int i = 1; i < game.getMatrix().height(); i++) {
+    for (int j = 0; j < game.getMatrix().width(); j++) {
+      game.getMatrix().set(S_MINO, i, j);
+    }
   }
-
-  void refresh() const {
-    std::cout << "Y: " << game.falling()->Y() << std::endl;
-  }
-
-  void score() const { std::cout << "Score: " << game.score() << std::endl; }
-
- private:
-  OngoingGame& game;
-};
-
-void print() {}
-
-int main() {
-  std::cout << static_cast<int64_t>(std::pow((0.8 - ((1 - 1) * 0.007)), 1 - 1))
-            << std::endl;
-  std::cout << static_cast<int64_t>(std::pow((0.8 - ((2 - 1) * 0.007)), 2 - 1))
-            << std::endl;
-  std::cout << static_cast<int64_t>(std::pow((0.8 - ((3 - 1) * 0.007)), 3 - 1))
-            << std::endl;
-  Player player("John", 123);
-  OngoingGame game = OngoingGame(&player, 1);
-  TextView v1(game);
-  game.start();
-  std::this_thread::sleep_for(std::chrono::seconds(1));
-  std::cout << "Hello, World!" << std::endl;
-  std::this_thread::sleep_for(std::chrono::seconds(69));
-  return 0;
+  REQUIRE_THROWS_AS(createTetrimino(O_MINO, game.getMatrix().generateMask()),
+                    BlockedOutException);
 }

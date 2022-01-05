@@ -70,6 +70,10 @@ void OngoingGame::connectNext(const signal::slot_type& subscriber) {
 }
 
 void OngoingGame::generatePoints(size_t lines) {
+  lines_ += static_cast<int>(lines);
+  if (lines != 0 && lines % 10 == 0) {
+    level_++;
+  }
   while (lines != 0) {
     switch (lines) {
       case 1:
@@ -90,14 +94,15 @@ void OngoingGame::generatePoints(size_t lines) {
         break;
     }
   }
-  lines_ += static_cast<int>(lines);
-  if (lines % 10 == 0) {
-    level_++;
-  }
 }
 
+std::vector<std::vector<OptionalMino>> OngoingGame::fallingInsideMatrix() {
+  Matrix matrix = matrix_;
+  matrix.add(falling_);
+  return matrix.getMinos();
+};
+
 void OngoingGame::state(GameState* state) {
-  printf("transition");
   delete state_;
   state_ = state;
 }

@@ -23,6 +23,8 @@
 
 #include "model/game/matrix.hpp"
 
+#include "model/game/state/exceptions/lockedoutexception.hpp"
+
 namespace tetris::model::game {
 
 void Matrix::add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino) {
@@ -38,6 +40,10 @@ void Matrix::add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino) {
           col < minos_.at(line).size()) {
         minos_.at(line).at(col) =
             minoTemplate.at(tetrimino->orientation()).at(i).at(j);
+        if (line > 2) {
+          throw states::exceptions::LockedOutException("Locked out", __FILE__,
+                                                       __LINE__);
+        }
       }
     }
   }
@@ -66,12 +72,11 @@ void Matrix::set(tetris::model::tetrimino::Mino m, int line, int col) {
 std::vector<std::vector<bool>> Matrix::generateMask() const {
   std::vector<std::vector<bool>> mask{};
   mask.reserve(minos_.size());
-
   for (auto& line : minos_) {
     std::vector<bool> t{};
     t.reserve(line.size());
-    for (auto& oMino : line) {
-      t.push_back(!oMino.has_value());
+    for (auto& mino : line) {
+      t.push_back(!mino.has_value());
     }
     mask.push_back(t);
   }
