@@ -36,26 +36,27 @@ class Player_Socket : QObject {
   const std::string name_;
 
  public:
-  Player_Socket(QTcpSocket*& socket, std::string name, QObject* parent)
-      : QObject(parent), socket_{socket}, name_(std::move(name)) {
+  explicit inline Player_Socket(QTcpSocket*& socket, std::string name,
+                                QObject* parent)
+      : QObject(parent), socket_{socket}, name_(std::move(name)), score_(0) {
     this->socket_->disconnect();
   }
 
-  [[nodiscard]] QTcpSocket* socket() const { return socket_; }
+  [[nodiscard]] inline QTcpSocket* socket() const { return socket_; }
 
-  [[nodiscard]] const std::string& name() const { return name_; }
+  [[nodiscard]] inline const std::string& name() const { return name_; }
 
-  void write(const QJsonDocument& doc) {
+  inline void write(const QJsonDocument& doc) {
     this->socket_->write(doc.toJson(QJsonDocument::Indented));
     this->socket_->waitForBytesWritten();
   }
 
-  void write(const QByteArray& data) {
+  inline void write(const QByteArray& data) {
     this->socket_->write(data);
     this->socket_->waitForBytesWritten();
   }
 
-  void parent(QObject* parent) { this->setParent(parent); }
+  inline void parent(QObject* parent) { this->setParent(parent); }
 };
 }  // namespace tetris::server
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_PLAYER_SOCKET_HPP_
