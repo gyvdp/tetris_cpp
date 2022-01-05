@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,6 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/player.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_
 
-namespace tetris::model::game {}  // namespace tetris::model::game
+namespace tetris::model::game::states::exceptions {
+
+/**
+ * @brief Throws an exception signaling the request action is not available in
+ * that state.
+ */
+class BlockedOutException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for not started exception.
+   * @param mess Message to display in exception.
+   */
+  explicit BlockedOutException(const std::string& mess, const char* file,
+                               int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
+                         mess) {}
+
+  ~BlockedOutException() override = default;
+};
+
+}  // namespace tetris::model::game::states::exceptions
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_

@@ -34,18 +34,5 @@ using namespace tetris::model::tetrimino;
 using namespace tetris::model::game;
 
 TEST_CASE("blocked out state") {
-  Player player("John", 123);
-  std::unique_ptr<OngoingGame> game =
-      std::make_unique<OngoingGame>(OngoingGame(&player, 1));
-  std::unique_ptr<GameState> gameState =
-      std::make_unique<states::BlockedOutState>(
-          states::BlockedOutState(game.get()));
-  game->state(std::move(gameState));
-  REQUIRE_THROWS_AS(game->start(), exceptions::StoppedGameException);
-  REQUIRE_THROWS_AS(game->holdFalling(), exceptions::StoppedGameException);
-  REQUIRE_THROWS_AS(game->softDrop(), exceptions::StoppedGameException);
-  REQUIRE_THROWS_AS(game->hardDrop(), exceptions::StoppedGameException);
-  REQUIRE_THROWS_AS(game->rotate(true), exceptions::StoppedGameException);
-  REQUIRE_THROWS_AS(game->lock(), exceptions::StoppedGameException);
-  REQUIRE_THROWS_AS(game->move(LEFT), exceptions::StoppedGameException);
+
 }

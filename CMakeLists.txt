@@ -8,6 +8,8 @@ set(REQUIRED_LIBS Core Widgets Network)
 set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets Qt6::Network)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
+find_package(Boost COMPONENTS system thread REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -45,7 +47,6 @@ include(CTest)
 #########################################################################################
 set(MODEL_SOURCES
         src/model/game/matrix.cpp
-        src/model/game/player.cpp
         src/model/tetrimino/tetrimino.cpp
         src/model/game/tetriminoGenerator.cpp
         src/model/game/ongoinggame.cpp
@@ -84,6 +85,7 @@ set(MODEL_TESTS
         )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
+target_link_libraries(MODEL_LIB Boost::system Boost::thread)
 
 target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
 

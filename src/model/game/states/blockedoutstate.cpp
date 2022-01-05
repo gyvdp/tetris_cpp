@@ -36,7 +36,8 @@ void BlockedOutState::start() {
 }
 
 void BlockedOutState::stop() {
-  game_->state(std::make_unique<states::StoppedState>(game_));
+  game_->stop();
+  game_->state(new StoppedState(game_));
 }
 
 void BlockedOutState::move(tetrimino::Direction direction) {

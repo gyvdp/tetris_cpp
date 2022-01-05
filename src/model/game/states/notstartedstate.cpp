@@ -34,7 +34,7 @@ namespace tetris::model::game::states {
 void NotStartedState::start() {
   game_->falling(tetrimino::createTetrimino(game_->pickMino()));
   game_->next(game_->pickMino());
-  game_->state(std::make_unique<FallingState>(game_));
+  game_->state(new FallingState(game_));
 }
 
 void NotStartedState::stop() {

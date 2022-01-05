@@ -25,38 +25,46 @@
 
 #include <model/game/state/stoppedstate.hpp>
 
+#include "model/game/state/exceptions/startongoinggameexception.hpp"
+#include "model/game/state/exceptions/stoppedgameexception.hpp"
+
 namespace tetris::model::game::states {
 
 void LockedOutState::start() {
-  // TODO
+  throw exceptions::StartOnGoingGameException("Cannot start when locked out",
+                                              __FILE__, __LINE__);
 }
 
-void LockedOutState::stop() {
-  game_->state(std::make_unique<states::StoppedState>(game_));
-}
+void LockedOutState::stop() { game_->state(new StoppedState(game_)); }
 
 void LockedOutState::move(tetrimino::Direction direction) {
-  // TODO
+  throw exceptions::StoppedGameException("Cannot move when locked out",
+                                         __FILE__, __LINE__);
 }
 
 void LockedOutState::holdFalling() {
-  // TODO
+  throw exceptions::StoppedGameException("Cannot hold when locked out",
+                                         __FILE__, __LINE__);
 }
 
 void LockedOutState::softDrop() {
-  // TODO
+  throw exceptions::StoppedGameException("Cannot drop when locked out",
+                                         __FILE__, __LINE__);
 }
 
 void LockedOutState::hardDrop() {
-  // TODO
+  throw exceptions::StoppedGameException("Cannot drop when locked out",
+                                         __FILE__, __LINE__);
 }
 
 void LockedOutState::rotate(bool clockwise) {
-  // TODO
+  throw exceptions::StoppedGameException("Cannot rotate when locked out",
+                                         __FILE__, __LINE__);
 }
 
 void LockedOutState::lock() {
-  // TODO
+  throw exceptions::StoppedGameException("Cannot lock when locked out",
+                                         __FILE__, __LINE__);
 }
 
 }  // namespace tetris::model::game::states

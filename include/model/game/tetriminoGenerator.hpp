@@ -78,7 +78,9 @@ class TetriminoGenerator {
  ******************************************************************************/
 
 inline TetriminoGenerator::TetriminoGenerator(std::uint_fast64_t seed)
-    : gen64_{seed}, minos_{generateBag()} {}
+    : gen64_{seed} {
+  minos_ = generateBag();
+}
 
 inline TetriminoGenerator::TetriminoGenerator()
     : TetriminoGenerator{static_cast<std::uint_fast64_t>(

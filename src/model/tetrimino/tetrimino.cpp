@@ -45,7 +45,7 @@ void Tetrimino::rotate(bool clockwise,
   auto tempMinos = minos_.at(tempOrientation);
   for (int i = 0; i < tempMinos.size(); i++) {
     for (int j = 0; j < tempMinos.at(i).size(); j++) {
-      if ((matrixMask[i][j]) && (tempMinos[i][j] != std::nullopt))
+      if ((matrixMask.at(i).at(j)) && (tempMinos.at(i).at(j) != std::nullopt))
         throw exceptions::RotationNotPossibleException("Rotation not possible",
                                                        __FILE__, __LINE__);
     }
@@ -61,12 +61,14 @@ void Tetrimino::move(Direction direction,
       if (minos_.at(orientation_)[line][col].has_value()) {
         auto x = newCoordinate.x() + col;
         auto y = newCoordinate.y() + line;
-        if (y >= 0 && y > matrixMask.size() && x >= 0 &&
-            x < matrixMask[y].size()) {
-          throw exceptions::MoveNotPossibleException(
-              "This move places the Tetrimino out of bound", __FILE__,
-              __LINE__);
-        } else if (!matrixMask[y][x]) {
+        if (y >= 0 && y < matrixMask.size() && x >= 0 &&
+            x < matrixMask.at(y).size()) {
+          if (!matrixMask.at(y).at(x)) {
+            throw exceptions::MoveNotPossibleException(
+                "This move places the Tetrimino out of bound", __FILE__,
+                __LINE__);
+          }
+        } else {
           throw exceptions::MoveNotPossibleException(
               "This move is impossible because there is a Mino in the way",
               __FILE__, __LINE__);

@@ -30,20 +30,77 @@
 namespace tetris::model::game {
 
 OngoingGame::OngoingGame(Player* player, std::uint_fast64_t seed)
-    : state_{std::make_unique<states::NotStartedState>(this)},
+    : state_{new states::NotStartedState(this)},
       player_{player},
       matrix_{10, 22},
       generator_{seed},
       falling_{},
       next_{},
-      hold_{} {
+      hold_{},
+      score_{0},
+      level_{1},
+      lines_{0},
+      io_{},
+      timer_(io_, boost::asio::chrono::milliseconds(100)) {
   if (player == nullptr) {
     throw std::invalid_argument("Player can not be null");
   }
 }
 
-void OngoingGame::state(std::unique_ptr<GameState> state) {
-  state_.swap(state);
+void OngoingGame::clearLines() {
+  auto lines = matrix_.getCompletedLines();
+  generatePoints(lines.size());
+  matrix_.removeLines(lines);
+};
+
+void OngoingGame::connectFalling(const signal::slot_type& subscriber) {
+  signalFalling.connect(subscriber);
+}
+
+void OngoingGame::connectScore(const signal::slot_type& subscriber) {
+  signalScore.connect(subscriber);
+}
+
+void OngoingGame::connectHold(const signal::slot_type& subscriber) {
+  signalHold.connect(subscriber);
+}
+
+void OngoingGame::connectNext(const signal::slot_type& subscriber) {
+  signalNext.connect(subscriber);
+}
+
+void OngoingGame::generatePoints(size_t lines) {
+  while (lines != 0) {
+    switch (lines) {
+      case 1:
+        score(1200 * (level_ + 1));
+        lines -= 1;
+        break;
+      case 2:
+        score(1200 * (level_ + 1));
+        lines -= 2;
+        break;
+      case 3:
+        score(1200 * (level_ + 1));
+        lines -= 3;
+        break;
+      default:
+        score(1200 * (level_ + 1));
+        lines -= 4;
+        break;
+    }
+  }
+  lines_ += static_cast<int>(lines);
+  if (lines % 10 == 0) {
+    level_++;
+  }
+}
+
+void OngoingGame::state(GameState* state) {
+  printf("transition");
+  delete state_;
+  state_ = state;
+  state_->start();
 }
 
 Matrix& OngoingGame::getMatrix() { return matrix_; }

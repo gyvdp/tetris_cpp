@@ -24,6 +24,9 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_FALLINGSTATE_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_FALLINGSTATE_HPP_
 
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/thread/thread.hpp>
+
 #include "model/game/gamestate.hpp"
 #include "model/game/ongoinggame.hpp"
 
@@ -32,6 +35,11 @@ namespace tetris::model::game::states {
  * @brief This class represents the state when the tetrimino is falling
  */
 class FallingState : public GameState {
+ private:
+  /**
+   * @brief Keeps track if the player has held during the state.
+   */
+  bool hasHold_ = false;
 
  public:
   /**
@@ -39,7 +47,7 @@ class FallingState : public GameState {
    *
    * @param game The game that have this state
    */
-  inline explicit FallingState(OngoingGame *game);
+  inline explicit FallingState(OngoingGame* game);
 
   /**
    * @inherit
@@ -80,12 +88,16 @@ class FallingState : public GameState {
    * @inherit
    */
   void lock() override;
+
+  void applyGravity();
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
-FallingState::FallingState(OngoingGame *game) : GameState{game} {}
+FallingState::FallingState(OngoingGame* game) : GameState{game} {
+
+}
 }  // namespace tetris::model::game::states
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_FALLINGSTATE_HPP_
