@@ -55,8 +55,7 @@ QJsonDocument Notification::action(Action action,
 }
 
 QJsonDocument Notification::action(Action action) {
-  if (action != HOLD && action != HARDDROP && action != SOFTDROP &&
-      action != LOST && action != LEAVE)
+  if (action != HOLD && action != HARDDROP && action != SOFTDROP)
     throw std::invalid_argument("Wrong action");
   QJsonObject object;
   QJsonObject data;
@@ -67,10 +66,36 @@ QJsonDocument Notification::action(Action action) {
   return doc;
 }
 
+QJsonDocument Notification::action(Action action, int score) {
+  if (action != LOST && action != LEAVE)
+    throw std::invalid_argument("Wrong action");
+  QJsonObject object;
+  QJsonObject data;
+  object["key"] = "ACTION";
+  data["action"] = action;
+  data["score"] = score;
+  object.insert("data", data);
+  QJsonDocument doc = QJsonDocument(object);
+  return doc;
+}
+
+QJsonDocument Notification::action(Action action, bool clockwise) {
+  if (action != ROTATE) throw std::invalid_argument("Wrong action");
+  QJsonObject object;
+  QJsonObject data;
+  object["key"] = "ACTION";
+  data["action"] = action;
+  data["clockwise"] = clockwise;
+  object.insert("data", data);
+  QJsonDocument doc = QJsonDocument(object);
+  return doc;
+}
+
 QJsonDocument Notification::starting_game(const std::string& player_name,
                                           int player_score,
                                           const std::string& opponent_name,
-                                          int opponent_score, long seed) {
+                                          int opponent_score,
+                                          uint_fast64_t seed) {
   QJsonObject object;
   QJsonObject data;
   QJsonObject playerObject;

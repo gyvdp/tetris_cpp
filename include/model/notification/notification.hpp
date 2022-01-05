@@ -41,27 +41,45 @@ namespace tetris::model::notification {
 class Notification {
  public:
   /**
-   * @brief Serialize a Action into a Json::Value
+   * @brief Serialize a Action into a QJsonDocument
    * @param action Action that you serialize
-   * @return Json::Value of a action
+   * @return QJsonDocument of a action
    */
   static QJsonDocument action(Action action);
 
   /**
-   * @brief Serialize a Action into a Json::Value
+   * @brief Serialize a Action into a QJsonDocument
    * @param action Action that you serialize
    * @param direction direction of the action
-   * @return Json::Value of a action and his additional data
+   * @return QJsonDocument of a action and his additional data
    */
   static QJsonDocument action(Action action, tetrimino::Direction direction);
 
   /**
-   * @brief Serialize a Action into a Json::Value
+   * @brief Serialize a Action into a QJsonDocument
    * @param action Action that you serialize
    * @param username username of the user
-   * @return Json::Value of a action and his additional data
+   * @return QJsonDocument of a action and his additional data
    */
   static QJsonDocument action(Action action, const std::string& username);
+
+  /**
+   * @brief Serialize a Action into a QJsonDocument
+   * @param action Action that you serialize
+   * @param clockwise if the rotate will be clockwise or not
+   * @return QJsonDocument of a action and his additional data
+   */
+  static QJsonDocument action(Action action, bool clockwise);
+
+
+  /**
+   * @brief Serialize a Action into a QJsonDocument
+   * @param action Action that you serialize
+   * @param score of the player when he lost or disconnects.
+   * @return QJsonDocument of a action and his additional data
+   */
+  static QJsonDocument action(Action action, int score);
+
 
   /**
    * @brief Serialize all the data that a user need for starting his game
@@ -70,12 +88,12 @@ class Notification {
    * @param opponent_name information of his opponent
    * @param opponent_score best score of the opponent
    * @param seed seed of the bag generator
-   * @return return Json::Value of all the data
+   * @return return QJsonDocument of all the data
    */
   static QJsonDocument starting_game(const std::string& player_name,
                                      int player_score,
                                      const std::string& opponent_name,
-                                     int opponent_score, long seed);
+                                     int opponent_score, uint_fast64_t seed);
 
   /**
    * @brief Interpret the message and act on the game accordingly

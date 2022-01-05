@@ -38,6 +38,7 @@ enum Action {
   HOLD,
   SOFTDROP,
   HARDDROP,
+  ROTATE,
 };
 
 /**
