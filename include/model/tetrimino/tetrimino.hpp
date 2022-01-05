@@ -64,7 +64,6 @@ class Tetrimino {
       &minos_;
 
  public:
-
   /**
    * @brief Default constructor of a Tetrimino
    */
@@ -150,7 +149,7 @@ Tetrimino::Tetrimino(
     std::map<Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
         &minos,
     Mino type)
-    : orientation_{NORTH}, type_{type}, coordinate_{{3, 0}}, minos_{minos} {}
+    : orientation_{NORTH}, type_{type}, coordinate_{{6, 6}}, minos_{minos} {}
 
 std::map<Orientation, std::array<std::array<std::optional<Mino>, 4>, 4>>
 Tetrimino::minos() const {

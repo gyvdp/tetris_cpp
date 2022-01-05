@@ -40,10 +40,10 @@ void Matrix::add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino) {
           col < minos_.at(line).size()) {
         minos_.at(line).at(col) =
             minoTemplate.at(tetrimino->orientation()).at(i).at(j);
-        if (line > 2) {
-          throw states::exceptions::LockedOutException("Locked out", __FILE__,
-                                                       __LINE__);
-        }
+        // if (line > 2) {
+        //   throw states::exceptions::LockedOutException("Locked out",
+        //   __FILE__,
+        //                                                __LINE__);
       }
     }
   }

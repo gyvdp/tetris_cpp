@@ -24,6 +24,7 @@
 #include "view.hpp"
 
 namespace tetris::view {
+
 View::View() : game_{new window::GameWindow{}} { game_->show(); }
 View::~View() {
   if (game_ != nullptr) {

@@ -25,16 +25,26 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
 
 #include <QGraphicsScene>
+#include <QtConcurrent/QtConcurrent>
+#include <utility>
 
 #include "client/view/component/matrix.hpp"
 #include "client/view/component/mino.hpp"
 namespace tetris::view::scene {
+struct Functions {
+  std::function<void(MatrixArray)> *updateMatrix_;
+};
+
 /**
  * @brief This class represents a GameScene
  */
 class GameScene : public QGraphicsScene {
   Q_OBJECT
  protected:
+  std::function<void(MatrixArray)> updateMatrix = [this](MatrixArray matrix) {
+    matrix_->set(std::move(matrix));
+  };
+
   /**
    * @brief The matrix of the game
    */
@@ -51,6 +61,8 @@ class GameScene : public QGraphicsScene {
    * @brief Destructor of a GameScene
    */
   ~GameScene() override;
+
+  Functions getFunction() { return {.updateMatrix_ = &updateMatrix}; }
 };
 }  // namespace tetris::view::scene
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_

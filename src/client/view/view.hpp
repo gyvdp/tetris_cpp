@@ -49,6 +49,8 @@ class View {
    * @brief Destructor for the view
    */
   ~View();
+
+  scene::Functions getFunction() { return game_->getFunction(); }
 };
 }  // namespace tetris::view
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_VIEW_HPP_

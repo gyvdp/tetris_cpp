@@ -57,6 +57,10 @@ void OngoingGame::connectFalling(const signal::slot_type& subscriber) {
   signalFalling.connect(subscriber);
 }
 
+void OngoingGame::connectBoard(const signalGameBoard::slot_type& subscriber) {
+  updateGame.connect(subscriber);
+}
+
 void OngoingGame::connectScore(const signal::slot_type& subscriber) {
   signalScore.connect(subscriber);
 }
@@ -99,7 +103,8 @@ void OngoingGame::generatePoints(size_t lines) {
 std::vector<std::vector<OptionalMino>> OngoingGame::fallingInsideMatrix() {
   Matrix matrix = matrix_;
   matrix.add(falling_);
-  return matrix.getMinos();
+  auto minos = matrix.getMinos();
+  return std::vector<std::vector<OptionalMino>>(&minos[2], &minos[22]);
 };
 
 void OngoingGame::state(GameState* state) {

@@ -95,7 +95,9 @@ void FallingState::hardDrop() {
 
 void FallingState::applyGravity() {
   try {
+    printf("%lu", game_->falling()->Y());
     game_->signalFalling();
+    game_->updateGame(game_->fallingInsideMatrix());
     game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
     game_->timer_.expires_at(
         std::chrono::steady_clock::now() +
