@@ -143,6 +143,12 @@ class OngoingGame {
   void connectFalling(const signal::slot_type &subscriber);
 
   /**
+   * @brief Getter for the level.
+   * @return The level of the current game.
+   */
+  inline int level() const;
+
+  /**
    * @breif Connects a subscriber to the score signal.
    * @param subscriber Subscriber to connect.
    */
@@ -159,8 +165,6 @@ class OngoingGame {
    * @param subscriber Subscriber to connect.
    */
   void connectNext(const signal::slot_type &subscriber);
-
-  void setContext(OngoingGame *context);
 
   /**
    * @brief This method is used to change the state of the actual game
@@ -333,6 +337,8 @@ void OngoingGame::score(int score) {
   signalScore();
 }
 
+int OngoingGame::level() const { return level_; }
+
 OptionalMino OngoingGame::next() const { return next_; }
 
 void OngoingGame::next(tetrimino::Mino mino) {
@@ -368,9 +374,7 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 
 void OngoingGame::lock() { state_->lock(); }
 
-tetrimino::Mino OngoingGame::pickMino() {
-  return generator_.takeMino();
-}
+tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
 
 }  // namespace tetris::model::game
 

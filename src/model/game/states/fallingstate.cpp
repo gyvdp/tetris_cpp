@@ -38,8 +38,8 @@
 namespace tetris::model::game::states {
 
 void FallingState::start() {
-  game_->timer_.async_wait(
-      [this](boost::system::error_code ec) { applyGravity(); });
+  throw exceptions::StartOnGoingGameException("Cannot start when falling",
+                                              __FILE__, __LINE__);
 }
 
 void FallingState::stop() { game_->state(new StoppedState(game_)); }
@@ -71,20 +71,20 @@ void FallingState::softDrop() {
 
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
-    // game_->state(std::make_unique<LockedDownState>(game_));
+    game_->state(new LockedDownState(game_));
   }
 }
 
 void FallingState::hardDrop() {
-  int dropper = 0;
+  int linesDropped = 0;
   bool drop = true;
   while (drop) {
     try {
       game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
-      dropper++;
+      linesDropped++;
     } catch (tetrimino::exceptions::MoveNotPossibleException& e) {
       drop = false;
-      game_->score(dropper * 2);
+      game_->score(linesDropped * 2);
       lock();
     }
   }
@@ -95,7 +95,7 @@ void FallingState::applyGravity() {
     game_->signalFalling();
     game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
     game_->timer_.expires_at(std::chrono::steady_clock::now() +
-                             boost::asio::chrono::milliseconds(100));
+                             boost::asio::chrono::milliseconds(1000));
     game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->state(new LockedDownState(game_));
@@ -120,7 +120,7 @@ void FallingState::lock() {
   }
   game_->next(game_->pickMino());
   game_->clearLines();
-  // game_->state(std::make_unique<FallingState>(game_));
+  game_->state(new FallingState(game_));
 }
 
 }  // namespace tetris::model::game::states

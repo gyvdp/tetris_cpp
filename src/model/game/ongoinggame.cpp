@@ -100,7 +100,6 @@ void OngoingGame::state(GameState* state) {
   printf("transition");
   delete state_;
   state_ = state;
-  state_->start();
 }
 
 Matrix& OngoingGame::getMatrix() { return matrix_; }

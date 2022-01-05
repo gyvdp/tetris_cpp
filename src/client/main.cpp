@@ -34,21 +34,19 @@ using namespace tetris::model::game;
 
 class TextView {
  public:
-  explicit TextView(OngoingGame& doc) : m_document(doc) {
-    doc.connectFalling(boost::bind(&TextView::refresh, this));
-    doc.connectScore(boost::bind(&TextView::score, this));
+  explicit TextView(OngoingGame& game) : game(game) {
+    game.connectFalling(boost::bind(&TextView::refresh, this));
+    game.connectScore(boost::bind(&TextView::score, this));
   }
 
   void refresh() const {
-    std::cout << "Y: " << m_document.falling()->Y() << std::endl;
+    std::cout << "Y: " << game.falling()->Y() << std::endl;
   }
 
-  void score() const {
-    std::cout << "Score: " << m_document.score() << std::endl;
-  }
+  void score() const { std::cout << "Score: " << game.score() << std::endl; }
 
  private:
-  OngoingGame& m_document;
+  OngoingGame& game;
 };
 
 void print() {}

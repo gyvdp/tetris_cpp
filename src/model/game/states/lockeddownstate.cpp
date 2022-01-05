@@ -38,11 +38,8 @@
 namespace tetris::model::game::states {
 
 void LockedDownState::start() {
-  printf("lock");
-  game_->getMatrix().add(game_->falling());
-  game_->falling(tetrimino::createTetrimino(game_->next().value()));
-  game_->next(game_->pickMino());
-  game_->state(new FallingState(game_));
+  throw exceptions::StartOnGoingGameException("Cannot start when locked out",
+                                              __FILE__, __LINE__);
 }
 
 void LockedDownState::stop() { game_->state(new StoppedState(game_)); }
@@ -77,7 +74,7 @@ void LockedDownState::rotate(bool clockwise) {
 }
 
 void LockedDownState::lock() {
-  game_->matrix().add(game_->falling());
+  game_->getMatrix().add(game_->falling());
   try {
     game_->falling(tetrimino::createTetrimino(game_->next().value()));
   } catch (exceptions::BlockedOutException& e) {
