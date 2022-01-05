@@ -55,6 +55,7 @@ set(MODEL_SOURCES
         src/model/game/states/stoppedstate.cpp
         src/model/game/states/blockedoutstate.cpp
         src/model/notification/notification.cpp
+        src/model/game/duel.cpp
         )
 
 set(MODEL_TESTS
