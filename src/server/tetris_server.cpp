@@ -25,6 +25,8 @@
 
 #include <iostream>
 
+#include "server/exceptions/server_start_exception.hpp"
+
 namespace tetris::server {
 
 Tetris_Server::Tetris_Server(QObject *parent) : QObject(parent), matchID_{0} {
@@ -33,7 +35,8 @@ Tetris_Server::Tetris_Server(QObject *parent) : QObject(parent), matchID_{0} {
 
   // Add Settings to serv ? Catch if can't
   if (!server_->listen(QHostAddress::Any, 9999))
-    throw 1;  // TODO @Gregory need Exception style UwU
+    throw exceptions::ServerStartFailException(
+        "The server can't start with this ip or this port", __FILE__, __LINE__);
 
   qDebug() << "Server active on : IP :" << server_->serverAddress()
            << " , Port : " << server_->serverPort();

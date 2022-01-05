@@ -23,6 +23,9 @@
 #include "client/tetris_client.hpp"
 
 #include <iostream>
+#include <utility>
+
+#include "client/exceptions/connexion_not_possible_exception.hpp"
 
 namespace tetris::client {
 
@@ -51,7 +54,8 @@ void Tetris_Client::connection(std::string ip, unsigned port,
 
   // Waiting for connection
   if (!socket_->waitForConnected(5000)) {
-    // Todo exception @Gregory UwU
+    throw exceptions::ConnexionNotPossibleException("Connexion impossible",
+                                                    __FILE__, __LINE__);
   }
 }
 
