@@ -82,10 +82,6 @@ static std::shared_ptr<Tetrimino> createTetrimino(
           throw model::game::states::exceptions::BlockedOutException(
               "You are blocked out", __FILE__, __LINE__);
         }
-        if (!matrixMask[lineNumber][coordinate.x()]) {
-          throw model::game::states::exceptions::LockedOutException(
-              "You are blocked out", __FILE__, __LINE__);
-        }
       }
     }
   }

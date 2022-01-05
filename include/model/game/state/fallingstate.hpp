@@ -31,13 +31,14 @@
 #include "model/game/ongoinggame.hpp"
 
 namespace tetris::model::game::states {
+
 /**
  * @brief This class represents the state when the tetrimino is falling
  */
 class FallingState : public GameState {
  private:
   /**
-   * @brief Keeps track if the player has held during the state.
+   * @brief Keeps track if the player has held during the current state.
    */
   bool hasHold_ = false;
 
@@ -89,6 +90,9 @@ class FallingState : public GameState {
    */
   void lock() override;
 
+  /**
+   * Applies in game gravity for a piece to fall.
+   */
   void applyGravity();
 };
 
@@ -96,7 +100,11 @@ class FallingState : public GameState {
  * Definitions of inline methods                                              *
  ******************************************************************************/
 FallingState::FallingState(OngoingGame* game) : GameState{game} {
-
+  game_->timer_.expires_at(
+      std::chrono::steady_clock::now() +
+      boost::asio::chrono::seconds(game->calculateGravity()));
+  game_->timer_.async_wait(
+      [this](boost::system::error_code ec) { applyGravity(); });
 }
 }  // namespace tetris::model::game::states
 

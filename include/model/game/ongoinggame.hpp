@@ -143,6 +143,12 @@ class OngoingGame {
   void connectFalling(const signal::slot_type &subscriber);
 
   /**
+   * @brief Getter for the level.
+   * @return The level of the current game.
+   */
+  inline int level() const;
+
+  /**
    * @breif Connects a subscriber to the score signal.
    * @param subscriber Subscriber to connect.
    */
@@ -159,8 +165,6 @@ class OngoingGame {
    * @param subscriber Subscriber to connect.
    */
   void connectNext(const signal::slot_type &subscriber);
-
-  void setContext(OngoingGame *context);
 
   /**
    * @brief This method is used to change the state of the actual game
@@ -209,6 +213,9 @@ class OngoingGame {
    */
   [[nodiscard]] inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
+
+  std::vector<std::vector<OptionalMino>> fallingInsideMatrix();
+
   /**
    * @brief Setter for the falling tetrimino.
    * @param tetrimino Tetrimino to set as the falling one.
@@ -253,6 +260,12 @@ class OngoingGame {
   inline void start();
 
   /**
+   * Calculate the number of G to place on the tetrimino.
+   * @return Number of G's tetrimino should feel.
+   */
+  [[nodiscard]] inline int64_t calculateGravity() const;
+
+  /**
    * @brief This method stops the game (by quitting or error)
    */
   inline void stop();
@@ -295,6 +308,7 @@ class OngoingGame {
    */
   void clearLines();
 
+
   /**
    * @brief Generates points for number of lines destroyed.
    * @param lines Number of lines that have been destroyed.
@@ -333,6 +347,8 @@ void OngoingGame::score(int score) {
   signalScore();
 }
 
+int OngoingGame::level() const { return level_; }
+
 OptionalMino OngoingGame::next() const { return next_; }
 
 void OngoingGame::next(tetrimino::Mino mino) {
@@ -368,8 +384,10 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 
 void OngoingGame::lock() { state_->lock(); }
 
-tetrimino::Mino OngoingGame::pickMino() {
-  return generator_.takeMino();
+tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
+
+int64_t OngoingGame::calculateGravity() const {
+  return static_cast<int64_t>(std::pow((0.8-((level_-1)*0.007)),level_-1));
 }
 
 }  // namespace tetris::model::game

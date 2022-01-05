@@ -82,12 +82,13 @@ set(MODEL_TESTS
         test/model/game/state/lockeddownstate_test.cpp
         test/model/game/state/notstartedstate_test.cpp
         test/model/game/state/stoppedstate_test.cpp
+        test/model/game/state/stoppedstate_test.cpp
+        test/model/tetrimino/tetriminologic_test.cpp
         )
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
-target_link_libraries(MODEL_LIB Boost::system Boost::thread)
 
-target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED} Boost::system Boost::thread)
 
 add_executable(model_test ${MODEL_TESTS})
 target_link_libraries(model_test Catch2 MODEL_LIB)

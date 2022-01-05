@@ -73,6 +73,8 @@ class Matrix {
    */
   inline Matrix(size_t width, size_t height);
 
+  inline std::vector<std::vector<OptionalMino>> getMinos();
+
   /**
    * @brief Getter of the width_ property
    * @return The width of the matrix
@@ -148,6 +150,8 @@ OptionalMino Matrix::get(utils::Coordinate position) const {
 OptionalMino Matrix::operator()(utils::Coordinate position) const {
   return get(position);
 }
+
+std::vector<std::vector<OptionalMino>> Matrix::getMinos() { return minos_; }
 
 }  // namespace tetris::model::game
 
