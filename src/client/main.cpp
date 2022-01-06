@@ -52,18 +52,12 @@ class TextView {
 void print() {}
 
 int main() {
-  std::cout << static_cast<int64_t>(std::pow((0.8 - ((1 - 1) * 0.007)), 1 - 1))
-            << std::endl;
-  std::cout << static_cast<int64_t>(std::pow((0.8 - ((2 - 1) * 0.007)), 2 - 1))
-            << std::endl;
-  std::cout << static_cast<int64_t>(std::pow((0.8 - ((3 - 1) * 0.007)), 3 - 1))
-            << std::endl;
   Player player("John", 123);
   OngoingGame game = OngoingGame(&player, 1);
   TextView v1(game);
   game.start();
   std::this_thread::sleep_for(std::chrono::seconds(1));
   std::cout << "Hello, World!" << std::endl;
-  std::this_thread::sleep_for(std::chrono::seconds(69));
+  std::this_thread::sleep_for(std::chrono::seconds(6339));
   return 0;
 }

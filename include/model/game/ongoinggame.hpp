@@ -106,6 +106,10 @@ class OngoingGame {
    */
   boost::asio::io_context io_;
 
+
+  /**
+   * @brief Timer of the game.
+   */
   boost::asio::steady_timer timer_;
 
   /**
@@ -384,7 +388,8 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 
 void OngoingGame::lock() { state_->lock(); }
 
-tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
+tetrimino::Mino OngoingGame::pickMino() {
+  return generator_.takeMino(); }
 
 int64_t OngoingGame::calculateGravity() const {
   return static_cast<int64_t>(std::pow((0.8-((level_-1)*0.007)),level_-1));

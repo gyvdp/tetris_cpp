@@ -25,6 +25,7 @@
 
 #include <model/game/state/blockedoutstate.hpp>
 #include <model/game/state/fallingstate.hpp>
+#include <model/game/state/lockedoutstate.hpp>
 #include <model/game/state/stoppedstate.hpp>
 #include <model/tetrimino/tetrimino_logic.hpp>
 
@@ -79,18 +80,17 @@ void LockedDownState::rotate(bool clockwise) {
 }
 
 void LockedDownState::lock() {
+  game_->getMatrix().add(game_->falling());
   try {
-    game_->getMatrix().add(game_->falling());
     game_->falling(tetrimino::createTetrimino(
         game_->next().value(), game_->getMatrix().generateMask()));
   } catch (exceptions::BlockedOutException& e) {
     game_->state(new BlockedOutState(game_));
   } catch (exceptions::LockedOutException& e) {
-    game_->state(new BlockedOutState(game_));
+    game_->state(new LockedOutState(game_));
   }
   game_->next(game_->pickMino());
   game_->clearLines();
   game_->state(new FallingState(game_));
 }
-
 }  // namespace tetris::model::game::states
