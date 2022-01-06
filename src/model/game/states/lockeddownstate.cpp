@@ -84,13 +84,11 @@ void LockedDownState::lock() {
   try {
     game_->falling(tetrimino::createTetrimino(
         game_->next().value(), game_->getMatrix().generateMask()));
+    game_->next(game_->pickMino());
+    game_->clearLines();
+    game_->state(new FallingState(game_));
   } catch (exceptions::BlockedOutException& e) {
     game_->state(new BlockedOutState(game_));
-  } catch (exceptions::LockedOutException& e) {
-    game_->state(new LockedOutState(game_));
   }
-  game_->next(game_->pickMino());
-  game_->clearLines();
-  game_->state(new FallingState(game_));
 }
 }  // namespace tetris::model::game::states

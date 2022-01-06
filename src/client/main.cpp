@@ -58,6 +58,6 @@ int main() {
   game.start();
   std::this_thread::sleep_for(std::chrono::seconds(1));
   std::cout << "Hello, World!" << std::endl;
-  std::this_thread::sleep_for(std::chrono::seconds(6339));
+  std::this_thread::sleep_for(std::chrono::seconds(15));
   return 0;
 }

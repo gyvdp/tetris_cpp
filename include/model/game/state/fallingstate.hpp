@@ -100,9 +100,8 @@ class FallingState : public GameState {
  * Definitions of inline methods                                              *
  ******************************************************************************/
 FallingState::FallingState(OngoingGame* game) : GameState{game} {
-  game_->timer_.expires_at(
-      std::chrono::steady_clock::now() +
-      boost::asio::chrono::seconds(game->calculateGravity()));
+  game_->timer_.expires_at(std::chrono::steady_clock::now() +
+                           boost::asio::chrono::milliseconds(1));
   game_->timer_.async_wait(
       [this](boost::system::error_code ec) { applyGravity(); });
 }
