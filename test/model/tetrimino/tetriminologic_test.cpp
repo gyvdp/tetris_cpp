@@ -27,7 +27,6 @@
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
 #include "model/game/state/exceptions/blockedoutexception.hpp"
-#include "model/game/state/exceptions/lockedoutexception.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
 using namespace tetris::model::tetrimino;
 using namespace tetris::model::game::states::exceptions;

@@ -109,6 +109,9 @@ class OngoingGame {
    */
   boost::asio::io_context io_;
 
+  /**
+   * @brief Timer of the game.
+   */
   boost::asio::steady_timer timer_;
 
   boost::thread a_;
@@ -321,6 +324,16 @@ class OngoingGame {
    * @param lines Number of lines that have been destroyed.
    */
   void generatePoints(size_t lines);
+
+
+  void refreshFallingTimer();
+
+  void refreshLockingTimer();
+
+
+  void moveFalling(tetrimino::Direction direction);
+
+  void rotateFalling(bool clockwise);
 
   /**
    * @brief Getter of the matrix by reference.

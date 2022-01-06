@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,8 +47,7 @@ void FallingState::stop() { game_->state(new StoppedState(game_)); }
 
 void FallingState::move(tetrimino::Direction direction) {
   try {
-    game_->falling()->move(direction, game_->matrix().generateMask());
-    game_->updateGame(game_->fallingInsideMatrix());
+    game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
   }
 }
@@ -63,19 +62,15 @@ void FallingState::holdFalling() {
       game_->hold(game_->falling()->type());
       game_->falling(tetrimino::createTetrimino(temp));
     }
+    game_->refreshFallingTimer();
     hasHold_ = true;
   }
 }
 
 void FallingState::softDrop() {
   try {
-    game_->timer_.expires_at(
-        std::chrono::steady_clock::now() +
-        boost::asio::chrono::milliseconds(game_->calculateGravity()));
-    game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
     game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
-    game_->updateGame(game_->fallingInsideMatrix());
-
+    game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
     game_->state(new LockedDownState(game_));
@@ -97,42 +92,23 @@ void FallingState::hardDrop() {
   }
 }
 
-void FallingState::applyGravity() {
-  try {
-    game_->timer_.expires_at(
-        std::chrono::steady_clock::now() +
-        boost::asio::chrono::milliseconds(game_->calculateGravity()));
-    std::cerr << game_->calculateGravity() << std::endl;
-    game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
-    game_->signalFalling();
-    game_->updateGame(game_->fallingInsideMatrix());
-    game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
-
-  } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
-    game_->state(new LockedDownState(game_));
-  }
-}
-
 void FallingState::rotate(bool clockwise) {
   try {
-    game_->falling()->rotate(clockwise, game_->matrix().generateMask());
-    game_->updateGame(game_->fallingInsideMatrix());
+    game_->rotateFalling(clockwise);
   } catch (tetrimino::exceptions::RotationNotPossibleException& ignored) {
   }
 }
 
 void FallingState::lock() {
+  game_->getMatrix().add(game_->falling());
   try {
-    game_->getMatrix().add(game_->falling());
     game_->falling(tetrimino::createTetrimino(
         game_->next().value(), game_->getMatrix().generateMask()));
+    game_->next(game_->pickMino());
+    game_->clearLines();
+    game_->state(new FallingState(game_));
   } catch (exceptions::BlockedOutException& e) {
     game_->state(new BlockedOutState(game_));
-  } catch (exceptions::LockedOutException& e) {
-    game_->state(new BlockedOutState(game_));
   }
-  game_->next(game_->pickMino());
-  game_->clearLines();
-  game_->state(new FallingState(game_));
 }
 }  // namespace tetris::model::game::states
