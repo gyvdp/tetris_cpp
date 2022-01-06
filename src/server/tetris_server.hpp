@@ -24,11 +24,13 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
 #include <QDebug>
+#include <QHostAddress>
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <memory>
 #include <queue>
+#include <string>
 #include <vector>
 
 #include "match.hpp"
@@ -37,17 +39,19 @@
 namespace tetris::server {
 
 class Tetris_Server : public QObject {
-  Q_OBJECT
-
  private:
+  Q_OBJECT
   QTcpServer *server_;
   std::queue<QTcpSocket *> waitingQueueConnection_;
   std::queue<Player_Socket *> waitingQueuePlayer_;
   std::vector<Match *> matchVector_;
   unsigned matchID_;
+  QHostAddress IP_;
+  int port_;
 
  public:
-  explicit Tetris_Server(QObject *parent = nullptr);
+  explicit Tetris_Server(QObject *parent = nullptr,
+                         QHostAddress IP = QHostAddress::Any, int port = 9999);
 
  signals:
 

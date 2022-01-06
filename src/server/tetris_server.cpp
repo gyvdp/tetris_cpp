@@ -20,23 +20,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #include "server/tetris_server.hpp"
 
 #include <iostream>
 
 namespace tetris::server {
 
-Tetris_Server::Tetris_Server(QObject *parent) : QObject(parent), matchID_{0} {
+Tetris_Server::Tetris_Server(QObject *parent, QHostAddress IP, int port)
+    : QObject(parent), matchID_{0}, IP_{IP}, port_{port} {
   // Creating server application
   server_ = new QTcpServer(this);
 
   // Add Settings to serv ? Catch if can't
-  if (!server_->listen(QHostAddress::Any, 9999))
+  if (!server_->listen(this->IP_, this->port_))
     throw 1;  // TODO @Gregory need Exception style UwU
 
-  qDebug() << "Server active on : IP :" << server_->serverAddress()
-           << " , Port : " << server_->serverPort();
+  qDebug() << "Server active on IP :" << server_->serverAddress().toString()
+           << ", Port :" << server_->serverPort();
 
   // Connect
   connect(server_, &QTcpServer::newConnection, this,
