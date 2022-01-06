@@ -54,7 +54,19 @@ OngoingGame::OngoingGame(Player* player, std::uint_fast64_t seed)
 void OngoingGame::clearLines() {
   auto lines = matrix_.getCompletedLines();
   generatePoints(lines.size());
-  matrix_.removeLines(lines);
+  int removed = 0;
+  for (const auto& line : lines) {
+    if (line > matrix_.height() - 1 || line < 0) {
+      throw std::logic_error("trying to remove a line that is out of the game");
+    }
+    for (int i = line + removed; i >= 0; i--) {
+      for (int j = 0; j < matrix_.getMinos().at(i).size(); j++) {
+        matrix_.getMinos().at(i).at(j) =
+            i != 0 ? matrix_.getMinos().at(i - 1).at(j) : std::nullopt;
+      }
+    }
+    removed++;
+  }
 };
 
 void OngoingGame::connectFalling(const signal::slot_type& subscriber) {
@@ -143,12 +155,14 @@ void OngoingGame::refreshLockingTimer() {
 }
 
 void OngoingGame::moveFalling(tetrimino::Direction direction) {
+  boost::lock_guard<boost::mutex> guard(mutexFalling_);
   falling_->move(direction, matrix_.generateMask());
   updateGame(fallingInsideMatrix());
 }
 
 void OngoingGame::rotateFalling(bool clockwise) {
-  falling_->rotate(clockwise);
+  boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  falling_->rotate(clockwise, matrix_.generateMask());
   updateGame(fallingInsideMatrix());
 }
 

@@ -104,6 +104,8 @@ class OngoingGame {
   int lines_;
 
  public:
+  boost::mutex mutexFalling_;
+
   /**
    * @brief Io context for the timer in each state.
    */
@@ -325,11 +327,9 @@ class OngoingGame {
    */
   void generatePoints(size_t lines);
 
-
   void refreshFallingTimer();
 
   void refreshLockingTimer();
-
 
   void moveFalling(tetrimino::Direction direction);
 
@@ -348,35 +348,54 @@ class OngoingGame {
 
 std::string_view OngoingGame::name() const { return player_->name(); }
 
-unsigned long OngoingGame::highScore() const { return player_->highScore(); }
+unsigned long OngoingGame::highScore() const {
 
-Matrix OngoingGame::matrix() const { return matrix_; }
+  return player_->highScore();
+}
+
+Matrix OngoingGame::matrix() const {
+
+  return matrix_;
+}
 
 std::shared_ptr<tetrimino::Tetrimino> OngoingGame::falling() const {
+  boost::lock_guard<boost::mutex> guard(
+      const_cast<boost::mutex &>(mutexFalling_));
   return falling_;
 }
 
-int OngoingGame::score() const { return score_; }
+int OngoingGame::score() const {
+
+  return score_;
+}
 
 void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
   falling_ = std::move(tetrimino);
 }
 
 void OngoingGame::score(int score) {
+
   score_ += score;
   signalScore();
 }
 
-int OngoingGame::level() const { return level_; }
+int OngoingGame::level() const {
+  return level_;
+}
 
-OptionalMino OngoingGame::next() const { return next_; }
+OptionalMino OngoingGame::next() const {
+  return next_;
+}
 
 void OngoingGame::next(tetrimino::Mino mino) {
   next_ = mino;
   signalNext();
 }
 
-OptionalMino OngoingGame::hold() const { return hold_; }
+OptionalMino OngoingGame::hold() const {
+  return hold_;
+}
 
 void OngoingGame::hold(tetrimino::Mino mino) {
   hold_ = mino;
@@ -391,20 +410,38 @@ void OngoingGame::start() {
 void OngoingGame::stop() { state_->stop(); }
 
 void OngoingGame::move(tetrimino::Direction direction) {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
   state_->move(direction);
   signal();
 }
-void OngoingGame::holdFalling() { state_->holdFalling(); }
+void OngoingGame::holdFalling() {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  state_->holdFalling();
+}
 
-void OngoingGame::softDrop() { state_->softDrop(); }
+void OngoingGame::softDrop() {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  state_->softDrop();
+}
 
-void OngoingGame::hardDrop() { state_->hardDrop(); }
+void OngoingGame::hardDrop() {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  state_->hardDrop();
+}
 
-void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
+void OngoingGame::rotate(bool clockwise) {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  state_->rotate(clockwise);
+}
 
-void OngoingGame::lock() { state_->lock(); }
+void OngoingGame::lock() {
+  // boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  state_->lock();
+}
 
-tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
+tetrimino::Mino OngoingGame::pickMino() {
+  return generator_.takeMino();
+}
 
 int64_t OngoingGame::calculateGravity() const {
   return static_cast<int64_t>(

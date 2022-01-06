@@ -31,9 +31,7 @@ using namespace tetris::model;
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   Q_INIT_RESOURCE(resources);
-
   auto view_ = tetris::view::View{};
   view_.start();
-
   return QApplication::exec();
 }
