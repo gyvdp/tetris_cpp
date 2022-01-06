@@ -34,6 +34,9 @@ GameWindow::GameWindow(QWidget *parent)
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   scale(0.4, 0.4);
+
+  connect(this, &GameWindow::matrixChanged, gameScene_,
+          &scene::GameScene::updateMatrix);
 }
 
 }  // namespace tetris::view::window

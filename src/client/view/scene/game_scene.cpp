@@ -35,4 +35,8 @@ GameScene::~GameScene() {
     matrix_ = nullptr;
   }
 }
+
+void GameScene::updateMatrix(MatrixArray array) {
+  matrix_->set(std::move(array));
+}
 }  // namespace tetris::view::scene

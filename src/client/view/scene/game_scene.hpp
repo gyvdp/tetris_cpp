@@ -41,9 +41,10 @@ struct Functions {
 class GameScene : public QGraphicsScene {
   Q_OBJECT
  protected:
-  std::function<void(MatrixArray)> updateMatrix = [this](MatrixArray matrix) {
-    matrix_->set(std::move(matrix));
-  };
+  //  std::function<void(MatrixArray)> updateMatrix = [this](MatrixArray matrix)
+  //  {
+  //    matrix_->set(std::move(matrix));
+  //  };
 
   /**
    * @brief The matrix of the game
@@ -62,7 +63,10 @@ class GameScene : public QGraphicsScene {
    */
   ~GameScene() override;
 
-  Functions getFunction() { return {.updateMatrix_ = &updateMatrix}; }
+  //  Functions getFunction() { return {.updateMatrix_ = &updateMatrix}; }
+
+ public slots:
+  void updateMatrix(MatrixArray array);
 };
 }  // namespace tetris::view::scene
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_

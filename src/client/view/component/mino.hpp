@@ -27,6 +27,7 @@
 #include <QTimer>
 #include <QtConcurrent/QtConcurrentRun>
 #include <optional>
+#include <string>
 
 #include "model/tetrimino/mino.hpp"
 
@@ -59,7 +60,7 @@ class Mino : public QGraphicsPixmapItem {
    * @param type Type of the Mino (optional)
    * @return THe URI of the Mino image
    */
-  static QString resource(OptionalMino type);
+  static QPixmap resource(OptionalMino type);
 
  public slots:
   /**
@@ -74,12 +75,8 @@ void Mino::set(OptionalMino type) {
   if (type.has_value() != type_.has_value() ||
       (type.has_value() && type_.has_value() &&
        type.value() != type_.value())) {
-    qDebug() << "before change";
-    setPixmap({resource(type)});
-    // QTimer::singleShot(0, [this, type]() { setPixmap({resource(type)}); });
-    //      QtConcurrent::run([this, type]() { setPixmap({resource(type)}); });
-    //  QtConcurrent::run([this, type]() { setPixmap(resource(type)); });
-    qDebug() << "after change";
+    setPixmap(resource(type));
+    type_ = type;
   }
 }
 }  // namespace tetris::view::component

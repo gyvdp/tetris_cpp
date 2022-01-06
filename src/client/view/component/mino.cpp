@@ -28,23 +28,23 @@ namespace tetris::view::component {
 Mino::Mino(const OptionalMino type, QGraphicsItem *parent)
     : QGraphicsPixmapItem{resource(type), parent}, type_{type} {}
 
-QString Mino::resource(const OptionalMino type) {
+QPixmap Mino::resource(const OptionalMino type) {
   if (!type.has_value()) {
-    return "";
+    return QPixmap{64, 64};
   }
 
   switch (type.value()) {
     case tetris::model::tetrimino::Mino::T_MINO:
     case tetris::model::tetrimino::Mino::O_MINO:
     case tetris::model::tetrimino::Mino::I_MINO:
-      return ":/mino/A0.png";
+      return QPixmap{":/mino/A0.png"};
     case tetris::model::tetrimino::Mino::L_MINO:
     case tetris::model::tetrimino::Mino::Z_MINO:
-      return ":/mino/B0.png";
+      return QPixmap{":/mino/B0.png"};
     case tetris::model::tetrimino::Mino::J_MINO:
     case tetris::model::tetrimino::Mino::S_MINO:
     default:
-      return ":/mino/C0.png";
+      return QPixmap{":/mino/C0.png"};
   }
 }
 

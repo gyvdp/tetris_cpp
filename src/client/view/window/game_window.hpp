@@ -47,7 +47,11 @@ class GameWindow : public QGraphicsView {
    */
   explicit GameWindow(QWidget *parent = nullptr);
 
-  inline scene::Functions getFunction() { return gameScene_->getFunction(); }
+ signals:
+  void matrixChanged(MatrixArray matrix);
+
+  //  inline scene::Functions getFunction() { return gameScene_->getFunction();
+  //  }
 };
 }  // namespace tetris::view::window
 

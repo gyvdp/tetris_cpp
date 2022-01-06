@@ -23,6 +23,8 @@
 
 #include "view.hpp"
 
+#include <QApplication>
+
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
 
@@ -43,7 +45,8 @@ void View::start() {
   auto *game = new game::OngoingGame{player, 1};
   game->connectBoard(
       [this](std::vector<std::vector<std::optional<tetrimino::Mino>>> matrix) {
-        (*getFunction().updateMatrix_)(matrix);
+        // moveToThread(QApplication::instance()->thread());
+        emit game_->matrixChanged(matrix);
       });
   game->start();
 }

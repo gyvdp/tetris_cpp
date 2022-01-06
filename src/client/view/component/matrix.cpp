@@ -23,6 +23,8 @@
 
 #include "matrix.hpp"
 
+#include <QApplication>
+#include <QObject>
 #include <QString>
 
 namespace tetris::view::component {
@@ -35,13 +37,13 @@ Matrix::Matrix(QGraphicsItem *parent)
   for (qsizetype i = 0; i < minos_.size(); ++i) {
     for (qsizetype j = 0; j < minos_[i].size(); ++j) {
       auto mino = new Mino{std::nullopt};
-      double x = (mino->boundingRect().height() +
+      double y = (mino->boundingRect().height() +
                   (mino->boundingRect().height() / 7.0)) *
-                     static_cast<double>(j) +
-                 PADDING;
-      double y = (mino->boundingRect().width() +
-                  (mino->boundingRect().width() / 7.0)) *
                      static_cast<double>(i) +
+                 PADDING;
+      double x = (mino->boundingRect().width() +
+                  (mino->boundingRect().width() / 7.0)) *
+                     static_cast<double>(j) +
                  PADDING;
       mino->setPos({x, y});
       addToGroup(mino);
@@ -63,7 +65,7 @@ void Matrix::set(MatrixArray matrix) {
     }
 
     for (size_t j = 0; j < matrix[i].size(); ++j) {
-      minos_[i][j]->set(matrix[i][j]);
+      minos_.at(i).at(j)->set(matrix[i][j]);
     }
   }
 }
