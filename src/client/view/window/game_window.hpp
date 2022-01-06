@@ -27,17 +27,24 @@
 #include <QGraphicsView>
 
 #include "client/view/scene/game_scene.hpp"
+#include "model/game/ongoinggame.hpp"
+#include "model/game/player.hpp"
+
 namespace tetris::view::window {
 /**
  * @brief This class Represents a GameWindow
  */
 class GameWindow : public QGraphicsView {
-  Q_OBJECT
+ Q_OBJECT
  protected:
   /**
    * @brief Scene of a game
    */
   scene::GameScene *gameScene_;
+
+  model::game::OngoingGame *onGame_;
+
+  void keyPressEvent(QKeyEvent *event) override;
 
  public:
   /**
@@ -47,11 +54,11 @@ class GameWindow : public QGraphicsView {
    */
   explicit GameWindow(QWidget *parent = nullptr);
 
+  void start();
+
  signals:
   void matrixChanged(MatrixArray matrix);
 
-  //  inline scene::Functions getFunction() { return gameScene_->getFunction();
-  //  }
 };
 }  // namespace tetris::view::window
 

@@ -24,16 +24,22 @@
 #include "view.hpp"
 
 #include <QApplication>
+#include <QKeyEvent>
 
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
+#include <QKeyEvent>
 
 using namespace tetris::model;
 
 namespace tetris::view {
 
 View::View() : game_{new window::GameWindow{}} { game_->show(); }
+
 View::~View() {
+  if (game_ != nullptr) {
+    delete game_;
+    game_ = nullptr;
+  }
+
   if (game_ != nullptr) {
     delete game_;
     game_ = nullptr;
@@ -41,14 +47,7 @@ View::~View() {
 }
 
 void View::start() {
-  auto *player = new game::Player{"John", 123};
-  auto *game = new game::OngoingGame{player, 1};
-  game->connectBoard(
-      [this](std::vector<std::vector<std::optional<tetrimino::Mino>>> matrix) {
-        // moveToThread(QApplication::instance()->thread());
-        emit game_->matrixChanged(matrix);
-      });
-  game->start();
+  game_->start();
 }
 
 }  // namespace tetris::view

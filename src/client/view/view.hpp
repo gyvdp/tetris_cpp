@@ -33,12 +33,14 @@ namespace tetris::view {
  * @brief This class is the main View class
  */
 class View : public QWidget {
-  Q_OBJECT
+ Q_OBJECT
  private:
   /**
    * @brief Window of the game
    */
   window::GameWindow *game_;
+
+ protected:
 
  public:
   /**
@@ -53,7 +55,6 @@ class View : public QWidget {
 
   void start();
 
-  //  inline scene::Functions getFunction() { return game_->getFunction(); }
 };
 }  // namespace tetris::view
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_VIEW_HPP_

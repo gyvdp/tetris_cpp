@@ -23,6 +23,8 @@
 
 #include "game_window.hpp"
 
+#include <QKeyEvent>
+
 namespace tetris::view::window {
 
 GameWindow::GameWindow(QWidget *parent)
@@ -37,6 +39,33 @@ GameWindow::GameWindow(QWidget *parent)
 
   connect(this, &GameWindow::matrixChanged, gameScene_,
           &scene::GameScene::updateMatrix);
+}
+void GameWindow::start() {
+  auto *player = new model::game::Player{"John", 123};
+  onGame_ = new model::game::OngoingGame{player, 1};
+  onGame_->connectBoard(
+      [this](std::vector<std::vector<std::optional<model::tetrimino::Mino>>> matrix) {
+        // moveToThread(QApplication::instance()->thread());
+        emit matrixChanged(matrix);
+      });
+  onGame_->start();
+}
+void GameWindow::keyPressEvent(QKeyEvent *event) {
+  qDebug() << event->key();
+  switch (event->key()) {
+    case Qt::Key_Left:onGame_->move(model::tetrimino::LEFT);
+      break;
+    case Qt::Key_Right:onGame_->move(model::tetrimino::RIGHT);
+      break;
+    case Qt::Key_Down:onGame_->softDrop();
+      break;
+    case Qt::Key_Space:onGame_->hardDrop();
+      break;
+    case Qt::Key_Up:onGame_->rotate(true);
+      break;
+    case Qt::Key_Control:onGame_->rotate(false);
+      break;
+  }
 }
 
 }  // namespace tetris::view::window
