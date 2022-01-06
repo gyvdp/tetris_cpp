@@ -40,15 +40,15 @@ TEST_CASE("Matrix tests") {
   }
 
   SECTION("Get completed lines") {
-    for (int i = 0; i < matrix.width(); i++) {
-      matrix.set(S_MINO, 0, i);
+    for (size_t i = 0; i < matrix.width(); i++) {
+      matrix.set(S_MINO, 0, static_cast<int>(i));
     }
     auto lines = matrix.getCompletedLines();
     REQUIRE(lines.at(0) == 0);
     SECTION("Remove line") {
       matrix.removeLines(lines);
-      for (int i = 0; i < matrix.width(); i++) {
-        REQUIRE(matrix({0, i}) == std::nullopt);
+      for (size_t i = 0; i < matrix.width(); i++) {
+        REQUIRE(matrix({0, static_cast<int>(i)}) == std::nullopt);
       }
     }
   }

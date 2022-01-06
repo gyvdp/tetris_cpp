@@ -57,8 +57,8 @@ TEST_CASE("class OTetrimino") {
     REQUIRE(tetrimino.X() == 3);
     REQUIRE(tetrimino.Y() == 0);
 
-    for (int line = 0; line < tetrimino.minos().size(); ++line) {
-      for (int column = 0;
+    for (size_t line = 0; line < tetrimino.minos().size(); ++line) {
+      for (size_t column = 0;
            column < tetrimino.minos().at(tetrimino.orientation())[line].size();
            ++column) {
         REQUIRE(tetrimino.minos().at(tetrimino.orientation())[line][column] ==
@@ -71,8 +71,8 @@ TEST_CASE("class OTetrimino") {
       auto tetrimino = OTetrimino();
       tetrimino.rotate(true);
 
-      for (int line = 0; line < tetrimino.minos().size(); ++line) {
-        for (int column = 0;
+      for (size_t line = 0; line < tetrimino.minos().size(); ++line) {
+        for (size_t column = 0;
              column <
              tetrimino.minos().at(tetrimino.orientation())[line].size();
              ++column) {
@@ -86,13 +86,13 @@ TEST_CASE("class OTetrimino") {
       tetrimino.rotate(true);
       tetrimino.rotate(true);
 
-      for (int line = 0; line < tetrimino.minos().size(); ++line) {
-        for (int column = 0;
+      for (size_t line = 0; line < tetrimino.minos().size(); ++line) {
+        for (size_t column = 0;
              column <
              tetrimino.minos().at(tetrimino.orientation())[line].size();
              ++column) {
           REQUIRE(tetrimino.minos().at(tetrimino.orientation())[line][column] ==
-                  eastShape[line][column]);
+                  southShape[line][column]);
         }
       }
     }
@@ -100,8 +100,8 @@ TEST_CASE("class OTetrimino") {
       auto tetrimino = OTetrimino();
       tetrimino.rotate(false);
 
-      for (int line = 0; line < tetrimino.minos().size(); ++line) {
-        for (int column = 0;
+      for (size_t line = 0; line < tetrimino.minos().size(); ++line) {
+        for (size_t column = 0;
              column <
              tetrimino.minos().at(tetrimino.orientation())[line].size();
              ++column) {
