@@ -44,26 +44,32 @@ void GameWindow::start() {
   auto *player = new model::game::Player{"John", 123};
   onGame_ = new model::game::OngoingGame{player, 1};
   onGame_->connectBoard(
-      [this](std::vector<std::vector<std::optional<model::tetrimino::Mino>>> matrix) {
+      [this](std::vector<std::vector<std::optional<model::tetrimino::Mino>>>
+                 matrix) {
         // moveToThread(QApplication::instance()->thread());
         emit matrixChanged(matrix);
       });
   onGame_->start();
 }
 void GameWindow::keyPressEvent(QKeyEvent *event) {
-  qDebug() << event->key();
   switch (event->key()) {
-    case Qt::Key_Left:onGame_->move(model::tetrimino::LEFT);
+    case Qt::Key_Left:
+      onGame_->move(model::tetrimino::LEFT);
       break;
-    case Qt::Key_Right:onGame_->move(model::tetrimino::RIGHT);
+    case Qt::Key_Right:
+      onGame_->move(model::tetrimino::RIGHT);
       break;
-    case Qt::Key_Down:onGame_->softDrop();
+    case Qt::Key_Down:
+      onGame_->softDrop();
       break;
-    case Qt::Key_Space:onGame_->hardDrop();
+    case Qt::Key_Space:
+      onGame_->hardDrop();
       break;
-    case Qt::Key_Up:onGame_->rotate(true);
+    case Qt::Key_Up:
+      onGame_->rotate(true);
       break;
-    case Qt::Key_Control:onGame_->rotate(false);
+    case Qt::Key_Control:
+      onGame_->rotate(false);
       break;
   }
 }

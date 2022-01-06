@@ -24,6 +24,7 @@
 #include "matrix.hpp"
 
 #include <QApplication>
+#include <QGraphicsScene>
 #include <QObject>
 #include <QString>
 
@@ -33,23 +34,6 @@ Matrix::Matrix(QGraphicsItem *parent)
       bg_{new QGraphicsPixmapItem{QString{":/bg/board.png"}}},
       minos_{20, {10, nullptr}} {
   addToGroup(bg_);
-
-  for (qsizetype i = 0; i < minos_.size(); ++i) {
-    for (qsizetype j = 0; j < minos_[i].size(); ++j) {
-      auto mino = new Mino{std::nullopt};
-      double y = (mino->boundingRect().height() +
-                  (mino->boundingRect().height() / 7.0)) *
-                     static_cast<double>(i) +
-                 PADDING;
-      double x = (mino->boundingRect().width() +
-                  (mino->boundingRect().width() / 7.0)) *
-                     static_cast<double>(j) +
-                 PADDING;
-      mino->setPos({x, y});
-      addToGroup(mino);
-      minos_[i][j] = mino;
-    }
-  }
 }
 
 QRectF Matrix::boundingRect() const { return bg_->boundingRect(); }
@@ -59,13 +43,40 @@ void Matrix::set(MatrixArray matrix) {
     throw std::invalid_argument("MatrixArray's height is not 20");
   }
 
-  for (size_t i = 0; i < matrix.size(); ++i) {
+  if (matrix.size() != 20) {
+    throw std::invalid_argument("MatrixArray's height is not 20");
+  }
+
+  for (qsizetype i = 0; i < matrix.size(); ++i) {
     if (matrix[i].size() != 10) {
       throw std::invalid_argument("MatrixArray's width is not 10");
     }
 
-    for (size_t j = 0; j < matrix[i].size(); ++j) {
-      minos_.at(i).at(j)->set(matrix[i][j]);
+    for (qsizetype j = 0; j < matrix[i].size(); ++j) {
+      if (minos_[i][j] == nullptr) {
+        if (matrix[i][j].has_value()) {
+          auto mino = new Mino{matrix[i][j], this};
+          qreal y = (mino->boundingRect().height() +
+                     (mino->boundingRect().height() / 7.0)) *
+                        static_cast<double>(i) +
+                    PADDING;
+          qreal x = (mino->boundingRect().width() +
+                     (mino->boundingRect().width() / 7.0)) *
+                        static_cast<double>(j) +
+                    PADDING;
+          mino->setPos({x, y});
+          addToGroup(mino);
+          minos_[i][j] = mino;
+        }
+      } else {
+        if (matrix[i][j].has_value()) {
+          minos_[i][j]->set(matrix[i][j]);
+        } else {
+          removeFromGroup(minos_[i][j]);
+          delete minos_[i][j];
+          minos_[i][j] = nullptr;
+        }
+      }
     }
   }
 }

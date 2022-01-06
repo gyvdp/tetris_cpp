@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +23,7 @@
 
 #include "model/game/state/fallingstate.hpp"
 
+#include <iostream>
 #include <model/game/state/blockedoutstate.hpp>
 #include <model/game/state/lockedoutstate.hpp>
 
@@ -47,6 +48,7 @@ void FallingState::stop() { game_->state(new StoppedState(game_)); }
 void FallingState::move(tetrimino::Direction direction) {
   try {
     game_->falling()->move(direction, game_->matrix().generateMask());
+    game_->updateGame(game_->fallingInsideMatrix());
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
   }
 }
@@ -67,11 +69,13 @@ void FallingState::holdFalling() {
 
 void FallingState::softDrop() {
   try {
-    game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
     game_->timer_.expires_at(
         std::chrono::steady_clock::now() +
-        boost::asio::chrono::seconds(game_->calculateGravity()));
+        boost::asio::chrono::milliseconds(game_->calculateGravity()));
     game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
+    game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
+    game_->updateGame(game_->fallingInsideMatrix());
+
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
     game_->state(new LockedDownState(game_));
@@ -95,14 +99,15 @@ void FallingState::hardDrop() {
 
 void FallingState::applyGravity() {
   try {
-    printf("%lu", game_->falling()->Y());
+    game_->timer_.expires_at(
+        std::chrono::steady_clock::now() +
+        boost::asio::chrono::milliseconds(game_->calculateGravity()));
+    std::cerr << game_->calculateGravity() << std::endl;
+    game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
     game_->signalFalling();
     game_->updateGame(game_->fallingInsideMatrix());
     game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
-    game_->timer_.expires_at(
-        std::chrono::steady_clock::now() +
-        boost::asio::chrono::seconds(game_->calculateGravity()));
-    game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
+
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->state(new LockedDownState(game_));
   }
@@ -111,6 +116,7 @@ void FallingState::applyGravity() {
 void FallingState::rotate(bool clockwise) {
   try {
     game_->falling()->rotate(clockwise, game_->matrix().generateMask());
+    game_->updateGame(game_->fallingInsideMatrix());
   } catch (tetrimino::exceptions::RotationNotPossibleException& ignored) {
   }
 }

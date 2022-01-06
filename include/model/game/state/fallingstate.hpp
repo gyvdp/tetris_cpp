@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -102,7 +102,7 @@ class FallingState : public GameState {
 FallingState::FallingState(OngoingGame* game) : GameState{game} {
   game_->timer_.expires_at(
       std::chrono::steady_clock::now() +
-      boost::asio::chrono::seconds(game->calculateGravity()));
+      boost::asio::chrono::milliseconds(game_->calculateGravity()));
   game_->timer_.async_wait(
       [this](boost::system::error_code ec) { applyGravity(); });
 }
