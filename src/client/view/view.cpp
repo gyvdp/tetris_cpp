@@ -23,6 +23,11 @@
 
 #include "view.hpp"
 
+#include "model/game/ongoinggame.hpp"
+#include "model/game/player.hpp"
+
+using namespace tetris::model;
+
 namespace tetris::view {
 
 View::View() : game_{new window::GameWindow{}} { game_->show(); }
@@ -31,6 +36,16 @@ View::~View() {
     delete game_;
     game_ = nullptr;
   }
+}
+
+void View::start() {
+  auto *player = new game::Player{"John", 123};
+  auto *game = new game::OngoingGame{player, 1};
+  game->connectBoard(
+      [this](std::vector<std::vector<std::optional<tetrimino::Mino>>> matrix) {
+        (*getFunction().updateMatrix_)(matrix);
+      });
+  game->start();
 }
 
 }  // namespace tetris::view

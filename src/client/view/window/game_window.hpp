@@ -46,6 +46,8 @@ class GameWindow : public QGraphicsView {
    * @param parent Parent QWidget (for memory)
    */
   explicit GameWindow(QWidget *parent = nullptr);
+
+  inline scene::Functions getFunction() { return gameScene_->getFunction(); }
 };
 }  // namespace tetris::view::window
 

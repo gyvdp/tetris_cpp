@@ -49,7 +49,9 @@ class OngoingGame {
    * @brief Defines a signal type.
    */
   typedef boost::signals2::signal<void()> signal;
-  typedef boost::signals2::signal<void(std::vector<std::vector<std::optional<tetrimino::Mino>>>)> signalGameBoard;
+  typedef boost::signals2::signal<void(
+      std::vector<std::vector<std::optional<tetrimino::Mino>>>)>
+      signalGameBoard;
 
   /**
    * @brief The state of the game (Not started, Falling, ...)
@@ -108,6 +110,8 @@ class OngoingGame {
   boost::asio::io_context io_;
 
   boost::asio::steady_timer timer_;
+
+  boost::thread a_;
 
   /**
    * @brief Signal that alerts any change in the falling tetrimino.
@@ -218,7 +222,6 @@ class OngoingGame {
    */
   [[nodiscard]] inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
-
   std::vector<std::vector<OptionalMino>> fallingInsideMatrix();
 
   /**
@@ -313,7 +316,6 @@ class OngoingGame {
    */
   void clearLines();
 
-
   /**
    * @brief Generates points for number of lines destroyed.
    * @param lines Number of lines that have been destroyed.
@@ -351,7 +353,6 @@ void OngoingGame::score(int score) {
   score_ += score;
   signalScore();
 }
-
 
 int OngoingGame::level() const { return level_; }
 
@@ -393,7 +394,8 @@ void OngoingGame::lock() { state_->lock(); }
 tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
 
 int64_t OngoingGame::calculateGravity() const {
-  return static_cast<int64_t>(std::pow((0.8-((level_-1)*0.007)),level_-1));
+  return static_cast<int64_t>(
+      std::pow((0.8 - ((level_ - 1) * 0.007)), level_ - 1));
 }
 
 }  // namespace tetris::model::game

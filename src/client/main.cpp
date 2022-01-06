@@ -25,16 +25,15 @@
 #include <iostream>
 
 #include "client/view/view.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
+
 using namespace tetris::model;
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  game::Player player{"John", 123};
-  tetris::view::View view_;
-  game::OngoingGame game{&player, 1};
-  game.connectBoard(*view_.getFunction().updateMatrix_);
-  game.start();
+  Q_INIT_RESOURCE(resources);
+
+  auto view_ = tetris::view::View{};
+  view_.start();
+
   return QApplication::exec();
 }

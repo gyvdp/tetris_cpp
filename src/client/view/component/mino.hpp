@@ -24,6 +24,8 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_MINO_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_MINO_HPP_
 #include <QGraphicsPixmapItem>
+#include <QTimer>
+#include <QtConcurrent/QtConcurrentRun>
 #include <optional>
 
 #include "model/tetrimino/mino.hpp"
@@ -59,6 +61,7 @@ class Mino : public QGraphicsPixmapItem {
    */
   static QString resource(OptionalMino type);
 
+ public slots:
   /**
    * @brief Set the Mino to a new type. If the type is the same, does nothing
    *
@@ -68,7 +71,16 @@ class Mino : public QGraphicsPixmapItem {
 };
 
 void Mino::set(OptionalMino type) {
-  if (type != type_) setPixmap({resource(type)});
+  if (type.has_value() != type_.has_value() ||
+      (type.has_value() && type_.has_value() &&
+       type.value() != type_.value())) {
+    qDebug() << "before change";
+    setPixmap({resource(type)});
+    // QTimer::singleShot(0, [this, type]() { setPixmap({resource(type)}); });
+    //      QtConcurrent::run([this, type]() { setPixmap({resource(type)}); });
+    //  QtConcurrent::run([this, type]() { setPixmap(resource(type)); });
+    qDebug() << "after change";
+  }
 }
 }  // namespace tetris::view::component
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_MINO_HPP_

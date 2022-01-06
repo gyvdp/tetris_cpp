@@ -11,11 +11,11 @@ find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 find_package(Boost COMPONENTS system thread REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall -Wno-unused-variable")
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
@@ -126,7 +126,9 @@ set(VIEW_SOURCES
         )
 
 add_library(VIEW_LIB ${VIEW_SOURCES})
-target_link_libraries(VIEW_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(VIEW_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED} MODEL_LIB)
+set_property(TARGET VIEW_LIB PROPERTY AUTOMOC ON)
+set_property(TARGET VIEW_LIB PROPERTY AUTORCC ON)
 
 #########################################################################################
 # CLIENT LIBRARY
@@ -150,7 +152,7 @@ target_link_libraries(client_test Catch2 CLIENT_LIB)
 # EXECUTABLES
 #########################################################################################
 add_executable(tetris_server src/server/main.cpp)
-add_executable(tetris_client src/client/main.cpp resources/resources.qrc)
+add_executable(tetris_client src/client/main.cpp)
 
 target_link_libraries(tetris_client PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
 target_link_libraries(tetris_server PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
