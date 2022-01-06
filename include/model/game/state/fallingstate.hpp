@@ -89,20 +89,13 @@ class FallingState : public GameState {
    * @inherit
    */
   void lock() override;
-
-  /**
-   * Applies in game gravity for a piece to fall.
-   */
-  void applyGravity();
-
-  void refreshTimer();
 };
 
 /******************************************************************************
  * Definitions of inline methods                                              *
  ******************************************************************************/
 FallingState::FallingState(OngoingGame* game) : GameState{game} {
-  refreshTimer();
+  game->refreshFallingTimer();
 }
 }  // namespace tetris::model::game::states
 

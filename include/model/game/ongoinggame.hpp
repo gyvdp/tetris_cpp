@@ -325,6 +325,16 @@ class OngoingGame {
    */
   void generatePoints(size_t lines);
 
+
+  void refreshFallingTimer();
+
+  void refreshLockingTimer();
+
+
+  void moveFalling(tetrimino::Direction direction);
+
+  void rotateFalling(bool clockwise);
+
   /**
    * @brief Getter of the matrix by reference.
    * @return The reference of the matrix.

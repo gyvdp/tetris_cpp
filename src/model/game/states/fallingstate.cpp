@@ -47,8 +47,7 @@ void FallingState::stop() { game_->state(new StoppedState(game_)); }
 
 void FallingState::move(tetrimino::Direction direction) {
   try {
-    game_->falling()->move(direction, game_->matrix().generateMask());
-    game_->updateGame(game_->fallingInsideMatrix());
+    game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
   }
 }
@@ -63,6 +62,7 @@ void FallingState::holdFalling() {
       game_->hold(game_->falling()->type());
       game_->falling(tetrimino::createTetrimino(temp));
     }
+    game_->refreshFallingTimer();
     hasHold_ = true;
   }
 }
@@ -70,18 +70,11 @@ void FallingState::holdFalling() {
 void FallingState::softDrop() {
   try {
     game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
-    // refresh timer
+    game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
     game_->state(new LockedDownState(game_));
   }
-}
-
-void FallingState::refreshTimer() {
-  game_->timer_.expires_at(
-      std::chrono::steady_clock::now() +
-      boost::asio::chrono::milliseconds(game_->calculateGravity()));
-  game_->timer_.async_wait(boost::bind(&FallingState::applyGravity, this));
 }
 
 void FallingState::hardDrop() {
@@ -99,21 +92,9 @@ void FallingState::hardDrop() {
   }
 }
 
-void FallingState::applyGravity() {
-  try {
-    game_->signalFalling();
-    game_->updateGame(game_->fallingInsideMatrix());
-    game_->falling()->move(tetrimino::DOWN, game_->matrix().generateMask());
-    refreshTimer();
-  } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
-    game_->state(new LockedDownState(game_));
-  }
-}
-
 void FallingState::rotate(bool clockwise) {
   try {
-    game_->falling()->rotate(clockwise, game_->matrix().generateMask());
-    game_->updateGame(game_->fallingInsideMatrix());
+    game_->rotateFalling(clockwise);
   } catch (tetrimino::exceptions::RotationNotPossibleException& ignored) {
   }
 }

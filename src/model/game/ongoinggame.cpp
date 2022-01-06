@@ -23,8 +23,12 @@
 
 #include "model/game/ongoinggame.hpp"
 
+#include <model/game/state/blockedoutstate.hpp>
+#include <model/tetrimino/exceptions/movenotpossibleexception.hpp>
 #include <stdexcept>
 
+#include "model/game/state/exceptions/blockedoutexception.hpp"
+#include "model/game/state/lockeddownstate.hpp"
 #include "model/game/state/notstartedstate.hpp"
 
 namespace tetris::model::game {
@@ -106,6 +110,47 @@ std::vector<std::vector<OptionalMino>> OngoingGame::fallingInsideMatrix() {
   auto minos = matrix.getMinos();
   return std::vector<std::vector<OptionalMino>>(&minos[2], &minos[22]);
 };
+
+void OngoingGame::refreshFallingTimer() {
+  timer_.expires_at(std::chrono::steady_clock::now() +
+                    boost::asio::chrono::milliseconds(calculateGravity()));
+  timer_.async_wait([this](boost::system::error_code e) {
+    try {
+      moveFalling(tetrimino::DOWN);
+      signalFalling();
+      refreshFallingTimer();
+    } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
+      state(new states::LockedDownState(this));
+    }
+  });
+}
+
+void OngoingGame::refreshLockingTimer() {
+  timer_.expires_at(std::chrono::steady_clock::now() +
+                    boost::asio::chrono::milliseconds(50));
+  timer_.async_wait([this](boost::system::error_code e) {
+    getMatrix().add(falling_);
+    try {
+      falling(tetrimino::createTetrimino(next().value(),
+                                         getMatrix().generateMask()));
+      next(pickMino());
+      clearLines();
+      state(new states::FallingState(this));
+    } catch (states::exceptions::BlockedOutException& e) {
+      state(new states::BlockedOutState(this));
+    }
+  });
+}
+
+void OngoingGame::moveFalling(tetrimino::Direction direction) {
+  falling_->move(direction, matrix_.generateMask());
+  updateGame(fallingInsideMatrix());
+}
+
+void OngoingGame::rotateFalling(bool clockwise) {
+  falling_->rotate(clockwise);
+  updateGame(fallingInsideMatrix());
+}
 
 void OngoingGame::state(GameState* state) {
   delete state_;

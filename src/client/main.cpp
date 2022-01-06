@@ -58,7 +58,6 @@ int main() {
   TextView v1(game);
   game.start();
   std::this_thread::sleep_for(std::chrono::seconds(1));
-  game.softDrop();
   std::cout << "Hello, World!" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(145));
   return 0;
