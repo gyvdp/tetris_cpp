@@ -40,7 +40,8 @@ class TextView {
   }
 
   void refresh() const {
-    std::cout << "Y: " << game.falling()->Y() << std::endl;
+    std::cout << "Y: " << game.falling()->Y() << " "
+              << "X: " << game.falling()->X() << std::endl;
   }
 
   void score() const { std::cout << "Score: " << game.score() << std::endl; }
@@ -57,7 +58,8 @@ int main() {
   TextView v1(game);
   game.start();
   std::this_thread::sleep_for(std::chrono::seconds(1));
+  game.softDrop();
   std::cout << "Hello, World!" << std::endl;
-  std::this_thread::sleep_for(std::chrono::seconds(15));
+  std::this_thread::sleep_for(std::chrono::seconds(145));
   return 0;
 }

@@ -49,6 +49,9 @@ class OngoingGame {
    * @brief Defines a signal type.
    */
   typedef boost::signals2::signal<void()> signal;
+  typedef boost::signals2::signal<void(
+      std::vector<std::vector<std::optional<tetrimino::Mino>>>)>
+      signalGameBoard;
 
   /**
    * @brief The state of the game (Not started, Falling, ...)
@@ -106,11 +109,12 @@ class OngoingGame {
    */
   boost::asio::io_context io_;
 
-
   /**
    * @brief Timer of the game.
    */
   boost::asio::steady_timer timer_;
+
+  boost::thread a_;
 
   /**
    * @brief Signal that alerts any change in the falling tetrimino.
@@ -131,6 +135,8 @@ class OngoingGame {
    * @brief Signal that alerts any change in the hold piece.
    */
   signal signalHold;
+
+  signalGameBoard updateGame;
 
   /**
    * @brief The default constructor of an Ongoing Game
@@ -157,6 +163,8 @@ class OngoingGame {
    * @param subscriber Subscriber to connect.
    */
   void connectScore(const signal::slot_type &subscriber);
+
+  void connectBoard(const signalGameBoard::slot_type &subscriber);
 
   /**
    * @breif Connects a subscriber to the hold signal.
@@ -216,7 +224,6 @@ class OngoingGame {
    * @return The falling Tetrimino
    */
   [[nodiscard]] inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
-
 
   std::vector<std::vector<OptionalMino>> fallingInsideMatrix();
 
@@ -312,7 +319,6 @@ class OngoingGame {
    */
   void clearLines();
 
-
   /**
    * @brief Generates points for number of lines destroyed.
    * @param lines Number of lines that have been destroyed.
@@ -388,11 +394,12 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 
 void OngoingGame::lock() { state_->lock(); }
 
-tetrimino::Mino OngoingGame::pickMino() {
-  return generator_.takeMino(); }
+tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
 
 int64_t OngoingGame::calculateGravity() const {
-  return static_cast<int64_t>(std::pow((0.8-((level_-1)*0.007)),level_-1));
+  return static_cast<int64_t>(
+             std::pow((0.8 - ((level_ - 1) * 0.007)), level_ - 1)) *
+         1000;
 }
 
 }  // namespace tetris::model::game
