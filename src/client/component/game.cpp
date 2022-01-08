@@ -25,8 +25,25 @@
 namespace tetris::client::component {
 
 Game::Game(QGraphicsItem *parent)
-    : QGraphicsItemGroup(parent), matrix_{new component::Matrix{this}} {}
+    : QGraphicsItemGroup(parent),
+      matrix_{new component::Matrix{this}},
+      scoreBoard_{new component::ScoreBoard{this}},
+      next_{new component::TetriHolder{this}},
+      hold_{new component::TetriHolder{this}} {
+  scoreBoard_->setPos({0, 0});
+  matrix_->setPos({scoreBoard_->boundingRect().width(), 0});
+  next_->setPos({matrix_->x() - next_->boundingRect().width(),
+                 scoreBoard_->boundingRect().height()});
+  hold_->setPos({next_->x(), next_->y() + next_->boundingRect().height()});
+}
 
 void Game::updateMatrix(MatrixArray array) { matrix_->set(std::move(array)); }
+
+QRectF Game::boundingRect() const {
+  return QRect{0, 0,
+               static_cast<int>(scoreBoard_->boundingRect().width() +
+                                matrix_->boundingRect().width()),
+               static_cast<int>(matrix_->boundingRect().height())};
+}
 
 }  // namespace tetris::client::component

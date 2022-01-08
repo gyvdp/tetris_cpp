@@ -110,13 +110,15 @@ target_link_libraries(server_test Catch2 SERVER_LIB)
 #########################################################################################
 set(VIEW_SOURCES
         resources/resources.qrc
+        src/client/client.cpp
+        src/client/window/game_window.cpp
+        src/client/scene/multiplayer_scene.cpp
         src/client/component/mino.cpp
         src/client/component/matrix.cpp
-        src/client/scene/multiplayer_scene.cpp
-        src/client/window/game_window.cpp
-        src/client/client.cpp
         src/client/component/game.cpp
-        src/client/tetris_client.cpp
+        src/client/component/score_board.cpp
+        src/client/component/tetri_holder.cpp
+
         )
 
 

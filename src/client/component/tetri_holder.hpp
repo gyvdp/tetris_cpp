@@ -21,32 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
-
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_TETRI_HOLDER_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_TETRI_HOLDER_HPP_
 #include <QGraphicsItemGroup>
-
-#include "matrix.hpp"
-#include "score_board.hpp"
-#include "tetri_holder.hpp"
-
 namespace tetris::client::component {
-class Game : public QGraphicsItemGroup {
+class TetriHolder : public QGraphicsItemGroup {
  protected:
-  /**
-   * @brief The matrix of the game
-   */
-  component::Matrix *matrix_;
-  component::ScoreBoard *scoreBoard_;
-  component::TetriHolder *next_;
-  component::TetriHolder *hold_;
+  static constexpr qreal PADDING = 64.0;
+  QGraphicsPixmapItem *bg_;
 
  public:
-  explicit Game(QGraphicsItem *parent = nullptr);
-
-  void updateMatrix(MatrixArray array);
-
-  [[nodiscard]] QRectF boundingRect() const override;
+  explicit TetriHolder(QGraphicsItem *parent = nullptr);
+  QRectF boundingRect() const override;
 };
 }  // namespace tetris::client::component
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_TETRI_HOLDER_HPP_

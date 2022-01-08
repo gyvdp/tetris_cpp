@@ -27,6 +27,7 @@
 #include <array>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <vector>
 
 #include "model/tetrimino/mino.hpp"
@@ -137,7 +138,11 @@ class Matrix {
 Matrix::Matrix(size_t width, size_t height)
     : width_{width},
       height_{height},
-      minos_{height, std::vector<OptionalMino>{width, std::nullopt}} {}
+      minos_{height, std::vector<OptionalMino>{width, std::nullopt}} {
+  if (width > 100 || height > 100) {
+    throw std::logic_error("coucou");
+  }
+}
 
 size_t Matrix::width() const { return width_; }
 
