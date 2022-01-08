@@ -70,17 +70,20 @@ static std::shared_ptr<Tetrimino> createTetrimino(
     Mino mino, std::vector<std::vector<bool>> matrixMask) {
   auto tetrimino = createTetrimino(mino);
   tetris::utils::Coordinate coordinate = tetrimino->getCoordinates();
-  for (size_t line = 0; line < tetrimino->minos().size(); ++line) {
+  for (size_t line = 0;
+       line < tetrimino->minos().at(tetrimino->orientation()).size() - 1;
+       line++) {
     for (size_t col = 0;
          col < tetrimino->minos().at(tetrimino->orientation()).at(line).size();
-         ++col) {
+         col++) {
       if (tetrimino->minos()
               .at(tetrimino->orientation())
               .at(line)
               .at(col)
               .has_value()) {
         auto lineNumber = coordinate.y() + line;
-        if (!matrixMask.at(lineNumber).at(coordinate.x())) {
+        auto colNumber = coordinate.x() + col;
+        if (!matrixMask.at(lineNumber).at(colNumber)) {
           throw model::game::states::exceptions::BlockedOutException(
               "You are blocked out", __FILE__, __LINE__);
         }

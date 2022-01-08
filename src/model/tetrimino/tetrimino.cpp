@@ -45,7 +45,10 @@ void Tetrimino::rotate(bool clockwise,
   auto tempMinos = minos_.at(tempOrientation);
   for (int i = 0; i < tempMinos.size(); i++) {
     for (int j = 0; j < tempMinos.at(i).size(); j++) {
-      if ((matrixMask.at(i).at(j)) && (tempMinos.at(i).at(j) != std::nullopt))
+      auto tempI = j + X();
+      auto tempY = i + Y();
+      if ((matrixMask.at(i).at(j)) &&
+          (tempMinos.at(tempY).at(tempI) != std::nullopt))
         throw exceptions::RotationNotPossibleException("Rotation not possible",
                                                        __FILE__, __LINE__);
     }
