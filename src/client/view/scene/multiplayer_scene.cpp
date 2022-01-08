@@ -38,12 +38,22 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
   connect(
       this, &scene::MultiplayerScene::matrixChanged, this,
       [this](MatrixArray array) { player1_->updateMatrix(std::move(array)); });
+
+  player1Game_->connectBoard(
+      [this](MatrixArray array) { emit matrixChanged(std::move(array)); });
+
+  player1Game_->start();
 }
 
 MultiplayerScene::~MultiplayerScene() {
   if (player1_ != nullptr) {
     delete player1_;
     player1_ = nullptr;
+  }
+
+  if (player1Game_ != nullptr) {
+    delete player1Game_;
+    player1Game_ = nullptr;
   }
 }
 

@@ -46,7 +46,7 @@ void Matrix::set(MatrixArray matrix) {
     }
 
     for (qsizetype j = 0; j < matrix[i].size(); ++j) {
-      if (minos_[i][j] != nullptr) {
+      if (minos_[i][j] == nullptr) {
         if (matrix[i][j].has_value()) {
           auto mino = new Mino{matrix[i][j], this};
           qreal y = (mino->boundingRect().height() +
@@ -65,7 +65,9 @@ void Matrix::set(MatrixArray matrix) {
         if (matrix[i][j].has_value()) {
           minos_[i][j]->set(matrix[i][j]);
         } else {
+          removeFromGroup(minos_[i][j]);
           delete minos_[i][j];
+          minos_[i][j] = nullptr;
         }
       }
     }
