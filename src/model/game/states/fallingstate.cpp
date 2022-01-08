@@ -70,10 +70,11 @@ void FallingState::holdFalling() {
 void FallingState::softDrop() {
   try {
     game_->moveFalling(tetrimino::DOWN);
-    game_->refreshFallingTimer();
+    // game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
     game_->state(new LockedDownState(game_));
+    delete this;
   }
 }
 
@@ -85,11 +86,11 @@ void FallingState::hardDrop() {
       game_->moveFalling(tetrimino::DOWN);
       linesDropped++;
     } catch (tetrimino::exceptions::MoveNotPossibleException& e) {
-      game_->score(linesDropped * 2);
-      lock();
       drop = false;
     }
   }
+  game_->score(linesDropped * 2);
+  lock();
 }
 
 void FallingState::rotate(bool clockwise) {
@@ -106,7 +107,7 @@ void FallingState::lock() {
         game_->next().value(), game_->getMatrix().generateMask()));
     game_->next(game_->pickMino());
     game_->clearLines();
-    game_->state(new FallingState(game_));
+    // game_->state(new FallingState(game_));
   } catch (exceptions::BlockedOutException& e) {
     game_->state(new BlockedOutState(game_));
   }
