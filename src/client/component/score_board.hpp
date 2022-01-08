@@ -21,27 +21,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "game.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_SCORE_BOARD_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_SCORE_BOARD_HPP_
+
+#include <QGraphicsItemGroup>
+#include <QGraphicsTextItem>
+
 namespace tetris::client::component {
+class ScoreBoard : public QGraphicsItemGroup {
+ protected:
+  static constexpr qreal PADDING = 64.0;
+  QGraphicsPixmapItem *bg_;
+  QGraphicsTextItem *highScore_;
+  QGraphicsTextItem *highScoreValue_;
+  QGraphicsTextItem *score_;
+  QGraphicsTextItem *scoreValue_;
 
-Game::Game(QGraphicsItem *parent)
-    : QGraphicsItemGroup(parent),
-      matrix_{new component::Matrix{this}},
-      scoreBoard_{new component::ScoreBoard{this}},
-      next_{new component::TetriHolder{"NEXT", this}},
-      hold_{new component::TetriHolder{"HOLD", this}} {
-  scoreBoard_->setPos({0, 0});
-  matrix_->setPos({scoreBoard_->boundingRect().width(), 0});
-  next_->setPos({matrix_->x() - next_->boundingRect().width(),
-                 scoreBoard_->boundingRect().height()});
-  hold_->setPos({next_->x(), next_->y() + next_->boundingRect().height()});
-}
-
-QRectF Game::boundingRect() const {
-  return QRect{0, 0,
-               static_cast<int>(scoreBoard_->boundingRect().width() +
-                                matrix_->boundingRect().width()),
-               static_cast<int>(matrix_->boundingRect().height())};
-}
-
+ public:
+  explicit ScoreBoard(QGraphicsItem *parent = nullptr);
+  void setHighScore(unsigned long score);
+  void setScore(unsigned long score);
+  QRectF boundingRect() const override;
+};
 }  // namespace tetris::client::component
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_SCORE_BOARD_HPP_

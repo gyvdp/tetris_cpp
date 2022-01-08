@@ -20,4 +20,7 @@
         <file alias="score.png">images/bg/score.png</file>
         <file alias="tetriminoholder.png">images/bg/tetriminoholder.png</file>
     </qresource>
+    <qresource prefix="font">
+        <file alias="nes.otf">fonts/Pixel_NES.otf</file>
+    </qresource>
 </RCC>

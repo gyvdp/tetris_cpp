@@ -24,6 +24,9 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_BLOCKEDOUTEXCEPTION_HPP_
 
+#include <stdexcept>
+#include <string>
+
 namespace tetris::model::game::states::exceptions {
 
 /**

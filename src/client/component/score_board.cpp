@@ -21,27 +21,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "game.hpp"
+#include "score_board.hpp"
+
+#include <QFontDatabase>
+#include <QString>
+#include <string>
+
 namespace tetris::client::component {
 
-Game::Game(QGraphicsItem *parent)
+ScoreBoard::ScoreBoard(QGraphicsItem *parent)
     : QGraphicsItemGroup(parent),
-      matrix_{new component::Matrix{this}},
-      scoreBoard_{new component::ScoreBoard{this}},
-      next_{new component::TetriHolder{"NEXT", this}},
-      hold_{new component::TetriHolder{"HOLD", this}} {
-  scoreBoard_->setPos({0, 0});
-  matrix_->setPos({scoreBoard_->boundingRect().width(), 0});
-  next_->setPos({matrix_->x() - next_->boundingRect().width(),
-                 scoreBoard_->boundingRect().height()});
-  hold_->setPos({next_->x(), next_->y() + next_->boundingRect().height()});
+      bg_{new QGraphicsPixmapItem{QString{":/bg/score.png"}, this}},
+      highScore_{new QGraphicsTextItem{QString{"TOP"}, this}},
+      highScoreValue_{new QGraphicsTextItem{QString{"00000"}, this}},
+      score_{new QGraphicsTextItem{QString{"SCORE"}, this}},
+      scoreValue_{new QGraphicsTextItem{QString{"00000"}, this}} {
+  qreal ratio = 64.0 / 7.0;
+
+  for (auto &text : {highScore_, highScoreValue_, score_, scoreValue_}) {
+    text->setFont({QFontDatabase::applicationFontFamilies(0).at(0),
+                   static_cast<int>(7.0 * ratio)});
+    text->setDefaultTextColor(QColor{255, 255, 255});
+  }
+
+  qreal x_text = 8.0 * ratio;
+
+  highScore_->setPos({x_text, 16.0 * ratio});
+  highScoreValue_->setPos({x_text, 24.0 * ratio});
+  score_->setPos({x_text, 40.0 * ratio});
+  scoreValue_->setPos({x_text, 48.0 * ratio});
 }
 
-QRectF Game::boundingRect() const {
-  return QRect{0, 0,
-               static_cast<int>(scoreBoard_->boundingRect().width() +
-                                matrix_->boundingRect().width()),
-               static_cast<int>(matrix_->boundingRect().height())};
+QRectF ScoreBoard::boundingRect() const { return bg_->boundingRect(); }
+
+void ScoreBoard::setHighScore(unsigned long score) {
+  highScoreValue_->setPlainText(QString::fromStdString(std::to_string(score)));
+}
+
+void ScoreBoard::setScore(unsigned long score) {
+  scoreValue_->setPlainText(QString::fromStdString(std::to_string(score)));
 }
 
 }  // namespace tetris::client::component

@@ -21,27 +21,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "game.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_TETRI_HOLDER_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_TETRI_HOLDER_HPP_
+
+#include <QGraphicsItemGroup>
+#include <QPixmap>
+#include <optional>
+
+#include "model/tetrimino/mino.hpp"
+
 namespace tetris::client::component {
 
-Game::Game(QGraphicsItem *parent)
-    : QGraphicsItemGroup(parent),
-      matrix_{new component::Matrix{this}},
-      scoreBoard_{new component::ScoreBoard{this}},
-      next_{new component::TetriHolder{"NEXT", this}},
-      hold_{new component::TetriHolder{"HOLD", this}} {
-  scoreBoard_->setPos({0, 0});
-  matrix_->setPos({scoreBoard_->boundingRect().width(), 0});
-  next_->setPos({matrix_->x() - next_->boundingRect().width(),
-                 scoreBoard_->boundingRect().height()});
-  hold_->setPos({next_->x(), next_->y() + next_->boundingRect().height()});
-}
+class TetriHolder : public QGraphicsItemGroup {
+ protected:
+  static constexpr qreal PADDING = 64.0;
+  QGraphicsPixmapItem *bg_;
+  QGraphicsTextItem *title_;
+  QGraphicsPixmapItem *tetrimino_;
 
-QRectF Game::boundingRect() const {
-  return QRect{0, 0,
-               static_cast<int>(scoreBoard_->boundingRect().width() +
-                                matrix_->boundingRect().width()),
-               static_cast<int>(matrix_->boundingRect().height())};
+ public:
+  explicit TetriHolder(QString type, QGraphicsItem *parent = nullptr);
+  QPixmap resource(model::tetrimino::Mino type);
+  inline void set(model::tetrimino::Mino type);
+  QRectF boundingRect() const override;
+};
+
+void TetriHolder::set(model::tetrimino::Mino type) {
+  qreal ratio = 64.0 / 7.0;
+  if (tetrimino_ == nullptr) {
+    tetrimino_ = new QGraphicsPixmapItem{resource(type), this};
+    tetrimino_->setPos({7 * ratio, title_->y() + (7 * ratio)});
+  }
 }
 
 }  // namespace tetris::client::component
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_TETRI_HOLDER_HPP_

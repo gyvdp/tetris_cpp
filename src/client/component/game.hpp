@@ -26,7 +26,10 @@
 
 #include <QGraphicsItemGroup>
 
-#include "matrix.hpp"
+#include "client/component/matrix.hpp"
+#include "client/component/score_board.hpp"
+#include "client/component/tetri_holder.hpp"
+#include "model/tetrimino/mino.hpp"
 
 namespace tetris::client::component {
 class Game : public QGraphicsItemGroup {
@@ -35,11 +38,37 @@ class Game : public QGraphicsItemGroup {
    * @brief The matrix of the game
    */
   component::Matrix *matrix_;
+  component::ScoreBoard *scoreBoard_;
+  component::TetriHolder *next_;
+  component::TetriHolder *hold_;
 
  public:
   explicit Game(QGraphicsItem *parent = nullptr);
 
-  void updateMatrix(MatrixArray array);
+  inline void updateMatrix(MatrixArray array);
+
+  inline void updateNext(model::tetrimino::Mino mino);
+
+  inline void updateHold(model::tetrimino::Mino mino);
+
+  inline void setHighScore(unsigned long score);
+
+  inline void setScore(unsigned long score);
+
+  [[nodiscard]] QRectF boundingRect() const override;
 };
+
+void Game::updateMatrix(MatrixArray array) { matrix_->set(std::move(array)); }
+
+void Game::updateNext(model::tetrimino::Mino mino) { next_->set(mino); }
+
+void Game::updateHold(model::tetrimino::Mino mino) { hold_->set(mino); }
+
+void Game::setHighScore(unsigned long score) {
+  scoreBoard_->setHighScore(score);
+}
+
+void Game::setScore(unsigned long score) { scoreBoard_->setScore(score); }
+
 }  // namespace tetris::client::component
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

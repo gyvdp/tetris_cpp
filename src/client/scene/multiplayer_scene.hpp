@@ -39,7 +39,10 @@ class MultiplayerScene : public QGraphicsScene {
   Q_OBJECT
  protected:
   component::Game *player1_;
+
   model::game::OngoingGame *player1Game_;
+
+  component::Game *player2_;
 
   void keyPressEvent(QKeyEvent *event) override;
 
@@ -55,9 +58,6 @@ class MultiplayerScene : public QGraphicsScene {
    * @brief Destructor of a GameScene
    */
   ~MultiplayerScene() override;
-
- signals:
-  void matrixChanged(MatrixArray matrix);
 };
 }  // namespace tetris::client::scene
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_

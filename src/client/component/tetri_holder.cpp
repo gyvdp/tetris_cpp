@@ -21,27 +21,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "game.hpp"
+#include "tetri_holder.hpp"
+
+#include <QFontDatabase>
+
 namespace tetris::client::component {
 
-Game::Game(QGraphicsItem *parent)
+TetriHolder::TetriHolder(QString type, QGraphicsItem *parent)
     : QGraphicsItemGroup(parent),
-      matrix_{new component::Matrix{this}},
-      scoreBoard_{new component::ScoreBoard{this}},
-      next_{new component::TetriHolder{"NEXT", this}},
-      hold_{new component::TetriHolder{"HOLD", this}} {
-  scoreBoard_->setPos({0, 0});
-  matrix_->setPos({scoreBoard_->boundingRect().width(), 0});
-  next_->setPos({matrix_->x() - next_->boundingRect().width(),
-                 scoreBoard_->boundingRect().height()});
-  hold_->setPos({next_->x(), next_->y() + next_->boundingRect().height()});
+      bg_{new QGraphicsPixmapItem{QString{":/bg/tetriminoholder.png"}, this}},
+      title_{new QGraphicsTextItem{type, this}},
+      tetrimino_{nullptr} {
+  qreal ratio = 64.0 / 7.0;
+
+  title_->setFont({QFontDatabase::applicationFontFamilies(0).at(0),
+                   static_cast<int>(7.0 * ratio)});
+  title_->setPos({7 * ratio, 7 * ratio});
 }
 
-QRectF Game::boundingRect() const {
-  return QRect{0, 0,
-               static_cast<int>(scoreBoard_->boundingRect().width() +
-                                matrix_->boundingRect().width()),
-               static_cast<int>(matrix_->boundingRect().height())};
+QRectF TetriHolder::boundingRect() const { return bg_->boundingRect(); }
+
+QPixmap TetriHolder::resource(model::tetrimino::Mino type) {
+  switch (type) {
+    case tetris::model::tetrimino::Mino::T_MINO:
+      return QPixmap{":/tetrimino/T0.png"};
+    case tetris::model::tetrimino::Mino::O_MINO:
+      return QPixmap{":/tetrimino/O0.png"};
+    case tetris::model::tetrimino::Mino::I_MINO:
+      return QPixmap{":/tetrimino/I0.png"};
+    case tetris::model::tetrimino::Mino::L_MINO:
+      return QPixmap{":/tetrimino/L0.png"};
+    case tetris::model::tetrimino::Mino::Z_MINO:
+      return QPixmap{":/tetrimino/Z0.png"};
+    case tetris::model::tetrimino::Mino::J_MINO:
+      return QPixmap{":/tetrimino/J0.png"};
+    case tetris::model::tetrimino::Mino::S_MINO:
+    default:
+      return QPixmap{":/tetrimino/S0.png"};
+  }
 }
 
 }  // namespace tetris::client::component
