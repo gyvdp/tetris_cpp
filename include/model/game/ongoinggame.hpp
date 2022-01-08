@@ -104,7 +104,16 @@ class OngoingGame {
   int lines_;
 
  public:
+
+  /**
+   * @brief Mutex of the falling mino.
+   */
   boost::mutex mutexFalling_;
+
+  /**
+   * @brief If player has held or not.
+   */
+  bool hasHeld = false;
 
   /**
    * @brief Io context for the timer in each state.
@@ -116,6 +125,9 @@ class OngoingGame {
    */
   boost::asio::steady_timer timer_;
 
+  /**
+   * @brief Thread running io context.
+   */
   boost::thread a_;
 
   /**
@@ -276,7 +288,7 @@ class OngoingGame {
    * Calculate the number of G to place on the tetrimino.
    * @return Number of G's tetrimino should feel.
    */
-  [[nodiscard]] inline int64_t calculateGravity() const;
+  [[nodiscard]] double calculateGravity() const;
 
   /**
    * @brief This method stops the game (by quitting or error)
@@ -405,12 +417,6 @@ void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
 void OngoingGame::lock() { state_->lock(); }
 
 tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
-
-int64_t OngoingGame::calculateGravity() const {
-  return static_cast<int64_t>(
-             std::pow((0.8 - ((level_ - 1) * 0.007)), level_ - 1)) *
-         1000;
-}
 
 }  // namespace tetris::model::game
 

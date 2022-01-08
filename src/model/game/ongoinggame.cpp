@@ -51,11 +51,14 @@ OngoingGame::OngoingGame(Player* player, std::uint_fast64_t seed)
   }
 }
 
+double OngoingGame::calculateGravity() const {
+  return (std::pow((0.8 - ((level_ - 1) * 0.007)), level_ - 1)) * 1000;
+}
+
 void OngoingGame::clearLines() {
   auto lines = matrix_.getCompletedLines();
   generatePoints(lines.size());
-  matrix_.removeLines(lines);
-};
+}
 
 void OngoingGame::connectFalling(const signal::slot_type& subscriber) {
   signalFalling.connect(subscriber);
@@ -113,7 +116,8 @@ std::vector<std::vector<OptionalMino>> OngoingGame::fallingInsideMatrix() {
 
 void OngoingGame::refreshFallingTimer() {
   timer_.expires_at(std::chrono::steady_clock::now() +
-                    boost::asio::chrono::milliseconds(calculateGravity()));
+                    boost::asio::chrono::milliseconds(
+                        static_cast<int64_t>(calculateGravity())));
   timer_.async_wait([this](boost::system::error_code e) {
     try {
       moveFalling(tetrimino::DOWN);
@@ -135,6 +139,7 @@ void OngoingGame::refreshLockingTimer() {
                                          getMatrix().generateMask()));
       next(pickMino());
       clearLines();
+      hasHeld = false;
       state(new states::FallingState(this));
     } catch (states::exceptions::BlockedOutException& e) {
       state(new states::BlockedOutState(this));
@@ -143,12 +148,14 @@ void OngoingGame::refreshLockingTimer() {
 }
 
 void OngoingGame::moveFalling(tetrimino::Direction direction) {
+  boost::lock_guard<boost::mutex> guard(mutexFalling_);
   falling_->move(direction, matrix_.generateMask());
   updateGame(fallingInsideMatrix());
 }
 
 void OngoingGame::rotateFalling(bool clockwise) {
-  falling_->rotate(clockwise);
+  boost::lock_guard<boost::mutex> guard(mutexFalling_);
+  falling_->rotate(clockwise, matrix_.generateMask());
   updateGame(fallingInsideMatrix());
 }
 

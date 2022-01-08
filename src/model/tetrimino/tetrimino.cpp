@@ -45,9 +45,20 @@ void Tetrimino::rotate(bool clockwise,
   auto tempMinos = minos_.at(tempOrientation);
   for (int i = 0; i < tempMinos.size(); i++) {
     for (int j = 0; j < tempMinos.at(i).size(); j++) {
-      if ((matrixMask.at(i).at(j)) && (tempMinos.at(i).at(j) != std::nullopt))
-        throw exceptions::RotationNotPossibleException("Rotation not possible",
-                                                       __FILE__, __LINE__);
+      auto matrixXPos = X() + j;
+      auto matrixYPos = Y() + i;
+      if (tempMinos.at(i).at(j).has_value()) {
+        if (matrixYPos >= matrixMask.size() ||
+            matrixXPos >= matrixMask.at(i).size()) {
+          throw exceptions::RotationNotPossibleException(
+              "Rotation not possible out of bounds", __FILE__, __LINE__);
+        }
+        if (((!matrixMask.at(matrixYPos).at(matrixXPos)))) {
+          throw exceptions::RotationNotPossibleException(
+              "Rotation not possible another pawns is there", __FILE__,
+              __LINE__);
+        }
+      }
     }
   }
   orientation_ = tempOrientation;
@@ -57,7 +68,7 @@ void Tetrimino::move(Direction direction,
                      std::vector<std::vector<bool>> matrixMask) {
   tetris::utils::Coordinate newCoordinate = coordinate_.value() + direction;
   for (size_t line = 0; line < minos_.size(); ++line) {
-    for (size_t col = 0; col < minos_.at(orientation_)[line].size(); ++col) {
+    for (size_t col = 0; col < minos_.at(orientation_).at(line).size(); ++col) {
       if (minos_.at(orientation_)[line][col].has_value()) {
         auto x = newCoordinate.x() + col;
         auto y = newCoordinate.y() + line;

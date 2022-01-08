@@ -25,7 +25,7 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_GAMESTATE_HPP_
 
 #include "model/tetrimino/direction.hpp"
-namespace tetris::model::game {
+namespace tetris::model::game{
 
 class OngoingGame;
 
@@ -34,10 +34,14 @@ class OngoingGame;
  */
 class GameState {
  protected:
+
+
   /**
    * @brief Pointer to the Ongoing Game
    */
   OngoingGame *game_;
+
+
 
  public:
   inline explicit GameState(OngoingGame *game);

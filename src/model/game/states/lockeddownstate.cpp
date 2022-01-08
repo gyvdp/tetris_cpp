@@ -56,10 +56,7 @@ void LockedDownState::holdFalling() {
                                           __FILE__, __LINE__);
 }
 
-void LockedDownState::softDrop() {
-  throw exceptions::IllegalStateException("Cannot soft drop when locked down",
-                                          __FILE__, __LINE__);
-}
+void LockedDownState::softDrop() {}
 
 void LockedDownState::hardDrop() {
   throw exceptions::IllegalStateException("Cannot hard drop when locked down",

@@ -23,48 +23,46 @@
 
 #include "model/game/state/blockedoutstate.hpp"
 
+#include <model/game/state/exceptions/blockedoutexception.hpp>
 #include <model/game/state/stoppedstate.hpp>
-
-#include "model/game/state/exceptions/startongoinggameexception.hpp"
-#include "model/game/state/exceptions/stoppedgameexception.hpp"
 
 namespace tetris::model::game::states {
 
 void BlockedOutState::start() {
-  throw exceptions::StoppedGameException("There is already a game started",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("There is already a game started",
+                                        __FILE__, __LINE__);
 }
 
 void BlockedOutState::stop() { game_->state(new StoppedState(game_)); }
 
 void BlockedOutState::move(tetrimino::Direction direction) {
-  throw exceptions::StoppedGameException("Cannot move when blocked out",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("Cannot move when blocked out",
+                                        __FILE__, __LINE__);
 }
 
 void BlockedOutState::holdFalling() {
-  throw exceptions::StoppedGameException("Cannot hold when blocked out",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("Cannot hold when blocked out",
+                                        __FILE__, __LINE__);
 }
 
 void BlockedOutState::softDrop() {
-  throw exceptions::StoppedGameException("Cannot drop when blocked out",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("Cannot drop when blocked out",
+                                        __FILE__, __LINE__);
 }
 
 void BlockedOutState::hardDrop() {
-  throw exceptions::StoppedGameException("Cannot drop when blocked out",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("Cannot drop when blocked out",
+                                        __FILE__, __LINE__);
 }
 
 void BlockedOutState::rotate(bool clockwise) {
-  throw exceptions::StoppedGameException("Cannot rotate when blocked out",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("Cannot rotate when blocked out",
+                                        __FILE__, __LINE__);
 }
 
 void BlockedOutState::lock() {
-  throw exceptions::StoppedGameException("Cannot lock when blocked out",
-                                         __FILE__, __LINE__);
+  throw exceptions::BlockedOutException("Cannot lock when blocked out",
+                                        __FILE__, __LINE__);
 }
 
 }  // namespace tetris::model::game::states
