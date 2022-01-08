@@ -43,7 +43,10 @@ void FallingState::start() {
                                               __FILE__, __LINE__);
 }
 
-void FallingState::stop() { game_->state(new StoppedState(game_)); }
+void FallingState::stop() {
+  game_->state(new StoppedState(game_));
+  delete this;
+}
 
 void FallingState::move(tetrimino::Direction direction) {
   try {
@@ -69,8 +72,10 @@ void FallingState::holdFalling() {
 
 void FallingState::softDrop() {
   try {
+    game_->timer_.cancel();
     game_->moveFalling(tetrimino::DOWN);
-    // game_->refreshFallingTimer();
+    game_->state(new FallingState(game_));
+    delete this;
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
     game_->state(new LockedDownState(game_));
@@ -107,9 +112,11 @@ void FallingState::lock() {
         game_->next().value(), game_->getMatrix().generateMask()));
     game_->next(game_->pickMino());
     game_->clearLines();
-    // game_->state(new FallingState(game_));
+    game_->state(new FallingState(game_));
+    delete this;
   } catch (exceptions::BlockedOutException& e) {
     game_->state(new BlockedOutState(game_));
+    delete this;
   }
 }
 }  // namespace tetris::model::game::states

@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -112,6 +112,7 @@ std::vector<std::vector<OptionalMino>> OngoingGame::fallingInsideMatrix() {
 };
 
 void OngoingGame::refreshFallingTimer() {
+  timer_.cancel();
   timer_.expires_at(std::chrono::steady_clock::now() +
                     boost::asio::chrono::milliseconds(calculateGravity()));
   timer_.async_wait([this](boost::system::error_code e) {
@@ -121,6 +122,7 @@ void OngoingGame::refreshFallingTimer() {
       refreshFallingTimer();
     } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
       state(new states::LockedDownState(this));
+      // todo delete?
     }
   });
 }
@@ -152,10 +154,7 @@ void OngoingGame::rotateFalling(bool clockwise) {
   updateGame(fallingInsideMatrix());
 }
 
-void OngoingGame::state(GameState* state) {
-  delete state_;
-  state_ = state;
-}
+void OngoingGame::state(GameState* state) { state_ = state; }
 
 Matrix& OngoingGame::getMatrix() { return matrix_; }
 
