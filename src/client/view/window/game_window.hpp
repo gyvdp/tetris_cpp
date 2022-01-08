@@ -52,7 +52,7 @@ class GameWindow : public QGraphicsView {
    */
   explicit GameWindow(QWidget *parent = nullptr);
 
-  ~GameWindow();
+  ~GameWindow() override;
 
   void start(std::string playerName, unsigned long highScore);
 };

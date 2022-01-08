@@ -27,6 +27,8 @@
 #include <QGraphicsItemGroup>
 
 #include "matrix.hpp"
+#include "score_board.hpp"
+#include "tetri_holder.hpp"
 
 namespace tetris::view::component {
 class Game : public QGraphicsItemGroup {
@@ -35,11 +37,16 @@ class Game : public QGraphicsItemGroup {
    * @brief The matrix of the game
    */
   component::Matrix *matrix_;
+  component::ScoreBoard *scoreBoard_;
+  component::TetriHolder *next_;
+  component::TetriHolder *hold_;
 
  public:
   explicit Game(QGraphicsItem *parent = nullptr);
 
   void updateMatrix(MatrixArray array);
+
+  QRectF boundingRect() const override;
 };
 }  // namespace tetris::view::component
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

@@ -21,43 +21,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_SCORE_BOARD_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_SCORE_BOARD_HPP_
 
-#include <QGraphicsScene>
-
-#include "client/view/component/game.hpp"
-#include "client/view/component/matrix.hpp"
-#include "client/view/component/mino.hpp"
-#include "model/game/ongoinggame.hpp"
-namespace tetris::view::scene {
-/**
- * @brief This class represents a GameScene
- */
-class MultiplayerScene : public QGraphicsScene {
-  Q_OBJECT
+#include <QGraphicsItemGroup>
+namespace tetris::view::component {
+class ScoreBoard : public QGraphicsItemGroup {
  protected:
-  component::Game *player1_;
-
-  model::game::OngoingGame *player1Game_;
-
-  void keyPressEvent(QKeyEvent *event) override;
+  static constexpr qreal PADDING = 64.0;
+  QGraphicsPixmapItem *bg_;
 
  public:
-  /**
-   * @brief Default constructor fot a GameScene
-   * @param parent Parent QObject (for memory)
-   */
-  explicit MultiplayerScene(model::game::Player *player1,
-                            QObject *parent = nullptr);
-
-  /**
-   * @brief Destructor of a GameScene
-   */
-  ~MultiplayerScene() override;
-
- signals:
-  void matrixChanged(MatrixArray matrix);
+  explicit ScoreBoard(QGraphicsItem *parent = nullptr);
+  void setHighScore(unsigned long score);
+  void setScore(unsigned long score);
+  QRectF boundingRect() const override;
 };
-}  // namespace tetris::view::scene
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+}  // namespace tetris::view::component
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_SCORE_BOARD_HPP_

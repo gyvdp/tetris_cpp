@@ -21,43 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+#include "tetri_holder.hpp"
 
-#include <QGraphicsScene>
+namespace tetris::view::component {
 
-#include "client/view/component/game.hpp"
-#include "client/view/component/matrix.hpp"
-#include "client/view/component/mino.hpp"
-#include "model/game/ongoinggame.hpp"
-namespace tetris::view::scene {
-/**
- * @brief This class represents a GameScene
- */
-class MultiplayerScene : public QGraphicsScene {
-  Q_OBJECT
- protected:
-  component::Game *player1_;
+TetriHolder::TetriHolder(QGraphicsItem *parent)
+    : QGraphicsItemGroup(parent),
+      bg_{new QGraphicsPixmapItem{QString{":/bg/tetriminoholder.png"}, this}} {}
 
-  model::game::OngoingGame *player1Game_;
+QRectF TetriHolder::boundingRect() const { return bg_->boundingRect(); }
 
-  void keyPressEvent(QKeyEvent *event) override;
-
- public:
-  /**
-   * @brief Default constructor fot a GameScene
-   * @param parent Parent QObject (for memory)
-   */
-  explicit MultiplayerScene(model::game::Player *player1,
-                            QObject *parent = nullptr);
-
-  /**
-   * @brief Destructor of a GameScene
-   */
-  ~MultiplayerScene() override;
-
- signals:
-  void matrixChanged(MatrixArray matrix);
-};
-}  // namespace tetris::view::scene
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+}  // namespace tetris::view::component

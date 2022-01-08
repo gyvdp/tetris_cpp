@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,6 +27,7 @@
 #include <array>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <vector>
 
 #include "model/tetrimino/mino.hpp"
@@ -137,7 +138,11 @@ class Matrix {
 Matrix::Matrix(size_t width, size_t height)
     : width_{width},
       height_{height},
-      minos_{height, std::vector<OptionalMino>{width, std::nullopt}} {}
+      minos_{height, std::vector<OptionalMino>{width, std::nullopt}} {
+  if (width > 100 || height > 100) {
+    throw std::logic_error("coucou");
+  }
+}
 
 size_t Matrix::width() const { return width_; }
 

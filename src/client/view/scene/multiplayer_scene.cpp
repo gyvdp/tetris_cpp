@@ -30,7 +30,7 @@ namespace tetris::view::scene {
 
 MultiplayerScene::MultiplayerScene(model::game::Player *player1,
                                    QObject *parent)
-    : QGraphicsScene(0, 0, 850, 1590, parent),
+    : QGraphicsScene(parent),
       player1_{new component::Game{}},
       player1Game_{new model::game::OngoingGame(player1, 42)} {
   addItem(player1_);
@@ -43,6 +43,9 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
       [this](MatrixArray array) { emit matrixChanged(std::move(array)); });
 
   player1Game_->start();
+
+  // setSceneRect(player1_->boundingRect());
+  setBackgroundBrush(QColor{0, 0, 0});
 }
 
 MultiplayerScene::~MultiplayerScene() {
@@ -52,6 +55,7 @@ MultiplayerScene::~MultiplayerScene() {
   }
 
   if (player1Game_ != nullptr) {
+    player1Game_->stop();
     delete player1Game_;
     player1Game_ = nullptr;
   }
@@ -76,6 +80,9 @@ void MultiplayerScene::keyPressEvent(QKeyEvent *event) {
       break;
     case Qt::Key_Control:
       player1Game_->rotate(false);
+      break;
+    case Qt::Key_Shift:
+      player1Game_->holdFalling();
       break;
   }
 }

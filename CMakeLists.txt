@@ -117,7 +117,7 @@ set(VIEW_SOURCES
         src/client/view/scene/multiplayer_scene.cpp
         src/client/view/window/game_window.cpp
         src/client/view/view.cpp
-        src/client/view/component/game.cpp src/client/view/component/game.hpp)
+        src/client/view/component/game.cpp src/client/view/component/game.hpp src/client/view/component/score_board.cpp src/client/view/component/score_board.hpp src/client/view/component/tetri_holder.cpp src/client/view/component/tetri_holder.hpp)
 
 set(TCP_SOURCES
         src/client/tetris_client.cpp

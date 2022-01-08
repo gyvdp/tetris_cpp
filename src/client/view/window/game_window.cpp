@@ -30,12 +30,13 @@ namespace tetris::view::window {
 GameWindow::GameWindow(QWidget *parent)
     : QGraphicsView(parent), gameScene_{nullptr} {
   setFrameStyle(QFrame::NoFrame);
-  setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+  // setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  // setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   scale(0.4, 0.4);
 }
+
 void GameWindow::start(std::string playerName, unsigned long highScore) {
   player_ = new model::game::Player{playerName, highScore};
   gameScene_ = new scene::MultiplayerScene{player_, this};
