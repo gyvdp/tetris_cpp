@@ -39,13 +39,8 @@ enum Action {
   SOFTDROP,
   HARDDROP,
   ROTATE,
+  LOCK
 };
-
-/**
- * @brief Array with all the different types of actions
- */
-static constexpr std::array ACTION{CONNECTION, LEAVE,    MOVE, HOLD,
-                                   SOFTDROP,   HARDDROP, LOST};
 }  // namespace tetris::model::notification
 
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_NOTIFIER_ACTION_HPP_

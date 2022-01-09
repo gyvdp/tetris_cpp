@@ -36,6 +36,11 @@ class Client : public QWidget {
   Q_OBJECT
  private:
   /**
+   * @brief Socket of the client.
+   */
+  tetris::client::Socket_Client *socket_client_;
+
+  /**
    * @brief Window of the game
    */
   window::GameWindow *game_;
@@ -44,14 +49,16 @@ class Client : public QWidget {
   /**
    * @brief Default constructor for a View
    */
-  Client();
+  Client(const QHostAddress &ip, int port, const std::string &name);
 
   /**
    * @brief Destructor for the view
    */
   ~Client();
 
-  void start();
+  void start(std::string playerName, unsigned long highScore,
+             std::string opponentName, unsigned long opponentHighScore,
+             unsigned long seed);
 };
 }  // namespace tetris::client
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_TETRIS_HPP_

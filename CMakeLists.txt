@@ -116,6 +116,7 @@ set(CLIENT_SOURCES
         src/client/component/mino.cpp
         src/client/component/matrix.cpp
         src/client/component/game.cpp
+        src/client/socket_client.cpp
         src/client/component/score_board.cpp
         src/client/component/tetri_holder.cpp
         )
