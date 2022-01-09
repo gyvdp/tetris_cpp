@@ -22,6 +22,8 @@
 // SOFTWARE.
 #include "client/socket_client.hpp"
 
+#include <QDebug>
+#include <iostream>
 #include <regex>
 
 #include "client/component/matrix.hpp"
@@ -105,6 +107,10 @@ void Socket_Client::deserialize(QByteArray& message) {
         break;
       case model::notification::HOLD:
         emit hold();
+        break;
+      case model::notification::ROTATE:
+        qDebug() << "Rotate" << data["clockwise"].toBool();
+        emit rotate(data["clockwise"].toBool());
         break;
       default:
         throw std::invalid_argument("Unknown action");

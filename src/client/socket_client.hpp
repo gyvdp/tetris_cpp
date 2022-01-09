@@ -72,13 +72,12 @@ class Socket_Client : public QObject {
   void slot_Connected();
   void slot_Disconnected();
   void slot_Reading();
-  // void matrixUpdate(MatrixArray array);
-  //   void scoreUpdate(unsigned score);
+  // ---------------------------
   void slot_Rotate(bool clockwise);
-  //  void nextUpdate(Tetrimino::Mino m);
   void slot_Hold(model::tetrimino::Mino m);
   void slot_Move(model::tetrimino::Direction direction);
-  //  void linesUpdate(unsigned lines);
+  //  void slot_Next();
+  //  void slot_SoftDrop();
 };
 }  // namespace tetris::client
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_SOCKET_CLIENT_HPP_

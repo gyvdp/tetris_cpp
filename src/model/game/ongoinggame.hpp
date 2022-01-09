@@ -24,6 +24,7 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_ONGOINGGAME_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_ONGOINGGAME_HPP_
 
+#include <QDebug>
 #include <QObject>
 #include <QTimer>
 #include <memory>
