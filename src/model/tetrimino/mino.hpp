@@ -21,15 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-#include "src/model/game/states/notstartedstate.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_
 
-TEST_CASE("stopped state") {}
+#include <array>
+
+namespace tetris::model::tetrimino {
+/**
+ * @brief Enumeration of the different types of minos
+ */
+enum Mino {
+  L_MINO,
+  J_MINO,
+  Z_MINO,
+  S_MINO,
+  O_MINO,
+  I_MINO,
+  T_MINO,
+};
+
+/**
+ * @brief Array with all the different types of minos
+ */
+static constexpr std::array MINOS{L_MINO, J_MINO, Z_MINO, S_MINO,
+                                  O_MINO, T_MINO, I_MINO};
+}  // namespace tetris::model::tetrimino
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_MINO_HPP_

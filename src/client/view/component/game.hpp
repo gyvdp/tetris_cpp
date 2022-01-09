@@ -44,9 +44,10 @@ class Game : public QGraphicsItemGroup {
  public:
   explicit Game(QGraphicsItem *parent = nullptr);
 
-  void updateMatrix(MatrixArray array);
+  [[nodiscard]] QRectF boundingRect() const override;
 
-  QRectF boundingRect() const override;
+ public slots:
+  void updateMatrix(MatrixArray array);
 };
 }  // namespace tetris::view::component
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

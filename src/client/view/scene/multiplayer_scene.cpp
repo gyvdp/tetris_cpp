@@ -35,12 +35,16 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
       player1Game_{new model::game::OngoingGame(player1, 42)} {
   addItem(player1_);
 
-  connect(
-      this, &scene::MultiplayerScene::matrixChanged, this,
-      [this](MatrixArray array) { player1_->updateMatrix(std::move(array)); });
+  //  connect(
+  //      this, &scene::MultiplayerScene::matrixChanged, this,
+  //      [this](MatrixArray array) { player1_->updateMatrix(std::move(array));
+  //      });
 
-  player1Game_->connectBoard(
-      [this](MatrixArray array) { emit matrixChanged(std::move(array)); });
+  connect(player1Game_, &model::game::OngoingGame::matrixUpdate,
+          [this](MatrixArray array) {
+            qDebug() << "matrixUpdate";
+            emit player1_->updateMatrix(std::move(array));
+          });
 
   player1Game_->start();
 
@@ -84,6 +88,8 @@ void MultiplayerScene::keyPressEvent(QKeyEvent *event) {
     case Qt::Key_Shift:
       player1Game_->holdFalling();
       break;
+    case Qt::Key_A:
+      player1Game_->moveFalling(model::tetrimino::DOWN);
   }
 }
 

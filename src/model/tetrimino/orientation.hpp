@@ -21,15 +21,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-#include "src/model/game/states/notstartedstate.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
 
-TEST_CASE("stopped state") {}
+#include <array>
+namespace tetris::model::tetrimino {
+
+/**
+ * @brief Enumeration of different Orientations of a Tetrimino (for rotations)
+ */
+enum Orientation { NORTH, EAST, SOUTH, WEST };
+
+/**
+ * @brief Array with all the possible Orientations
+ */
+static constexpr std::array ORIENTATIONS{NORTH, EAST, SOUTH, WEST};
+
+/**
+ * Computes the next orientation after the rotation
+ * @param start The start Orientation
+ * @param clockwise true if clockwise, false if counter-clockwise
+ * @return The Orientation after the rotation
+ */
+static constexpr Orientation next(Orientation orientation, bool clockwise) {
+  switch (orientation) {
+    case NORTH:
+      return clockwise ? EAST : WEST;
+    case EAST:
+      return clockwise ? SOUTH : NORTH;
+    case SOUTH:
+      return clockwise ? WEST : EAST;
+    case WEST:
+      return clockwise ? NORTH : SOUTH;
+  }
+}
+
+}  // namespace tetris::model::tetrimino
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_

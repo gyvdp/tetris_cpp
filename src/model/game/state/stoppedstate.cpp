@@ -21,15 +21,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-#include "src/model/game/states/notstartedstate.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#include "stoppedstate.hpp"
 
-TEST_CASE("stopped state") {}
+#include "model/game/state/exceptions/stoppedgameexception.hpp"
+
+namespace tetris::model::game::states {
+
+#define stoppedGame(arg)                                           \
+  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
+  ;
+
+void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+
+void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
+
+void StoppedState::move(tetrimino::Direction direction) {
+  stoppedGame("game cannot move if stopped");
+}
+
+void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
+
+void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
+
+void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
+
+void StoppedState::rotate(bool clockwise) {
+  stoppedGame("game cannot rotate if stopped");
+}
+
+void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
+
+}  // namespace tetris::model::game::states

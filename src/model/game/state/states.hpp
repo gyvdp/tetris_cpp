@@ -21,15 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-#include "src/model/game/states/notstartedstate.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_STATE_STATES_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_STATE_STATES_HPP_
 
-TEST_CASE("stopped state") {}
+namespace tetris::model::game::states {
+enum State {
+  NOT_STARTED,
+  FALLING,
+  LOCKED_DOWN,
+  LOCKED_OUT,
+  BLOCKED_OUT,
+  STOPPED
+};
+}  // namespace tetris::model::game::states
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_STATE_STATES_HPP_

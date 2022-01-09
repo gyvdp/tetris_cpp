@@ -21,15 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-#include "src/model/game/states/notstartedstate.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_LTETRIMINO_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_LTETRIMINO_HPP_
 
-TEST_CASE("stopped state") {}
+#include "model/tetrimino/shape/lshape.hpp"
+#include "model/tetrimino/tetrimino.hpp"
+
+namespace tetris::model::tetrimino {
+
+/**
+ * @brief Class representing LTetrimino which is a child of Tetrimino
+ */
+class LTetrimino : public Tetrimino {
+ public:
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  inline explicit LTetrimino();
+
+};
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
+LTetrimino::LTetrimino() : Tetrimino{shape::lShapes, L_MINO} {}
+
+
+}  // namespace tetris::model::tetrimino
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_LTETRIMINO_HPP_

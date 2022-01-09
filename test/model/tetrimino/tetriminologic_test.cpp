@@ -32,7 +32,7 @@ using namespace tetris::model::tetrimino;
 using namespace tetris::model::game::states::exceptions;
 TEST_CASE("End of game") {
   tetris::model::game::Player player("John", 123);
-  tetris::model::game::OngoingGame game(&player, 1);
+  tetris::model::game::OngoingGame game(&player, 1, nullptr);
   game.getMatrix().set(S_MINO, 1, 4);
   REQUIRE_THROWS_AS(createTetrimino(O_MINO, game.getMatrix().generateMask()),
                     BlockedOutException);

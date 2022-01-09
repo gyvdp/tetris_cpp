@@ -21,16 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/fallingstate.hpp"
+#include "src/model/game/states/fallingstate.hpp"
 
 #include "catch2/catch.hpp"
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
 #include "model/game/state/exceptions/illegalstateexception.hpp"
 #include "model/game/state/exceptions/startongoinggameexception.hpp"
-#include "model/game/state/notstartedstate.hpp"
 #include "model/tetrimino/direction.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
+#include "src/model/game/states/notstartedstate.hpp"
 
 using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;

@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/blockedoutstate.hpp"
+#include "src/model/game/states/blockedoutstate.hpp"
 
 #include "catch2/catch.hpp"
 #include "model/game/ongoinggame.hpp"
@@ -33,6 +33,4 @@ using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;
 using namespace tetris::model::game;
 
-TEST_CASE("blocked out state") {
-
-}
+TEST_CASE("blocked out state") {}

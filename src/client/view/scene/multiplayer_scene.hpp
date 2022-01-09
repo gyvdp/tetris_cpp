@@ -30,6 +30,7 @@
 #include "client/view/component/matrix.hpp"
 #include "client/view/component/mino.hpp"
 #include "model/game/ongoinggame.hpp"
+
 namespace tetris::view::scene {
 /**
  * @brief This class represents a GameScene
@@ -55,9 +56,6 @@ class MultiplayerScene : public QGraphicsScene {
    * @brief Destructor of a GameScene
    */
   ~MultiplayerScene() override;
-
- signals:
-  void matrixChanged(MatrixArray matrix);
 };
 }  // namespace tetris::view::scene
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_

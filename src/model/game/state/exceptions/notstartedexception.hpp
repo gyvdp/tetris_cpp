@@ -21,15 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "catch2/catch.hpp"
-#include "model/game/ongoinggame.hpp"
-#include "model/game/player.hpp"
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/tetrimino/direction.hpp"
-#include "model/tetrimino/tetrimino_logic.hpp"
-#include "src/model/game/states/notstartedstate.hpp"
-using namespace tetris::model::game::states;
-using namespace tetris::model::tetrimino;
-using namespace tetris::model::game;
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_HPP_
 
-TEST_CASE("stopped state") {}
+namespace tetris::model::game::states::exceptions {
+
+/**
+ * @brief Throws an exception signaling the game has not been started.
+ */
+class NotStartedException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for not started exception.
+   * @param mess Message to display in exception.
+   */
+  explicit NotStartedException(const std::string& mess, const char* file,
+                               int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +mess){};
+  ~NotStartedException() override = default;
+};
+
+}  // namespace tetris::model::game::states::exceptions
+
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_NOTSTARTEDEXCEPTION_HPP_

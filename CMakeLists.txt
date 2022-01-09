@@ -2,25 +2,28 @@ cmake_minimum_required(VERSION 3.19)
 project(esi_atlir5_atlc_project2)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 set(QT_VERSION 6)
 set(REQUIRED_LIBS Core Widgets Network)
 set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Widgets Qt6::Network)
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
-find_package(Boost COMPONENTS system thread REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall -Wno-unused-variable")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic-errors -Wall -Wno-unused-variable")
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
     set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 endif ()
 
-include_directories(include)
 include_directories(resources)
 include_directories(src)
+
 
 #########################################################################################
 # SET UP / DOWNLOAD NEEDED LIBRARIES
@@ -46,12 +49,12 @@ set(MODEL_SOURCES
         src/model/tetrimino/tetrimino.cpp
         src/model/game/tetriminoGenerator.cpp
         src/model/game/ongoinggame.cpp
-        src/model/game/states/notstartedstate.cpp
-        src/model/game/states/fallingstate.cpp
-        src/model/game/states/lockeddownstate.cpp
-        src/model/game/states/lockedoutstate.cpp
-        src/model/game/states/stoppedstate.cpp
-        src/model/game/states/blockedoutstate.cpp
+        src/model/game/state/notstartedstate.cpp
+        src/model/game/state/fallingstate.cpp
+        src/model/game/state/lockeddownstate.cpp
+        src/model/game/state/lockedoutstate.cpp
+        src/model/game/state/stoppedstate.cpp
+        src/model/game/state/blockedoutstate.cpp
         src/model/notification/notification.cpp
         )
 
@@ -82,7 +85,8 @@ set(MODEL_TESTS
 
 add_library(MODEL_LIB ${MODEL_SOURCES})
 
-target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED} Boost::system Boost::thread)
+target_link_libraries(MODEL_LIB PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+set_property(TARGET MODEL_LIB PROPERTY AUTOMOC ON)
 
 add_executable(model_test ${MODEL_TESTS})
 target_link_libraries(model_test Catch2 MODEL_LIB)
@@ -133,10 +137,10 @@ set_property(TARGET CLIENT_LIB PROPERTY AUTORCC ON)
 # EXECUTABLES
 #########################################################################################
 add_executable(tetris_server src/server/main.cpp)
-add_executable(tetris_client src/client/main.cpp)
+add_executable(tetris_client src/client/main.cpp ${VIEW_SOURCES} ${MODEL_SOURCES})
 
-target_link_libraries(tetris_client PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
-target_link_libraries(tetris_server PUBLIC MODEL_LIB SERVER_LIB CLIENT_LIB ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_client PUBLIC ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(tetris_server PUBLIC ${REQUIRED_LIBS_QUALIFIED})
 
 if (WIN32)
     set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")

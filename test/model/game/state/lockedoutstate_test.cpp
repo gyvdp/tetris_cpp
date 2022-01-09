@@ -24,14 +24,12 @@
 #include "catch2/catch.hpp"
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
-#include "model/game/state/blockedoutstate.hpp"
 #include "model/game/state/exceptions/stoppedgameexception.hpp"
 #include "model/tetrimino/direction.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
+#include "src/model/game/states/blockedoutstate.hpp"
 using namespace tetris::model::game::states;
 using namespace tetris::model::tetrimino;
 using namespace tetris::model::game;
 
-TEST_CASE("locked out state") {
-
-}
+TEST_CASE("locked out state") {}

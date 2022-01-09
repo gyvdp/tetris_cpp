@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/notstartedstate.hpp"
+#include "src/model/game/states/notstartedstate.hpp"
 
 #include "catch2/catch.hpp"
 #include "model/game/ongoinggame.hpp"
