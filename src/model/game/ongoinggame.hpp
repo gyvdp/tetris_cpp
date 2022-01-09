@@ -86,17 +86,17 @@ class OngoingGame : public QObject {
   /**
    * @brief Score of the game.
    */
-  int score_;
+  unsigned score_;
 
   /**
    * @brief Level of the game.
    */
-  int level_;
+  unsigned level_;
 
   /**
    * @brief Number of lines deleted in the game.
    */
-  int lines_;
+  unsigned lines_;
 
   /**
    * @brief Timer of the game.
@@ -121,7 +121,7 @@ class OngoingGame : public QObject {
    * @brief Getter for the level.
    * @return The level of the current game.
    */
-  inline int level() const;
+  inline unsigned level() const;
 
   /**
    * @brief This method is used to change the state of the actual game
@@ -155,13 +155,13 @@ class OngoingGame : public QObject {
    * @brief Setter for the score.
    * @param score Score to set.
    */
-  inline void score(int score);
+  inline void score(unsigned score);
 
   /**
    * @brief Getter for the score.
    * @return Score of the current game.
    */
-  [[nodiscard]] inline int score() const;
+  [[nodiscard]] inline unsigned score() const;
 
   /**
    * @brief Getter of the falling Tetrimino
@@ -285,7 +285,20 @@ class OngoingGame : public QObject {
   Matrix &getMatrix();
 
  signals:
+
   void matrixUpdate(MatrixArray array);
+
+  void scoreUpdate(unsigned score);
+
+  void rotateUpdate(bool clockwise);
+
+  void nextUpdate(tetrimino::Mino m);
+
+  void holdUpdate(tetrimino::Mino m);
+
+  void moveUpdate(tetrimino::Direction direction);
+
+  void linesUpdate(unsigned lines);
 };
 
 /******************************************************************************
@@ -302,15 +315,15 @@ std::shared_ptr<tetrimino::Tetrimino> OngoingGame::falling() const {
   return falling_;
 }
 
-int OngoingGame::score() const { return score_; }
+unsigned OngoingGame::score() const { return score_; }
 
 void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
   falling_ = std::move(tetrimino);
 }
 
-void OngoingGame::score(int score) { score_ += score; }
+void OngoingGame::score(unsigned score) { score_ += score; }
 
-int OngoingGame::level() const { return level_; }
+unsigned OngoingGame::level() const { return level_; }
 
 OptionalMino OngoingGame::next() const { return next_; }
 
