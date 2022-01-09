@@ -61,7 +61,7 @@ class Notification {
    * @param username username of the user
    * @return QJsonDocument of a action and his additional data
    */
-  static QJsonDocument action(Action action, const std::string& username);
+  static QJsonDocument action(Action action, const QString& username);
 
   /**
    * @brief Serialize a Action into a QJsonDocument
@@ -77,7 +77,7 @@ class Notification {
    * @param score of the player when he lost or disconnects.
    * @return QJsonDocument of a action and his additional data
    */
-  static QJsonDocument action(Action action, int score);
+  static QJsonDocument action(Action action, unsigned long score);
 
   /**
    * @brief Serialize all the data that a user need for starting his game
@@ -88,10 +88,11 @@ class Notification {
    * @param seed seed of the bag generator
    * @return return QJsonDocument of all the data
    */
-  static QJsonDocument starting_game(const std::string& player_name,
-                                     int player_score,
-                                     const std::string& opponent_name,
-                                     int opponent_score, uint_fast64_t seed);
+  static QJsonDocument starting_game(const QString& player_name,
+                                     unsigned long player_score,
+                                     const QString& opponent_name,
+                                     unsigned long opponent_score,
+                                     uint_fast64_t seed);
 
   /**
    * @brief Interpret the message and act on the game accordingly

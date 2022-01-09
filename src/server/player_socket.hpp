@@ -28,46 +28,87 @@
 #include <QJsonObject>
 #include <QTcpSocket>
 #include <utility>
+
 namespace tetris::server {
 class Player_Socket : QObject {
   Q_OBJECT
  private:
   QTcpSocket* socket_;
-  const std::string name_;
+  const QString name_;
+  unsigned long highScore_;
 
  public:
-  explicit inline Player_Socket(QTcpSocket*& socket, std::string name,
-                                QObject* parent);
+  /**
+   * @brief Constructor of Player_Socket
+   * @param socket Socket to communicate with the player
+   * @param name Name of the player
+   * @param parent Where the player is in
+   */
+  explicit inline Player_Socket(QTcpSocket*& socket, QString name,
+                                unsigned long highscore, QObject* parent);
 
-  [[nodiscard]] inline QTcpSocket* socket() const;
+  /**
+   * @brief Getter of socket
+   * @return pointer of socket
+   */
+  [[nodiscard]] inline QTcpSocket* socket();
 
-  [[nodiscard]] inline const std::string& name() const;
+  /**
+   * @brief  Getter of Name
+   * @return Name
+   */
+  [[nodiscard]] inline QString name();
 
-  inline void write(const QJsonDocument& doc);
+  /**
+   * @brief Write on the socket from a QJsonDocument
+   * @param doc QJsonDocument with information
+   */
+  [[maybe_unused]] [[maybe_unused]] inline void write(const QJsonDocument& doc);
 
+  /**
+   * @brief Write on the socket from a QByteArray
+   * @param data QBytesArray with information
+   */
   inline void write(const QByteArray& data);
 
+  /**
+   * @brief Setter of Parent
+   * @param parent new Parent to link with
+   */
   inline void parent(QObject* parent);
+
+  /**
+   * @brief Getter of HighScore
+   * @return HighScore of the player
+   */
+  [[nodiscard]] inline unsigned long highScore() const;
 };
 
-Player_Socket::Player_Socket(QTcpSocket*& socket, std::string name,
-                             QObject* parent)
-    : QObject(parent), socket_{socket}, name_(std::move(name)) {
+Player_Socket::Player_Socket(QTcpSocket*& socket, QString name,
+                             unsigned long highscore, QObject* parent)
+    : QObject(parent),
+      socket_{socket},
+      name_(std::move(name)),
+      highScore_(highscore) {
   this->socket_->disconnect();
 }
 
-QTcpSocket* Player_Socket::socket() const { return socket_; }
-const std::string& Player_Socket::name() const { return name_; }
+QTcpSocket* Player_Socket::socket() { return this->socket_; }
+
+QString Player_Socket::name() { return this->name_; }
+
+[[maybe_unused]] void Player_Socket::write(const QJsonDocument& doc) {
+  this->socket_->write(doc.toJson(QJsonDocument::Indented));
+  this->socket_->waitForBytesWritten();
+}
+
 void Player_Socket::write(const QByteArray& data) {
   this->socket_->write(data);
   this->socket_->waitForBytesWritten();
 }
 
-void Player_Socket::write(const QJsonDocument& doc) {
-  this->socket_->write(doc.toJson(QJsonDocument::Compact));
-}
-
 void Player_Socket::parent(QObject* parent) { this->setParent(parent); }
 
+unsigned long Player_Socket::highScore() const { return this->highScore_; }
 }  // namespace tetris::server
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_PLAYER_SOCKET_HPP_

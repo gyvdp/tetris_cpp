@@ -22,7 +22,6 @@
 // SOFTWARE.
 
 #include <QApplication>
-#include <iostream>
 
 #include "client/client.hpp"
 
@@ -32,6 +31,5 @@ int main(int argc, char *argv[]) {
 
   auto client = tetris::client::Client{};
   client.start();
-
   return QApplication::exec();
 }

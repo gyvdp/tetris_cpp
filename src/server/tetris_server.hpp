@@ -23,7 +23,6 @@
 
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
-#include <QDebug>
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -31,8 +30,10 @@
 #include <queue>
 #include <vector>
 
+#include "iostream"
 #include "match.hpp"
 #include "player_socket.hpp"
+#include "server/exceptions/server_start_exception.hpp"
 
 namespace tetris::server {
 
@@ -46,16 +47,61 @@ class Tetris_Server : public QObject {
   std::vector<Match *> matchVector_;
   unsigned matchID_;
 
+  /**
+   * @brief Create a Player_socket
+   * @param doc QJsonDocument with his name
+   * @param socket socket of the player
+   * @return Player_socket created
+   */
+  Player_Socket *createPlayer(QJsonDocument &doc, QTcpSocket *socket);
+  /**
+   * @brief Put the player_socket in the queue
+   * @param player_socket player_socket that we move
+   */
+  void joinQueue(Player_Socket *&player_socket);
+  /**
+   * @brief Put the player_socket in a match with le first one in the queue;
+   * @param player_socket player_socket that we move
+   */
+  void joinMatch(Player_Socket *&player_socket);
+
+  /**
+   * @brief will open a json file and will research for the best score of the
+   * player.
+   * @param name name of the player.
+   * @return player's best score in String.
+   */
+  static QString findScoreInJson(const QString &name);
+
  public:
+  /**
+   * @brief Constructor of Tetris_Server
+   * @param parent Parent of this class
+   */
   explicit Tetris_Server(QObject *parent = nullptr);
 
  signals:
 
  public slots:
+  /**
+   * @brief Action when a user is connecting
+   */
   void slot_Connected();
+  /**
+   * @brief Action when a user is disconnecting
+   */
   void slot_Disconnected();
+  /**
+   * @brief Action when a player is disconnecting
+   */
   void slot_PlayerDisconnected();
+  /**
+   * @brief Action when a match ends
+   */
   void slot_Match_Ended(Match *match);
+  /**
+   * @brief Action when a user send something
+   */
   void slot_Reading();
 };
 }  // namespace tetris::server

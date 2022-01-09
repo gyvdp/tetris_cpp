@@ -23,7 +23,7 @@
 
 #include "server/match.hpp"
 
-#include <utility>
+#include <QFile>
 
 #include "model/notification/notification.hpp"
 
@@ -32,7 +32,6 @@ namespace tetris::server {
 Match::Match(Player_Socket*& player1, Player_Socket*& player2, unsigned id,
              QObject* parent)
     : QObject(parent), players_({player1, player2}), id_(id) {
-  // Connect
   for (const auto& player : players_) {
     player->parent(this);
     connect(player->socket(), &QAbstractSocket::disconnected, this,
@@ -41,22 +40,10 @@ Match::Match(Player_Socket*& player1, Player_Socket*& player2, unsigned id,
             &Match::slot_Reading);
   }
 
-  // Write STARTING GAME NOTIFICATION
-  qDebug() << "Match started : ";
-
-  this->players_[0]->socket()->write(
-      tetris::model::notification::Notification::starting_game(
-          players_[0]->name(), 78785, players_[1]->name(), 45, 54353)
-          .toJson(QJsonDocument::Indented));
-
-  this->players_[1]->socket()->write(
-      tetris::model::notification::Notification::starting_game(
-          players_[1]->name(), 45, players_[0]->name(), 54353, 54353)
-          .toJson(QJsonDocument::Indented));
+  sendStarting();
 }
 
 void Match::slot_Disconnected() {
-  qDebug() << "Match : disconnected...";
   bool finish = true;
   for (auto& player : players_) {
     if (player->socket()->state() != QAbstractSocket::UnconnectedState) {
@@ -73,6 +60,11 @@ void Match::slot_Reading() {
   for (auto& sender : this->players_) {
     if (sender->socket()->state() != QAbstractSocket::UnconnectedState) {
       auto data = sender->socket()->readAll();
+      if (QJsonDocument::fromJson(data)
+              .object()["data"]
+              .toObject()["action"]
+              .toInt() == model::notification::LOST)
+        playerLost(sender, data);
       for (auto& receiver : this->players_) {
         if (sender->name() != receiver->name() &&
             receiver->socket()->state() != QAbstractSocket::UnconnectedState) {
@@ -83,4 +75,58 @@ void Match::slot_Reading() {
     }
   }
 }
+
+void Match::sendStarting() {
+  auto seed = time(nullptr);
+  this->players_[0]->socket()->write(
+      tetris::model::notification::Notification::starting_game(
+          players_[0]->name(), players_[0]->highScore(), players_[1]->name(),
+          players_[1]->highScore(), seed)
+          .toJson(QJsonDocument::Indented));
+
+  this->players_[1]->socket()->write(
+      tetris::model::notification::Notification::starting_game(
+          players_[1]->name(), players_[1]->highScore(), players_[0]->name(),
+          players_[0]->highScore(), seed)
+          .toJson(QJsonDocument::Indented));
+}
+
+void Match::playerLost(Player_Socket*& p_socket, QByteArray data) {
+  // TODO Faire l'écriture du json.
+
+  //  QJsonDocument doc = QJsonDocument::fromJson(data);
+  //  QString score = doc.object()["data"].toObject()["score"].toString();
+  //  if (p_socket->highScore() < score.toULong()) {
+  //    QFile file("playerdata.json");
+  //    QJsonDocument file_doc;
+  //    if (file.exists()) {
+  //      std::cout << "1";
+  //      file.open(QIODevice::ReadWrite);
+  //      file_doc = QJsonDocument::fromJson(file.readAll());
+  //      if (p_socket->highScore() != 0) {
+  //        file_doc.object()["players"]
+  //            .toObject()[p_socket->name()]
+  //            .toObject()["highscore"] = score;
+  //      } else {
+  //        std::cout << "2";
+  //        QJsonObject player;
+  //        player.insert("highscore", score);
+  //        file_doc.object()["players"].toObject().insert(p_socket->name(),
+  //                                                       player);
+  //      }
+  //    } else {
+  //      std::cout << "3";
+  //      QJsonObject players;
+  //      QJsonObject player;
+  //      player.insert("highscore", score);
+  //      players.insert(p_socket->name(), player);
+  //      file_doc.setObject(players);
+  //    }
+  //    file.seek(0);
+  //    file.write(file_doc.toJson(QJsonDocument::Indented));
+  //    file.flush();
+  //    file.close();
+  //  }
+}
+
 }  // namespace tetris::server

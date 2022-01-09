@@ -25,14 +25,14 @@
 
 namespace tetris::model::notification {
 
-QJsonDocument Notification::action(Action action, const std::string& username) {
+QJsonDocument Notification::action(Action action, const QString& username) {
   if (action != CONNECTION) throw std::invalid_argument("Wrong action");
   QJsonObject object;
   QJsonObject data;
   QJsonObject player;
   object["key"] = "ACTION";
   data["action"] = action;
-  player["username"] = QString::fromStdString(username);
+  player["username"] = username;
   data.insert("player", player);
   object.insert("data", data);
   QJsonDocument doc = QJsonDocument(object);
@@ -55,7 +55,8 @@ QJsonDocument Notification::action(Action action,
 }
 
 QJsonDocument Notification::action(Action action) {
-  if (action != HOLD && action != HARDDROP && action != SOFTDROP)
+  if (action != HOLD && action != HARDDROP && action != SOFTDROP &&
+      action != LEAVE)
     throw std::invalid_argument("Wrong action");
   QJsonObject object;
   QJsonObject data;
@@ -66,14 +67,13 @@ QJsonDocument Notification::action(Action action) {
   return doc;
 }
 
-QJsonDocument Notification::action(Action action, int score) {
-  if (action != LOST && action != LEAVE)
-    throw std::invalid_argument("Wrong action");
+QJsonDocument Notification::action(Action action, unsigned long score) {
+  if (action != LOST) throw std::invalid_argument("Wrong action");
   QJsonObject object;
   QJsonObject data;
   object["key"] = "ACTION";
   data["action"] = action;
-  data["score"] = score;
+  data["score"] = QString::fromStdString(std::to_string(score));
   object.insert("data", data);
   QJsonDocument doc = QJsonDocument(object);
   return doc;
@@ -91,23 +91,25 @@ QJsonDocument Notification::action(Action action, bool clockwise) {
   return doc;
 }
 
-QJsonDocument Notification::starting_game(const std::string& player_name,
-                                          int player_score,
-                                          const std::string& opponent_name,
-                                          int opponent_score,
+QJsonDocument Notification::starting_game(const QString& player_name,
+                                          unsigned long player_score,
+                                          const QString& opponent_name,
+                                          unsigned long opponent_score,
                                           uint_fast64_t seed) {
   QJsonObject object;
   QJsonObject data;
   QJsonObject playerObject;
   QJsonObject opponentObject;
   object["key"] = "STARTING_GAME";
-  playerObject["name"] = QString::fromStdString(player_name);
-  playerObject["highscore"] = player_score;
-  opponentObject["name"] = QString::fromStdString(opponent_name);
-  opponentObject["highscore"] = opponent_score;
+  playerObject["name"] = player_name;
+  playerObject["highscore"] =
+      QString::fromStdString(std::to_string(player_score));
+  opponentObject["name"] = opponent_name;
+  opponentObject["highscore"] =
+      QString::fromStdString(std::to_string(opponent_score));
   data.insert("player", playerObject);
   data.insert("opponent", opponentObject);
-  data["seed"] = static_cast<int>(seed);
+  data["seed"] = QString::fromStdString(std::to_string(seed));
   object.insert("data", data);
   QJsonDocument doc = QJsonDocument(object);
   return doc;
@@ -115,37 +117,39 @@ QJsonDocument Notification::starting_game(const std::string& player_name,
 void Notification::deserialize(QByteArray& message,
                                model::game::OngoingGame& playerGame,
                                model::game::OngoingGame& opponentGame) {
-  QJsonDocument doc = QJsonDocument::fromJson(message);
-  QString key = doc.object()["key"].toString();
-  QJsonObject data = doc.object()["data"].toObject();
-  if (key == "ACTION") {
-    switch (data["action"].toInt()) {
-      case LEAVE:
-        opponentGame.stop();
-      case LOST:
-        opponentGame.stop();
-      case MOVE:
-        opponentGame.move(
-            static_cast<tetrimino::Direction>(data["direction"].toInt()));
-        break;
-      case SOFTDROP:
-        opponentGame.softDrop();
-        break;
-      case HARDDROP:
-        opponentGame.hardDrop();
-        break;
-      case HOLD:
-        opponentGame.holdFalling();
-        break;
-      default:
-        qDebug() << "Action unknown";
-    }
-  } else if (key == "STARTING_GAME") {
-    //    data["player"].toObject()["name"].toString().toStdString();
-    //    data["player"].toObject()["highscore"].toInt();
-    //    data["opponent"].toObject()["name"].toString().toStdString();
-    //    data["opponent"].toObject()["highscore"].toInt();
-  }
+  // TODO
+
+  //  QJsonDocument doc = QJsonDocument::fromJson(message);
+  //  QString key = doc.object()["key"].toString();
+  //  QJsonObject data = doc.object()["data"].toObject();
+  //  if (key == "ACTION") {
+  //    switch (data["action"].toInt()) {
+  //      case LEAVE:
+  //        opponentGame.stop();
+  //      case LOST:
+  //        opponentGame.stop();
+  //      case MOVE:
+  //        opponentGame.move(
+  //            static_cast<tetrimino::Direction>(data["direction"].toInt()));
+  //        break;
+  //      case SOFTDROP:
+  //        opponentGame.softDrop();
+  //        break;
+  //      case HARDDROP:
+  //        opponentGame.hardDrop();
+  //        break;
+  //      case HOLD:
+  //        opponentGame.holdFalling();
+  //        break;
+  //      default:
+  //        qDebug() << "Action unknown";
+  //    }
+  //  } else if (key == "STARTING_GAME") {
+  //    data["player"].toObject()["name"].toString().toStdString();
+  //    data["player"].toObject()["highscore"].toInt();
+  //    data["opponent"].toObject()["name"].toString().toStdString();
+  //    data["opponent"].toObject()["highscore"].toInt();
+  //  }
 }
 
 }  // namespace tetris::model::notification

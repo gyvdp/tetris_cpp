@@ -22,9 +22,6 @@
 // SOFTWARE.
 #include "client/tetris_client.hpp"
 
-#include <iostream>
-#include <utility>
-
 #include "client/exceptions/connexion_not_possible_exception.hpp"
 
 namespace tetris::client {
@@ -69,7 +66,8 @@ void Tetris_Client::slot_Connected() {
   qDebug() << "connected...";
 
   socket_->write(tetris::model::notification::Notification::action(
-                     model::notification::CONNECTION, this->username_)
+                     model::notification::CONNECTION,
+                     QString::fromStdString(this->username_))
                      .toJson(QJsonDocument::Indented));
   this->socket_->waitForBytesWritten();
 }

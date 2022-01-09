@@ -24,7 +24,6 @@
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_SERVER_MATCH_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_SERVER_MATCH_HPP_
 
-#include <QDebug>
 #include <QString>
 #include <QTcpSocket>
 #include <array>
@@ -40,18 +39,44 @@ class Match : public QObject {
   std::array<Player_Socket*, 2> players_;
 
   unsigned id_;
+  /**
+   * @brief Send to both player the inormation to start a game.
+   */
+  void sendStarting();
+
+  void playerLost(Player_Socket*& p_socket, QByteArray data);
 
  public:
+  /**
+   * @brief Constructor of Match.
+   * @param player1 Player_socket of the first player
+   * @param player2 Player_socket of the second player
+   * @param id id of the game.
+   * @param parent parent of the match
+   */
   explicit Match(Player_Socket*& player1, Player_Socket*& player2, unsigned id,
                  QObject* parent);
 
+  /**
+   * @brief Getter of id
+   * @return id
+   */
   [[nodiscard]] inline unsigned id() const { return this->id_; }
 
  signals:
+  /**
+   * @brief Signal that is emited when the match is finished
+   */
   void matchEnded(tetris::server::Match*);
 
  public slots:
+  /**
+   * @brief Action when a player disconnect
+   */
   void slot_Disconnected();
+  /**
+   * @brief Action when a player write to the match
+   */
   void slot_Reading();
 };
 }  // namespace tetris::server
