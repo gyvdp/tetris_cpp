@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Tetris [CLIENT Andrew]" type="CMakeRunConfiguration" factoryName="Application" folderName="Tetris" singleton="false" PROGRAM_PARAMS="127.0.0.1 9999 Andrew" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esi_atlir5_atlc_project2" TARGET_NAME="tetris_client" CONFIG_NAME="DebugWindows" RUN_TARGET_PROJECT_NAME="esi_atlir5_atlc_project2" RUN_TARGET_NAME="tetris_client">
+  <configuration default="false" name="Tetris [CLIENT Andrew]" type="CMakeRunConfiguration" factoryName="Application" folderName="Tetris" singleton="false" PROGRAM_PARAMS="127.0.0.1 9999 Andrew" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esi_atlir5_atlc_project2" TARGET_NAME="tetris_client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esi_atlir5_atlc_project2" RUN_TARGET_NAME="tetris_client">
     <method v="2">
       <option name="CMake.Explicit.Target" predefinedTargetName="tetris_client" />
     </method>
