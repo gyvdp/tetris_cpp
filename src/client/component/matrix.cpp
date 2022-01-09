@@ -28,10 +28,8 @@
 namespace tetris::client::component {
 Matrix::Matrix(QGraphicsItem *parent)
     : QGraphicsItemGroup{parent},
-      bg_{new QGraphicsPixmapItem{QString{":/bg/board.png"}}},
-      minos_{20, {10, nullptr}} {
-  addToGroup(bg_);
-}
+      bg_{new QGraphicsPixmapItem{QString{":/bg/board.png"}, this}},
+      minos_{20, {10, nullptr}} {}
 
 QRectF Matrix::boundingRect() const { return bg_->boundingRect(); }
 
@@ -58,14 +56,12 @@ void Matrix::set(MatrixArray matrix) {
                         static_cast<double>(j) +
                     PADDING;
           mino->setPos({x, y});
-          addToGroup(mino);
           minos_[i][j] = mino;
         }
       } else {
         if (matrix[i][j].has_value()) {
           minos_[i][j]->set(matrix[i][j]);
         } else {
-          removeFromGroup(minos_[i][j]);
           delete minos_[i][j];
           minos_[i][j] = nullptr;
         }

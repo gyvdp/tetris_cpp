@@ -21,32 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
-
-#include <QGraphicsItemGroup>
-
-#include "matrix.hpp"
-#include "score_board.hpp"
 #include "tetri_holder.hpp"
 
 namespace tetris::client::component {
-class Game : public QGraphicsItemGroup {
- protected:
-  /**
-   * @brief The matrix of the game
-   */
-  component::Matrix *matrix_;
-  component::ScoreBoard *scoreBoard_;
-  component::TetriHolder *next_;
-  component::TetriHolder *hold_;
 
- public:
-  explicit Game(QGraphicsItem *parent = nullptr);
+TetriHolder::TetriHolder(QGraphicsItem *parent)
+    : QGraphicsItemGroup(parent),
+      bg_{new QGraphicsPixmapItem{QString{":/bg/tetriminoholder.png"}, this}} {}
 
-  void updateMatrix(MatrixArray array);
+QRectF TetriHolder::boundingRect() const { return bg_->boundingRect(); }
 
-  [[nodiscard]] QRectF boundingRect() const override;
-};
 }  // namespace tetris::client::component
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

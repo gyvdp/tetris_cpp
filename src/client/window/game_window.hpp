@@ -42,7 +42,6 @@ class GameWindow : public QGraphicsView {
    * @brief Scene of a game
    */
   scene::MultiplayerScene *gameScene_;
-
   model::game::Player *player_;
   model::game::Player *player2_;
 
@@ -54,7 +53,7 @@ class GameWindow : public QGraphicsView {
    */
   explicit GameWindow(QWidget *parent = nullptr);
 
-  ~GameWindow();
+  ~GameWindow() override;
 
   void start(std::string playerName, unsigned long highScore,
              std::string opponentName, unsigned long opponentHighScore,

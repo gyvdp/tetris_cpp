@@ -22,6 +22,7 @@
 // SOFTWARE.
 #include "game_window.hpp"
 
+#include <QFontDatabase>
 #include <QKeyEvent>
 
 namespace tetris::client::window {
@@ -29,11 +30,11 @@ namespace tetris::client::window {
 GameWindow::GameWindow(QWidget* parent)
     : QGraphicsView(parent), gameScene_{nullptr} {
   setFrameStyle(QFrame::NoFrame);
-  setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  scale(0.4, 0.4);
+  scale(0.2, 0.2);
+  int id = QFontDatabase::addApplicationFont(":/font/nes.otf");
+  qDebug() << "Font id:" << id;
 }
 
 void GameWindow::start(std::string playerName, unsigned long highScore,
@@ -46,12 +47,20 @@ void GameWindow::start(std::string playerName, unsigned long highScore,
   gameScene_ =
       new scene::MultiplayerScene{player_, player2_, seed, socket, this};
   setScene(gameScene_);
+  //  fitInView(frameRect(), Qt::KeepAspectRatio);
+
+  //  qDebug() << sceneRect();
+  //  qDebug() << frameRect();
 }
 
 GameWindow::~GameWindow() {
   if (player_ != nullptr) {
     delete player_;
     player_ = nullptr;
+  }
+  if (player2_ != nullptr) {
+    delete player2_;
+    player2_ = nullptr;
   }
 }
 

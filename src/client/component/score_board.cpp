@@ -21,32 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
-
-#include <QGraphicsItemGroup>
-
-#include "matrix.hpp"
 #include "score_board.hpp"
-#include "tetri_holder.hpp"
+
+#include <QFontDatabase>
 
 namespace tetris::client::component {
-class Game : public QGraphicsItemGroup {
- protected:
-  /**
-   * @brief The matrix of the game
-   */
-  component::Matrix *matrix_;
-  component::ScoreBoard *scoreBoard_;
-  component::TetriHolder *next_;
-  component::TetriHolder *hold_;
 
- public:
-  explicit Game(QGraphicsItem *parent = nullptr);
+ScoreBoard::ScoreBoard(QGraphicsItem *parent)
+    : QGraphicsItemGroup(parent),
+      bg_{new QGraphicsPixmapItem{QString{":/bg/score.png"}, this}},
+      highScore_{new QGraphicsTextItem{QString{"TOP"}, this}},
+      highScoreValue_{new QGraphicsTextItem{QString{"00000"}, this}},
+      score_{new QGraphicsTextItem{QString{"SCORE"}, this}},
+      scoreValue_{new QGraphicsTextItem{QString{"00000"}, this}} {
+  for (auto &text : {highScore_, highScoreValue_, score_, scoreValue_}) {
+    text->setFont({QFontDatabase::applicationFontFamilies(0).at(0), 64});
+    text->setDefaultTextColor(QColor{255, 255, 255});
+  }
+}
 
-  void updateMatrix(MatrixArray array);
+QRectF ScoreBoard::boundingRect() const { return bg_->boundingRect(); }
 
-  [[nodiscard]] QRectF boundingRect() const override;
-};
 }  // namespace tetris::client::component
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

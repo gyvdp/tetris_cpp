@@ -38,8 +38,11 @@ class MultiplayerScene : public QGraphicsScene {
   Q_OBJECT
  protected:
   component::Game *player1_;
+
   model::game::OngoingGame *player1Game_;
   model::game::OngoingGame *player2Game_;
+
+  component::Game *player2_;
 
   void keyPressEvent(QKeyEvent *event) override;
 

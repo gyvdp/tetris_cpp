@@ -31,9 +31,10 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
                                    model::game::Player *player2,
                                    uint_fast64_t seed, Socket_Client *socket,
                                    QObject *parent)
-    : QGraphicsScene(0, 0, 850, 1590, parent),
+    : QGraphicsScene(parent),
       player1_{new component::Game{}},
       player1Game_{new model::game::OngoingGame(player1, seed)},
+      player2_{new component::Game{}},
       player2Game_{new model::game::OngoingGame(player2, seed)} {
   addItem(player1_);
 
@@ -50,6 +51,14 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
           });
 
   player1Game_->start();
+
+  setBackgroundBrush(QColor{0, 0, 0});
+
+  player2_->setPos(player1_->x() + player1_->boundingRect().width(),
+                   player1_->y());
+
+  addItem(player1_);
+  addItem(player2_);
 }
 
 MultiplayerScene::~MultiplayerScene() {
@@ -59,8 +68,14 @@ MultiplayerScene::~MultiplayerScene() {
   }
 
   if (player1Game_ != nullptr) {
+    player1Game_->stop();
     delete player1Game_;
     player1Game_ = nullptr;
+  }
+
+  if (player2_ != nullptr) {
+    delete player2_;
+    player2_ = nullptr;
   }
 }
 
@@ -83,6 +98,9 @@ void MultiplayerScene::keyPressEvent(QKeyEvent *event) {
       break;
     case Qt::Key_Control:
       player1Game_->rotate(false);
+      break;
+    case Qt::Key_Shift:
+      player1Game_->holdFalling();
       break;
   }
 }
