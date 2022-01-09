@@ -71,17 +71,16 @@ void Match::slot_Disconnected() {
 
 void Match::slot_Reading() {
   for (auto& sender : this->players_) {
-    if (sender->socket()->state() != QAbstractSocket::UnconnectedState)
-    {
+    if (sender->socket()->state() != QAbstractSocket::UnconnectedState) {
       auto data = sender->socket()->readAll();
-          for (auto& receiver : this->players_) {
-            if (sender->name() != receiver->name() && receiver->socket()->state() != QAbstractSocket::UnconnectedState) {
-              receiver->write(data);
-              receiver->socket()->waitForBytesWritten();
-            }
-          }
+      for (auto& receiver : this->players_) {
+        if (sender->name() != receiver->name() &&
+            receiver->socket()->state() != QAbstractSocket::UnconnectedState) {
+          receiver->write(data);
+          receiver->socket()->waitForBytesWritten();
+        }
+      }
     }
-
   }
 }
 }  // namespace tetris::server

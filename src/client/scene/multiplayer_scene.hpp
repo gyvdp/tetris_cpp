@@ -21,34 +21,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include <QGraphicsScene>
 
-namespace tetris::model::game::states {
+#include "client/component/game.hpp"
+#include "client/component/matrix.hpp"
+#include "client/component/mino.hpp"
+#include "model/game/ongoinggame.hpp"
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+namespace tetris::client::scene {
+/**
+ * @brief This class represents a GameScene
+ */
+class MultiplayerScene : public QGraphicsScene {
+  Q_OBJECT
+ protected:
+  component::Game *player1_;
+  model::game::OngoingGame *player1Game_;
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+  void keyPressEvent(QKeyEvent *event) override;
 
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
+ public:
+  /**
+   * @brief Default constructor fot a GameScene
+   * @param parent Parent QObject (for memory)
+   */
+  explicit MultiplayerScene(model::game::Player *player1,
+                            QObject *parent = nullptr);
 
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
+  /**
+   * @brief Destructor of a GameScene
+   */
+  ~MultiplayerScene() override;
 
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+ signals:
+  void matrixChanged(MatrixArray matrix);
+};
+}  // namespace tetris::client::scene
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_

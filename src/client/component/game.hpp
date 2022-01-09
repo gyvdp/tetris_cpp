@@ -21,34 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include <QGraphicsItemGroup>
 
-namespace tetris::model::game::states {
+#include "matrix.hpp"
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+namespace tetris::client::component {
+class Game : public QGraphicsItemGroup {
+ protected:
+  /**
+   * @brief The matrix of the game
+   */
+  component::Matrix *matrix_;
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+ public:
+  explicit Game(QGraphicsItem *parent = nullptr);
 
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
-
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+  void updateMatrix(MatrixArray array);
+};
+}  // namespace tetris::client::component
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_COMPONENT_GAME_HPP_

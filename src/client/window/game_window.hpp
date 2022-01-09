@@ -21,34 +21,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAMEWINDOW_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAMEWINDOW_HPP_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include <QGraphicsView>
 
-namespace tetris::model::game::states {
+#include "client/scene/multiplayer_scene.hpp"
+#include "model/game/ongoinggame.hpp"
+#include "model/game/player.hpp"
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+namespace tetris::client::window {
+/**
+ * @brief This class Represents a GameWindow
+ */
+class GameWindow : public QGraphicsView {
+  Q_OBJECT
+ protected:
+  /**
+   * @brief Scene of a game
+   */
+  scene::MultiplayerScene *gameScene_;
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+  model::game::Player *player_;
 
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
+ public:
+  /**
+   * @brief Default constructor of a GameWindow
+   *
+   * @param parent Parent QWidget (for memory)
+   */
+  explicit GameWindow(QWidget *parent = nullptr);
 
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
+  ~GameWindow();
 
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
+  void start(std::string playerName, unsigned long highScore);
+};
+}  // namespace tetris::client::window
 
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAMEWINDOW_HPP_

@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/fallingstate.hpp"
+#include "model/game/states/fallingstate.hpp"
 
-#include <iostream>
-#include <model/game/state/blockedoutstate.hpp>
-#include <model/game/state/lockedoutstate.hpp>
+#include <model/game/states/blockedoutstate.hpp>
 
-#include "model/game/state/exceptions/blockedoutexception.hpp"
-#include "model/game/state/exceptions/lockedoutexception.hpp"
-#include "model/game/state/exceptions/startongoinggameexception.hpp"
-#include "model/game/state/lockeddownstate.hpp"
-#include "model/game/state/stoppedstate.hpp"
+#include "model/game/states/exceptions/blockedoutexception.hpp"
+#include "model/game/states/exceptions/startongoinggameexception.hpp"
+#include "model/game/states/stoppedstate.hpp"
 #include "model/tetrimino/exceptions/movenotpossibleexception.hpp"
 #include "model/tetrimino/exceptions/rotationnotpossibleexception.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
@@ -70,7 +66,7 @@ void FallingState::holdFalling() {
 void FallingState::softDrop() {
   try {
     game_->moveFalling(tetrimino::DOWN);
-    // game_->refreshFallingTimer();
+    game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
     // game_->state(new LockedDownState(game_));

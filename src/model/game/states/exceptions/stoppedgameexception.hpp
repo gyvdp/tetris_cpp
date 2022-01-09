@@ -21,34 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_STOPPEDGAMEEXCEPTION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_STOPPEDGAMEEXCEPTION_HPP_
+namespace tetris::model::game::states::exceptions {
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+/**
+ * @brief Throws an exception signaling the game has not been stopped.
+ */
+class StoppedGameException : public std::logic_error {
+ public:
+  /**
+   * @brief Constructor for not started exception.
+   * @param mess Message to display in exception.
+   */
+  explicit StoppedGameException(const std::string& mess, const char* file,
+                                int line)
+      : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
+                         mess){};
+  ~StoppedGameException() override = default;
+};
 
-namespace tetris::model::game::states {
-
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
-
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
-
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
-
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+}  // namespace tetris::model::game::states::exceptions
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_GAME_STATE_EXCEPTIONS_STOPPEDGAMEEXCEPTION_HPP_

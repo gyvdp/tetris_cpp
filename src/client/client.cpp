@@ -21,34 +21,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#include "client.hpp"
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+namespace tetris::client {
 
-namespace tetris::model::game::states {
+Client::Client() : game_{new window::GameWindow{}} { game_->show(); }
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+Client::~Client() {
+  if (game_ != nullptr) {
+    delete game_;
+    game_ = nullptr;
+  }
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
-
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
+  if (game_ != nullptr) {
+    delete game_;
+    game_ = nullptr;
+  }
 }
 
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
+void Client::start() { game_->start("John", 42); }
 
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+}  // namespace tetris::client

@@ -24,16 +24,14 @@
 #include <QApplication>
 #include <iostream>
 
-#include "client/view/view.hpp"
-
-using namespace tetris::model;
+#include "client/client.hpp"
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   Q_INIT_RESOURCE(resources);
 
-  auto view_ = tetris::view::View{};
-  view_.start();
+  auto client = tetris::client::Client{};
+  client.start();
 
   return QApplication::exec();
 }

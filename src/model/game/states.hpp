@@ -21,34 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_STATES_H_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_STATES_H_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+namespace tetris::model::game {
+enum class StateType {
+  NOT_STARTED,
+  FALLING,
+  LOCKED_DOWN,
+  LOCKED_OUT,
+  BLOCKED_OUT,
+  STOPPED
+};
+}  // namespace tetris::model::game
 
-namespace tetris::model::game::states {
-
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
-
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
-
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
-
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_GAME_STATES_H_

@@ -21,34 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#include "game.hpp"
+namespace tetris::client::component {
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+Game::Game(QGraphicsItem *parent)
+    : QGraphicsItemGroup(parent), matrix_{new component::Matrix{this}} {}
 
-namespace tetris::model::game::states {
+void Game::updateMatrix(MatrixArray array) { matrix_->set(std::move(array)); }
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
-
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
-
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
-
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+}  // namespace tetris::client::component

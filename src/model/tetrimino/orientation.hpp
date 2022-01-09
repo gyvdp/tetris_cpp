@@ -21,34 +21,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include <array>
+namespace tetris::model::tetrimino {
 
-namespace tetris::model::game::states {
+/**
+ * @brief Enumeration of different Orientations of a Tetrimino (for rotations)
+ */
+enum Orientation { NORTH, EAST, SOUTH, WEST };
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+/**
+ * @brief Array with all the possible Orientations
+ */
+static constexpr std::array ORIENTATIONS{NORTH, EAST, SOUTH, WEST};
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
-
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
+/**
+ * Computes the next orientation after the rotation
+ * @param start The start Orientation
+ * @param clockwise true if clockwise, false if counter-clockwise
+ * @return The Orientation after the rotation
+ */
+static constexpr Orientation next(Orientation orientation, bool clockwise) {
+  switch (orientation) {
+    case NORTH:
+      return clockwise ? EAST : WEST;
+    case EAST:
+      return clockwise ? SOUTH : NORTH;
+    case SOUTH:
+      return clockwise ? WEST : EAST;
+    case WEST:
+      return clockwise ? NORTH : SOUTH;
+  }
 }
 
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
+}  // namespace tetris::model::tetrimino
 
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_MODEL_ORIENTATION_HPP_

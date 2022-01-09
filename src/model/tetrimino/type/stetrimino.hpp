@@ -21,34 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_STETRIMINO_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_STETRIMINO_HPP_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include "model/tetrimino/shape/sshape.hpp"
+#include "model/tetrimino/tetrimino.hpp"
 
-namespace tetris::model::game::states {
+namespace tetris::model::tetrimino {
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+/**
+ * @brief Class representing STetrimino which is a child of Tetrimino
+ */
+class STetrimino : public Tetrimino {
+ public:
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  inline explicit STetrimino();
+};
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
 
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
+STetrimino::STetrimino() : Tetrimino{shape::sShapes, S_MINO} {}
 
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
+}  // namespace tetris::model::tetrimino
 
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_STETRIMINO_HPP_

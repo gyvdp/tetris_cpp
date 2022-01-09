@@ -21,34 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_OTETRIMINO_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_OTETRIMINO_HPP_
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include "model/tetrimino/shape/oshape.hpp"
+#include "model/tetrimino/tetrimino.hpp"
 
-namespace tetris::model::game::states {
+namespace tetris::model::tetrimino {
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
+/**
+ * @brief Class representing OTetrimino which is a child of Tetrimino
+ */
+class OTetrimino : public Tetrimino {
+ public:
+  /**
+   * @brief Default constructor of a Tetrimino
+   */
+  inline explicit OTetrimino();
+};
+/******************************************************************************
+ * Definitions of inline methods                                              *
+ ******************************************************************************/
 
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
+OTetrimino::OTetrimino() : Tetrimino{shape::oShapes, O_MINO} {}
 
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
+}  // namespace tetris::model::tetrimino
 
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
-}
-
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
-}
-
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_MODEL_TETRIMINO_TYPE_OTETRIMINO_HPP_

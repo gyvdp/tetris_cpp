@@ -21,34 +21,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/states/stoppedstate.hpp"
+#include "game_window.hpp"
 
-#include "model/game/states/exceptions/stoppedgameexception.hpp"
+#include <QKeyEvent>
 
-namespace tetris::model::game::states {
+namespace tetris::client::window {
 
-#define stoppedGame(arg)                                           \
-  throw exceptions::StoppedGameException(arg, __FILE__, __LINE__); \
-  ;
-
-void StoppedState::start() { stoppedGame("game cannot start if stopped"); }
-
-void StoppedState::stop() { stoppedGame("game cannot stop if stopped"); }
-
-void StoppedState::move(tetrimino::Direction direction) {
-  stoppedGame("game cannot move if stopped");
+GameWindow::GameWindow(QWidget *parent)
+    : QGraphicsView(parent), gameScene_{nullptr} {
+  setFrameStyle(QFrame::NoFrame);
+  setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  scale(0.4, 0.4);
+}
+void GameWindow::start(std::string playerName, unsigned long highScore) {
+  player_ = new model::game::Player{playerName, highScore};
+  gameScene_ = new scene::MultiplayerScene{player_, this};
+  setScene(gameScene_);
 }
 
-void StoppedState::holdFalling() { stoppedGame("game cannot hold if stopped"); }
-
-void StoppedState::softDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::hardDrop() { stoppedGame("game cannot drop if stopped"); }
-
-void StoppedState::rotate(bool clockwise) {
-  stoppedGame("game cannot rotate if stopped");
+GameWindow::~GameWindow() {
+  if (player_ != nullptr) {
+    delete player_;
+    player_ = nullptr;
+  }
 }
 
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
-}  // namespace tetris::model::game::states
+}  // namespace tetris::client::window

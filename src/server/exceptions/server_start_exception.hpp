@@ -35,7 +35,7 @@ class ServerStartFailException : public std::logic_error {
   explicit ServerStartFailException(const std::string &mess, const char *file,
                                     int line)
       : std::logic_error(std::string(file) + ":" + std::to_string(line) + ":" +
-      mess) {}
+                         mess) {}
 
   ~ServerStartFailException() override = default;
 };

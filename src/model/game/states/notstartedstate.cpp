@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/notstartedstate.hpp"
+#include "model/game/states/notstartedstate.hpp"
 
 #include <stdexcept>
 
-#include "model/game/state/exceptions/notstartedexception.hpp"
-#include "model/game/state/fallingstate.hpp"
+#include "model/game/states/exceptions/notstartedexception.hpp"
+#include "model/game/states/fallingstate.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
 
 namespace tetris::model::game::states {

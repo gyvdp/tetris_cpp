@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
+// Copyright (c) 2022 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM,
 // Thomas LEUTSCHER
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/lockedoutstate.hpp"
+#include "model/game/states/lockedoutstate.hpp"
 
-#include <model/game/state/stoppedstate.hpp>
+#include <model/game/states/stoppedstate.hpp>
 
-#include "model/game/state/exceptions/startongoinggameexception.hpp"
-#include "model/game/state/exceptions/stoppedgameexception.hpp"
+#include "model/game/states/exceptions/startongoinggameexception.hpp"
+#include "model/game/states/exceptions/stoppedgameexception.hpp"
 
 namespace tetris::model::game::states {
 
