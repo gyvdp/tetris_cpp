@@ -26,9 +26,6 @@
 
 #include <QObject>
 #include <QTimer>
-#include <boost/asio.hpp>
-#include <boost/signals2.hpp>
-#include <boost/thread/thread.hpp>
 #include <memory>
 #include <optional>
 #include <utility>
