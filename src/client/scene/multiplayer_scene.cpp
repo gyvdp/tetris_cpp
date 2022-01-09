@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #include "client/scene/multiplayer_scene.hpp"
 
 #include <QKeyEvent>
@@ -29,11 +28,14 @@
 namespace tetris::client::scene {
 
 MultiplayerScene::MultiplayerScene(model::game::Player *player1,
+                                   model::game::Player *player2,
+                                   uint_fast64_t seed, Socket_Client *socket,
                                    QObject *parent)
     : QGraphicsScene(parent),
       player1_{new component::Game{}},
-      player1Game_{new model::game::OngoingGame(player1, 42)},
-      player2_{new component::Game{}} {
+      player1Game_{new model::game::OngoingGame(player1, seed)},
+      player2_{new component::Game{}},
+      player2Game_{new model::game::OngoingGame(player2, seed, false)} {
   connect(
       player1Game_, &model::game::OngoingGame::matrixUpdate,
       [this](MatrixArray array) { player1_->updateMatrix(std::move(array)); });
@@ -43,6 +45,23 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
 
   connect(player1Game_, &model::game::OngoingGame::holdUpdate,
           [this](model::tetrimino::Mino mino) { player1_->updateHold(mino); });
+  connect(player1Game_, &model::game::OngoingGame::holdUpdate, socket,
+          &Socket_Client::slot_Hold);
+  connect(player1Game_, &model::game::OngoingGame::moveUpdate, socket,
+          &Socket_Client::slot_Move);
+
+  connect(player1Game_, &model::game::OngoingGame::rotateUpdate, socket,
+          &Socket_Client::slot_Rotate);
+
+  connect(player1Game_, &model::game::OngoingGame::lockUpdate, socket,
+          &Socket_Client::slot_Lock);
+  connect(player1Game_, &model::game::OngoingGame::hardDropUpdate, socket,
+          &Socket_Client::slot_HardDrop);
+
+  connect(player1Game_, &model::game::OngoingGame::matrixUpdate,
+          [this](MatrixArray array) {
+            emit player1_->updateMatrix(std::move(array));
+          });
 
   connect(player1Game_, &model::game::OngoingGame::scoreUpdate,
           [this](unsigned int score) { player1_->setScore(score); });

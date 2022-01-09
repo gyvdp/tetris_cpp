@@ -20,9 +20,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
-#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
-#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
+#ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_SOCKET_CLIENT_HPP_
+#define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_SOCKET_CLIENT_HPP_
 
 #include <QAbstractSocket>
 #include <QDebug>
@@ -34,32 +33,50 @@
 #include <regex>
 #include <stdexcept>
 
+#include "model/game/ongoinggame.hpp"
 #include "model/notification/notification.hpp"
 
 namespace tetris::client {
 
-class Tetris_Client : public QObject {
+class Socket_Client : public QObject {
   Q_OBJECT
 
  private:
-  QTcpSocket *socket_;
+  QTcpSocket* socket_;
   std::string username_;
 
  public:
-  inline explicit Tetris_Client(QObject *parent = nullptr) : QObject(parent) {
+  inline explicit Socket_Client(QObject* parent = nullptr) : QObject(parent) {
     this->socket_ = new QTcpSocket(this);
   }
 
-  void sendData(const QJsonDocument &);
+  void sendData(const QJsonDocument&);
 
-  void connection(std::string ip, unsigned port, std::string);
+  void connection(const QString& ip, unsigned port, const std::string&);
+
+  void deserialize(QByteArray& message);
 
  signals:
+  void leave(unsigned long score);
+  void lost(unsigned long score);
+  void move(tetris::model::tetrimino::Direction direction);
+  void softdrop();
+  void starting_game(std::string playerName, unsigned long highScore,
+                     std::string opponentName, unsigned long opponentHighScore,
+                     uint_fast64_t seed);
+  void harddrop();
+  void rotate(bool clockwise);
+  void hold();
 
  public slots:
   void slot_Connected();
   void slot_Disconnected();
   void slot_Reading();
+  void slot_Rotate(bool clockwise);
+  void slot_Lock();
+  void slot_Hold(model::tetrimino::Mino m);
+  void slot_Move(model::tetrimino::Direction direction);
+  void slot_HardDrop();
 };
 }  // namespace tetris::client
-#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_TETRIS_CLIENT_HPP_
+#endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_SOCKET_CLIENT_HPP_

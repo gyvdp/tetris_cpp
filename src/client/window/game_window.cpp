@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #include "game_window.hpp"
 
 #include <QFontDatabase>
@@ -28,7 +27,7 @@
 
 namespace tetris::client::window {
 
-GameWindow::GameWindow(QWidget *parent)
+GameWindow::GameWindow(QWidget* parent)
     : QGraphicsView(parent), gameScene_{nullptr} {
   setFrameStyle(QFrame::NoFrame);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -37,14 +36,16 @@ GameWindow::GameWindow(QWidget *parent)
   int id = QFontDatabase::addApplicationFont(":/font/nes.otf");
 }
 
-void GameWindow::start(std::string playerName, unsigned long highScore) {
+void GameWindow::start(std::string playerName, unsigned long highScore,
+                       std::string opponentName,
+                       unsigned long opponentHighScore, unsigned long seed,
+                       Socket_Client* socket) {
   player_ = new model::game::Player{playerName, highScore};
-  gameScene_ = new scene::MultiplayerScene{player_, this};
-  setScene(gameScene_);
-  //  fitInView(frameRect(), Qt::KeepAspectRatio);
+  player2_ = new model::game::Player{opponentName, opponentHighScore};
 
-  //  qDebug() << sceneRect();
-  //  qDebug() << frameRect();
+  gameScene_ =
+      new scene::MultiplayerScene{player_, player2_, seed, socket, this};
+  setScene(gameScene_);
 }
 
 GameWindow::~GameWindow() {

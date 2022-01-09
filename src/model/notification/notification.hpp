@@ -94,14 +94,6 @@ class Notification {
                                      unsigned long opponent_score,
                                      uint_fast64_t seed);
 
-  /**
-   * @brief Interpret the message and act on the game accordingly
-   * @param message message that the client or server get from the communication
-   * @param game game that message will act on
-   */
-  static void deserialize(QByteArray& message,
-                          model::game::OngoingGame& playerGame,
-                          model::game::OngoingGame& opponentGame);
 };
 }  // namespace tetris::model::notification
 

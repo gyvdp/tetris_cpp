@@ -44,8 +44,6 @@ class Match : public QObject {
    */
   void sendStarting();
 
-  void playerLost(Player_Socket*& p_socket, QByteArray data);
-
  public:
   /**
    * @brief Constructor of Match.
@@ -61,7 +59,7 @@ class Match : public QObject {
    * @brief Getter of id
    * @return id
    */
-  [[nodiscard]] inline unsigned id() const { return this->id_; }
+  [[nodiscard]] inline unsigned id() const;
 
  signals:
   /**
@@ -79,5 +77,8 @@ class Match : public QObject {
    */
   void slot_Reading();
 };
+
+unsigned int Match::id() const { return this->id_; }
+
 }  // namespace tetris::server
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_INCLUDE_SERVER_MATCH_HPP_

@@ -22,14 +22,32 @@
 // SOFTWARE.
 
 #include <QApplication>
+#include <QHostAddress>
 
 #include "client/client.hpp"
 
 int main(int argc, char *argv[]) {
+  if (argc != 4 && argc != 1)
+    throw std::invalid_argument("need 3 argument to run");
+
+  // Verify ip and port
+  std::string regex = "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$";
+  if (!std::regex_match(argv[1], std::regex(regex)))
+    throw std::invalid_argument("ip address is not valid");
+
+  QString IP = argv[1];
+  QHostAddress IPAddress = QHostAddress(IP);
+  int port = 0;
+
+  if (!std::isdigit(std::strtol(argv[2], nullptr, 10)) &&
+      (port = std::strtol(argv[2], nullptr, 10)) <= 0 && port >= 65537)
+    throw std::invalid_argument("port is not valid");
+
+  std::string name = argv[3];
+
   QApplication app(argc, argv);
   Q_INIT_RESOURCE(resources);
 
-  auto client = tetris::client::Client{};
-  client.start();
+  auto client = tetris::client::Client{IPAddress, port, name};
   return QApplication::exec();
 }
