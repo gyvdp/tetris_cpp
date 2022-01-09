@@ -49,6 +49,4 @@ void StoppedState::rotate(bool clockwise) {
   stoppedGame("game cannot rotate if stopped");
 }
 
-void StoppedState::lock() { stoppedGame("game cannot start if stopped"); }
-
 }  // namespace tetris::model::game::states

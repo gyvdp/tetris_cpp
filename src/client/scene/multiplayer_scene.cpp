@@ -67,7 +67,7 @@ void MultiplayerScene::keyPressEvent(QKeyEvent *event) {
       player1Game_->softDrop();
       break;
     case Qt::Key_Space:
-      player1Game_->hardDrop();
+      player1Game_->holdFalling();
       break;
     case Qt::Key_Up:
       player1Game_->rotate(true);

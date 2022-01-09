@@ -111,7 +111,7 @@ class Matrix {
    * every case of the row.
    * @return Vector of all rows that are completed.
    */
-  std::vector<unsigned long> getCompletedLines();
+  std::vector<unsigned int> getCompletedLines();
 
   /**
    * @brief Gets a specific case in the matrix.
@@ -120,6 +120,10 @@ class Matrix {
    * @return Value at given index.
    */
   inline OptionalMino operator()(utils::Coordinate position) const;
+
+  void removeLine(unsigned long i);
+
+  void setLine(std::vector<OptionalMino> minos, unsigned long line);
 
   /**
    * @brief Sets a mino at a specific location.

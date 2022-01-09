@@ -60,9 +60,4 @@ void BlockedOutState::rotate(bool clockwise) {
                                         __FILE__, __LINE__);
 }
 
-void BlockedOutState::lock() {
-  throw exceptions::BlockedOutException("Cannot lock when blocked out",
-                                        __FILE__, __LINE__);
-}
-
 }  // namespace tetris::model::game::states

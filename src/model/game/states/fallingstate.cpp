@@ -25,6 +25,7 @@
 
 #include <model/game/states/blockedoutstate.hpp>
 
+#include "lockeddownstate.hpp"
 #include "model/game/states/exceptions/blockedoutexception.hpp"
 #include "model/game/states/exceptions/startongoinggameexception.hpp"
 #include "model/game/states/stoppedstate.hpp"
@@ -49,7 +50,7 @@ void FallingState::move(tetrimino::Direction direction) {
 }
 
 void FallingState::holdFalling() {
-  if (!game_->hasHeld) {
+  if (!game_->hasHeld()) {
     if (game_->hold() == std::nullopt) {
       game_->hold(game_->falling()->type());
       game_->falling(tetrimino::createTetrimino(game_->next().value()));
@@ -58,8 +59,8 @@ void FallingState::holdFalling() {
       game_->hold(game_->falling()->type());
       game_->falling(tetrimino::createTetrimino(temp));
     }
-    game_->refreshFallingTimer();
-    game_->hasHeld = true;
+    emit game_->holdUpdate(game_->hold().value());
+    game_->hasHeld(true);
   }
 }
 
@@ -69,7 +70,8 @@ void FallingState::softDrop() {
     game_->refreshFallingTimer();
   } catch (tetrimino::exceptions::MoveNotPossibleException& ignored) {
     game_->score(1);
-    // game_->state(new LockedDownState(game_));
+    game_->state(new states::LockedDownState(game_));
+    delete this;
   }
 }
 
@@ -85,7 +87,7 @@ void FallingState::hardDrop() {
     }
   }
   game_->score(linesDropped * 2);
-  lock();
+  game_->lock();
 }
 
 void FallingState::rotate(bool clockwise) {
@@ -95,16 +97,4 @@ void FallingState::rotate(bool clockwise) {
   }
 }
 
-void FallingState::lock() {
-  game_->getMatrix().add(game_->falling());
-  try {
-    game_->falling(tetrimino::createTetrimino(
-        game_->next().value(), game_->getMatrix().generateMask()));
-    game_->next(game_->pickMino());
-    game_->clearLines();
-    // game_->state(new FallingState(game_));
-  } catch (exceptions::BlockedOutException& e) {
-    game_->state(new BlockedOutState(game_));
-  }
-}
 }  // namespace tetris::model::game::states

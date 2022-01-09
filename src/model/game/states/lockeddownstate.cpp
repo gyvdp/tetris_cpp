@@ -57,7 +57,10 @@ void LockedDownState::holdFalling() {
                                           __FILE__, __LINE__);
 }
 
-void LockedDownState::softDrop() {}
+void LockedDownState::softDrop() {
+  throw exceptions::IllegalStateException("Cannot soft drop when blocked out",
+                                          __FILE__, __LINE__);
+}
 
 void LockedDownState::hardDrop() {
   throw exceptions::IllegalStateException("Cannot hard drop when locked down",
@@ -73,5 +76,4 @@ void LockedDownState::rotate(bool clockwise) {
   }
 }
 
-void LockedDownState::lock() {}
 }  // namespace tetris::model::game::states

@@ -76,10 +76,6 @@ class BlockedOutState : public GameState {
    */
   void rotate(bool clockwise) override;
 
-  /**
-   * @inherit
-   */
-  void lock() override;
 };
 
 /******************************************************************************
