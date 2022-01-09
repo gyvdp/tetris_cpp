@@ -66,8 +66,7 @@ void Match::slot_Reading() {
               .toInt() == model::notification::LOST)
         playerLost(sender, data);
       for (auto& receiver : this->players_) {
-        if (sender->name() != receiver->name() &&
-            receiver->socket()->state() != QAbstractSocket::UnconnectedState) {
+        if (receiver->socket()->state() != QAbstractSocket::UnconnectedState) {
           receiver->write(data);
           receiver->socket()->waitForBytesWritten();
         }

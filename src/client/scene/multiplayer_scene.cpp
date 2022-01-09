@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #include "client/scene/multiplayer_scene.hpp"
 
 #include <QKeyEvent>
@@ -29,11 +28,21 @@
 namespace tetris::client::scene {
 
 MultiplayerScene::MultiplayerScene(model::game::Player *player1,
+                                   model::game::Player *player2,
+                                   uint_fast64_t seed, Socket_Client *socket,
                                    QObject *parent)
     : QGraphicsScene(0, 0, 850, 1590, parent),
       player1_{new component::Game{}},
-      player1Game_{new model::game::OngoingGame(player1, 42)} {
+      player1Game_{new model::game::OngoingGame(player1, seed)},
+      player2Game_{new model::game::OngoingGame(player2, seed)} {
   addItem(player1_);
+
+  connect(player1Game_, &model::game::OngoingGame::holdUpdate, socket,
+          &Socket_Client::slot_Hold);
+  connect(player1Game_, &model::game::OngoingGame::moveUpdate, socket,
+          &Socket_Client::slot_Move);
+  connect(player1Game_, &model::game::OngoingGame::rotate, socket,
+          &Socket_Client::slot_Rotate);
 
   connect(player1Game_, &model::game::OngoingGame::matrixUpdate,
           [this](MatrixArray array) {

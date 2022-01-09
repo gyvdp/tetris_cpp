@@ -25,7 +25,11 @@
 
 namespace tetris::client {
 
-Client::Client() : game_{new window::GameWindow{}} { game_->show(); }
+Client::Client(const QHostAddress& ip, int port, std::string name)
+    : socket_client_{new Socket_Client(this)}, game_{new window::GameWindow{}} {
+  this->socket_client_->connection(ip.toString(), port, name);
+  connect(socket_client_, &Socket_Client::starting_game, this, &Client::start);
+}
 
 Client::~Client() {
   if (game_ != nullptr) {
@@ -39,6 +43,12 @@ Client::~Client() {
   }
 }
 
-void Client::start() { game_->start("John", 42); }
+void Client::start(std::string playerName, unsigned long highScore,
+                   std::string opponentName, unsigned long opponentHighScore,
+                   unsigned long seed) {
+  game_->start(playerName, highScore, opponentName, opponentHighScore, seed,
+               this->socket_client_);
+  game_->show();
+}
 
 }  // namespace tetris::client

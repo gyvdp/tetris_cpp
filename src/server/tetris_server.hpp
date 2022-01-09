@@ -20,17 +20,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_SERVER_SERVER_TETRISSERVER_HPP_
+#include <QHostAddress>
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <iostream>
 #include <memory>
 #include <queue>
 #include <vector>
 
-#include "iostream"
 #include "match.hpp"
 #include "player_socket.hpp"
 #include "server/exceptions/server_start_exception.hpp"
@@ -46,6 +46,8 @@ class Tetris_Server : public QObject {
   std::queue<Player_Socket *> waitingQueuePlayer_;
   std::vector<Match *> matchVector_;
   unsigned matchID_;
+  QHostAddress ip_;
+  int port_;
 
   /**
    * @brief Create a Player_socket
@@ -77,8 +79,11 @@ class Tetris_Server : public QObject {
   /**
    * @brief Constructor of Tetris_Server
    * @param parent Parent of this class
+   * @param ip adress ip of the Tetris_Server
+   * @param port port of the application
    */
-  explicit Tetris_Server(QObject *parent = nullptr);
+  explicit Tetris_Server(QObject *parent = nullptr,
+                         QHostAddress ip = QHostAddress::Any, int port = 9999);
 
  signals:
 

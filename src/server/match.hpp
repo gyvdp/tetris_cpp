@@ -63,6 +63,8 @@ class Match : public QObject {
    */
   [[nodiscard]] inline unsigned id() const { return this->id_; }
 
+  void launchMatch();
+
  signals:
   /**
    * @brief Signal that is emited when the match is finished

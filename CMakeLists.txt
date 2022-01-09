@@ -116,7 +116,7 @@ set(VIEW_SOURCES
         src/client/window/game_window.cpp
         src/client/client.cpp
         src/client/component/game.cpp
-        src/client/tetris_client.cpp
+        src/client/socket_client.cpp
         )
 
 

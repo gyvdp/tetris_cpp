@@ -340,6 +340,7 @@ void OngoingGame::stop() { state_->stop(); }
 void OngoingGame::move(tetrimino::Direction direction) {
   state_->move(direction);
 }
+
 void OngoingGame::holdFalling() { state_->holdFalling(); }
 
 void OngoingGame::softDrop() { state_->softDrop(); }

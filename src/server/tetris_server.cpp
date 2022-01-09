@@ -27,14 +27,15 @@
 
 namespace tetris::server {
 
-Tetris_Server::Tetris_Server(QObject *parent) : QObject(parent), matchID_{0} {
+Tetris_Server::Tetris_Server(QObject *parent, QHostAddress ip, int port)
+    : QObject(parent), matchID_{0}, ip_{ip}, port_{port} {
   server_ = new QTcpServer(this);
 
-  if (!server_->listen(QHostAddress::Any, 9999))
+  if (!server_->listen(this->ip_, this->port_))
     throw exceptions::ServerStartFailException(
         "The server can't start with this ip or this port", __FILE__, __LINE__);
 
-  std::cout << "Server active on : IP :"
+  std::cout << "Server active on : IP : "
             << server_->serverAddress().toString().toStdString()
             << " , Port : " << server_->serverPort() << std::endl;
 

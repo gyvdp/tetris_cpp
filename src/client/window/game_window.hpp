@@ -27,6 +27,7 @@
 #include <QGraphicsView>
 
 #include "client/scene/multiplayer_scene.hpp"
+#include "client/socket_client.hpp"
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
 
@@ -43,6 +44,7 @@ class GameWindow : public QGraphicsView {
   scene::MultiplayerScene *gameScene_;
 
   model::game::Player *player_;
+  model::game::Player *player2_;
 
  public:
   /**
@@ -54,7 +56,9 @@ class GameWindow : public QGraphicsView {
 
   ~GameWindow();
 
-  void start(std::string playerName, unsigned long highScore);
+  void start(std::string playerName, unsigned long highScore,
+             std::string opponentName, unsigned long opponentHighScore,
+             unsigned long seed, Socket_Client *socket);
 };
 }  // namespace tetris::client::window
 

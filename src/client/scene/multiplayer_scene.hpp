@@ -20,15 +20,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 #ifndef ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_VIEW_GAME_HPP_
-
 #include <QGraphicsScene>
 
 #include "client/component/game.hpp"
 #include "client/component/matrix.hpp"
 #include "client/component/mino.hpp"
+#include "client/socket_client.hpp"
 #include "model/game/ongoinggame.hpp"
 
 namespace tetris::client::scene {
@@ -40,6 +39,7 @@ class MultiplayerScene : public QGraphicsScene {
  protected:
   component::Game *player1_;
   model::game::OngoingGame *player1Game_;
+  model::game::OngoingGame *player2Game_;
 
   void keyPressEvent(QKeyEvent *event) override;
 
@@ -49,7 +49,8 @@ class MultiplayerScene : public QGraphicsScene {
    * @param parent Parent QObject (for memory)
    */
   explicit MultiplayerScene(model::game::Player *player1,
-                            QObject *parent = nullptr);
+                            model::game::Player *player2, uint_fast64_t seed,
+                            Socket_Client *socket, QObject *parent = nullptr);
 
   /**
    * @brief Destructor of a GameScene
