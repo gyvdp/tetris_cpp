@@ -336,6 +336,10 @@ class OngoingGame : public QObject {
   void moveUpdate(tetrimino::Direction direction);
 
   void linesUpdate(std::vector<unsigned int> completedLines);
+
+  void hardDropUpdate();
+
+  void lockUpdate();
 };
 
 /******************************************************************************
@@ -410,6 +414,7 @@ void OngoingGame::softDrop() {
 void OngoingGame::hardDrop() {
   try {
     state_->hardDrop();
+    emit hardDropUpdate();
   } catch (std::logic_error& ignored) {
   }
 }

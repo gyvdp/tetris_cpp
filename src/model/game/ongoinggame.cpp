@@ -182,6 +182,7 @@ void OngoingGame::lock() {
     next(pickMino());
     emit nextUpdate(next().value());
     clearLines();
+    emit lockUpdate();
     refreshFallingTimer();
   } catch (states::exceptions::BlockedOutException& e) {
     state(new states::BlockedOutState(this));
