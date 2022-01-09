@@ -324,9 +324,15 @@ void OngoingGame::softDrop() { state_->softDrop(); }
 
 void OngoingGame::hardDrop() { state_->hardDrop(); }
 
-void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
+void OngoingGame::rotate(bool clockwise) {
+  state_->rotate(clockwise);
+  emit matrixUpdate(fallingInsideMatrix());
+}
 
-void OngoingGame::lock() { state_->lock(); }
+void OngoingGame::lock() {
+  state_->lock();
+  emit matrixUpdate(fallingInsideMatrix());
+}
 
 tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
 
