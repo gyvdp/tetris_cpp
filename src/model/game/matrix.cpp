@@ -47,13 +47,19 @@ void Matrix::add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino) {
   }
 }
 
-void Matrix::removeLines(const std::vector<unsigned long>& linesToRemove) {
-  for (auto& line : linesToRemove)
-    for (auto& mino : minos_.at(line)) mino = std::nullopt;
+void Matrix::removeLine(unsigned long i) {
+  for (size_t j = 0; j < width(); j++) {
+    minos_.at(i).at(j) = std::nullopt;
+  }
 }
 
-std::vector<unsigned long> Matrix::getCompletedLines() {
-  std::vector<unsigned long> completedLines;
+void Matrix::setLine(std::vector<OptionalMino> minos, unsigned long line) {
+  for (size_t col = 0; col < width(); col++)
+    minos_.at(line).at(col) = minos.at(col);
+}
+
+std::vector<unsigned int> Matrix::getCompletedLines() {
+  std::vector<unsigned int> completedLines;
   for (size_t i = 0; i < minos_.size(); i++) {
     bool isComplete = true;
     for (auto& j : minos_.at(i))

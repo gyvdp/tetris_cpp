@@ -34,6 +34,7 @@ namespace tetris::model::game::states {
 void NotStartedState::start() {
   game_->falling(tetrimino::createTetrimino(game_->pickMino()));
   game_->next(game_->pickMino());
+  emit game_->nextUpdate(game_->next().value());
   game_->state(new FallingState(game_));
 }
 
@@ -64,11 +65,6 @@ void NotStartedState::hardDrop() {
 
 void NotStartedState::rotate(bool clockwise) {
   throw exceptions::NotStartedException("Cannot rotate if game is not started",
-                                        __FILE__, __LINE__);
-}
-
-void NotStartedState::lock() {
-  throw exceptions::NotStartedException("Cannot lock if a game is not started",
                                         __FILE__, __LINE__);
 }
 

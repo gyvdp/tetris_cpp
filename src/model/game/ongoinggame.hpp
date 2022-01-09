@@ -51,17 +51,22 @@ class OngoingGame : public QObject {
   /**
    * @brief The state of the game (Not started, Falling, ...)
    */
-  GameState *state_;
+  GameState* state_;
 
   /**
    * @brief The player of the OngoingGame
    */
-  Player *player_;
+  Player* player_;
 
   /**
    * @brief The matrix of the game with all placed minos
    */
   Matrix matrix_;
+
+  /**
+   * @brief If player has held or not.
+   */
+  bool hasHeld_ = false;
 
   /**
    * @brief The Tetrimino bag generator
@@ -94,6 +99,11 @@ class OngoingGame : public QObject {
   unsigned level_;
 
   /**
+   * @brief True if the player is managed
+   */
+  bool managed_;
+
+  /**
    * @brief Number of lines deleted in the game.
    */
   unsigned lines_;
@@ -101,34 +111,30 @@ class OngoingGame : public QObject {
   /**
    * @brief Timer of the game.
    */
-  QTimer *timer_;
+  QTimer* timer_;
 
  public:
-  /**
-   * @brief If player has held or not.
-   */
-  bool hasHeld = false;
-
   /**
    * @brief The default constructor of an Ongoing Game
    *
    * @param player Pointer to the player of this game
    * @param state The initial state of the game
    */
-  explicit OngoingGame(Player *player, std::uint_fast64_t seed);
+  explicit OngoingGame(Player* player, std::uint_fast64_t seed,
+                       bool managed = true);
 
   /**
    * @brief Getter for the level.
    * @return The level of the current game.
    */
-  inline unsigned level() const;
+  [[nodiscard]] inline unsigned level() const;
 
   /**
    * @brief This method is used to change the state of the actual game
    *
    * @param state Pointer to the new state
    */
-  void state(GameState *state);
+  void state(GameState* state);
 
   /**
    * @brief This method returns the username of the playing player
@@ -150,6 +156,12 @@ class OngoingGame : public QObject {
    * @return The matrix
    */
   [[nodiscard]] inline Matrix matrix() const;
+
+  /**
+   * @brief Getter for is managed.
+   * @return True if it's a managed player.
+   */
+  [[nodiscard]] inline bool isManaged() const;
 
   /**
    * @brief Setter for the score.
@@ -186,6 +198,18 @@ class OngoingGame : public QObject {
   [[nodiscard]] inline OptionalMino next() const;
 
   /**
+   * @brief Check if player has held.
+   * @return True if the player has already held.
+   */
+  [[nodiscard]] inline bool hasHeld() const;
+
+  /**
+   * Sets if the player has held or not.
+   * @param held True if the player has held.
+   */
+  inline void hasHeld(bool held);
+
+  /**
    * Setter for the next tetrimino.
    * @param mino Mino to set as next
    */
@@ -214,7 +238,6 @@ class OngoingGame : public QObject {
    * @brief This method start the game
    */
   inline void start();
-
   /**
    * Calculate the number of G to place on the tetrimino.
    * @return Number of G's tetrimino should feel.
@@ -257,7 +280,7 @@ class OngoingGame : public QObject {
   /**
    * @brief This method locks the locked-down falling Tetrimino
    */
-  inline void lock();
+  void lock();
 
   /**
    * @brief Clears all the completed lines from the matrix.
@@ -270,19 +293,33 @@ class OngoingGame : public QObject {
    */
   void generatePoints(size_t lines);
 
+  /**
+   * Stops and resets the locking timer.
+   */
   void refreshFallingTimer();
 
+  /**
+   * @brief Stops and resets the timer.
+   */
   void refreshLockingTimer();
 
+  /**
+   * @brief Moves the falling piece in.
+   * @param direction Direction to move the piece in.
+   */
   void moveFalling(tetrimino::Direction direction);
 
+  /**
+   * @brief Rotates the falling piece
+   * @param clockwise
+   */
   void rotateFalling(bool clockwise);
 
   /**
    * @brief Getter of the matrix by reference.
    * @return The reference of the matrix.
    */
-  Matrix &getMatrix();
+  Matrix& getMatrix();
 
  signals:
 
@@ -298,7 +335,7 @@ class OngoingGame : public QObject {
 
   void moveUpdate(tetrimino::Direction direction);
 
-  void linesUpdate(unsigned lines);
+  void linesUpdate(std::vector<unsigned int> completedLines);
 };
 
 /******************************************************************************
@@ -321,7 +358,10 @@ void OngoingGame::falling(std::shared_ptr<tetrimino::Tetrimino> tetrimino) {
   falling_ = std::move(tetrimino);
 }
 
-void OngoingGame::score(unsigned score) { score_ += score; }
+void OngoingGame::score(unsigned score) {
+  score_ += score;
+  emit scoreUpdate(score_);
+}
 
 unsigned OngoingGame::level() const { return level_; }
 
@@ -333,23 +373,58 @@ OptionalMino OngoingGame::hold() const { return hold_; }
 
 void OngoingGame::hold(tetrimino::Mino mino) { hold_ = mino; }
 
-void OngoingGame::start() { state_->start(); }
-
-void OngoingGame::stop() { state_->stop(); }
-
-void OngoingGame::move(tetrimino::Direction direction) {
-  state_->move(direction);
+void OngoingGame::start() {
+  try {
+    state_->start();
+  } catch (std::logic_error& ignored) {
+  }
 }
 
-void OngoingGame::holdFalling() { state_->holdFalling(); }
+void OngoingGame::stop() {
+  try {
+    state_->stop();
+  } catch (std::logic_error& ignored) {
+  }
+}
 
-void OngoingGame::softDrop() { state_->softDrop(); }
+void OngoingGame::move(tetrimino::Direction direction) {
+  try {
+    state_->move(direction);
+  } catch (std::logic_error& ignored) {
+  }
+}
+void OngoingGame::holdFalling() {
+  try {
+    state_->holdFalling();
+  } catch (std::logic_error& ignored) {
+  }
+}
 
-void OngoingGame::hardDrop() { state_->hardDrop(); }
+void OngoingGame::softDrop() {
+  try {
+    state_->softDrop();
+  } catch (std::logic_error& ignored) {
+  }
+}
 
-void OngoingGame::rotate(bool clockwise) { state_->rotate(clockwise); }
+void OngoingGame::hardDrop() {
+  try {
+    state_->hardDrop();
+  } catch (std::logic_error& ignored) {
+  }
+}
+void OngoingGame::rotate(bool clockwise) {
+  try {
+    state_->rotate(clockwise);
+  } catch (std::logic_error& ignored) {
+  }
+}
 
-void OngoingGame::lock() { state_->lock(); }
+void OngoingGame::hasHeld(bool held) { hasHeld_ = held; }
+
+bool OngoingGame::hasHeld() const { return hasHeld_; }
+
+bool OngoingGame::isManaged() const { return managed_; }
 
 tetrimino::Mino OngoingGame::pickMino() { return generator_.takeMino(); }
 

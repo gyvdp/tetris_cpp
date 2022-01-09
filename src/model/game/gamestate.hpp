@@ -43,6 +43,12 @@ class GameState {
   OngoingGame *game_;
 
  public:
+
+  /**
+   * @brief State of the game.
+   * @param type Type of state.
+   * @param game Current game.
+   */
   inline explicit GameState(StateType type, OngoingGame *game);
 
   /**
@@ -50,6 +56,10 @@ class GameState {
    */
   virtual ~GameState() = default;
 
+  /**
+   * @brief Getter for the type of state.
+   * @return The type of state.
+   */
   inline StateType type() const;
 
   /**
@@ -89,11 +99,6 @@ class GameState {
    * @param clockwise true if clockwise, false if anti-clockwise
    */
   virtual void rotate(bool clockwise) = 0;
-
-  /**
-   * @brief This method locks the locked-down falling Tetrimino
-   */
-  virtual void lock() = 0;
 };
 
 /******************************************************************************

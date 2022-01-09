@@ -74,11 +74,6 @@ class StoppedState : public GameState {
    * @inherit
    */
   void rotate(bool clockwise) override;
-
-  /**
-   * @inherit
-   */
-  void lock() override;
 };
 
 /******************************************************************************
