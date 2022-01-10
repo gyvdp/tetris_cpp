@@ -106,6 +106,9 @@ void Socket_Client::deserialize(QByteArray& message) {
       case model::notification::HOLD:
         emit hold();
         break;
+      case model::notification::SCORE:
+        emit score(data["score"].toString().toUShort());
+        break;
       case model::notification::ROTATE:
         emit rotate((data["clockwise"].toBool()));
         break;
@@ -153,6 +156,10 @@ void Socket_Client::slot_HardDrop() {
   this->sendData(
       model::notification::Notification::action(model::notification::HARDDROP));
 }
-// void Tetris_Client::linesUpdate(unsigned int lines) {}
+
+void Socket_Client::slot_Score(unsigned int score) {
+  this->sendData(model::notification::Notification::action(
+      model::notification::SCORE, (unsigned long)score));
+}
 
 }  // namespace tetris::client

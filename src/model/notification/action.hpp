@@ -39,7 +39,8 @@ enum Action {
   SOFTDROP,
   HARDDROP,
   ROTATE,
-  LOCK
+  LOCK,
+  SCORE
 };
 }  // namespace tetris::model::notification
 

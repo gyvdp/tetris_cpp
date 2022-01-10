@@ -40,6 +40,9 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
       player1Game_, &model::game::OngoingGame::matrixUpdate,
       [this](MatrixArray array) { player1_->updateMatrix(std::move(array)); });
 
+  connect(socket, &Socket_Client::score,
+          [this](unsigned score) { player2_->setScore(score); });
+
   connect(player1Game_, &model::game::OngoingGame::nextUpdate,
           [this](model::tetrimino::Mino mino) { player1_->updateNext(mino); });
 
@@ -67,6 +70,8 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
           &Socket_Client::slot_Lock);
   connect(player1Game_, &model::game::OngoingGame::hardDropUpdate, socket,
           &Socket_Client::slot_HardDrop);
+  connect(player1Game_, &model::game::OngoingGame::scoreUpdate, socket,
+          &Socket_Client::slot_Score);
 
   connect(player1Game_, &model::game::OngoingGame::matrixUpdate,
           [this](MatrixArray array) {

@@ -68,6 +68,7 @@ class Socket_Client : public QObject {
   void rotate(bool clockwise);
   void hold();
   void lock();
+  void score(unsigned score);
 
  public slots:
   void slot_Connected();
@@ -78,6 +79,7 @@ class Socket_Client : public QObject {
   void slot_Hold(model::tetrimino::Mino m);
   void slot_Move(model::tetrimino::Direction direction);
   void slot_HardDrop();
+  void slot_Score(unsigned score);
 };
 }  // namespace tetris::client
 #endif  // ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_SOCKET_CLIENT_HPP_

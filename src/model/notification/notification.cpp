@@ -68,7 +68,8 @@ QJsonDocument Notification::action(Action action) {
 }
 
 QJsonDocument Notification::action(Action action, unsigned long score) {
-  if (action != LOST) throw std::invalid_argument("Wrong action");
+  if (action != LOST && action != SCORE)
+    throw std::invalid_argument("Wrong action");
   QJsonObject object;
   QJsonObject data;
   object["key"] = "ACTION";
