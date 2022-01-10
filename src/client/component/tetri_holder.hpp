@@ -51,6 +51,8 @@ void TetriHolder::set(model::tetrimino::Mino type) {
   if (tetrimino_ == nullptr) {
     tetrimino_ = new QGraphicsPixmapItem{resource(type), this};
     tetrimino_->setPos({7 * ratio, title_->y() + (7 * ratio)});
+  } else {
+    tetrimino_->setPixmap(resource(type));
   }
 }
 
