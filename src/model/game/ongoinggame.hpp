@@ -371,11 +371,17 @@ unsigned OngoingGame::level() const { return level_; }
 
 OptionalMino OngoingGame::next() const { return next_; }
 
-void OngoingGame::next(tetrimino::Mino mino) { next_ = mino; }
+void OngoingGame::next(tetrimino::Mino mino) {
+  next_ = mino;
+  emit nextUpdate(next_.value());
+}
 
 OptionalMino OngoingGame::hold() const { return hold_; }
 
-void OngoingGame::hold(tetrimino::Mino mino) { hold_ = mino; }
+void OngoingGame::hold(tetrimino::Mino mino) {
+  hold_ = mino;
+  emit holdUpdate(hold_.value());
+}
 
 void OngoingGame::start() {
   try {

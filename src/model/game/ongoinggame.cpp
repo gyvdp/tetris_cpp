@@ -71,6 +71,7 @@ OngoingGame::OngoingGame(Player* player, std::uint_fast64_t seed, bool managed)
           next(pickMino());
           emit nextUpdate(next().value());
           clearLines();
+          emit lockUpdate();
           delete state_;
           hasHeld(false);
           state(new states::FallingState(this));
