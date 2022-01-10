@@ -102,12 +102,6 @@ class Matrix {
   void add(const std::shared_ptr<tetrimino::Tetrimino>& tetrimino);
 
   /**
-   * @brief Remove given lines in the matrix.
-   * @param linesToRemove All lines that need to be removed in the matrix.
-   */
-  void removeLines(const std::vector<unsigned long>& linesToRemove);
-
-  /**
    * @brief Gets all lines that are completed. Meaning that there is a mino in
    * every case of the row.
    * @return Vector of all rows that are completed.

@@ -94,49 +94,46 @@ int OngoingGame::calculateGravity() const {
 
 void OngoingGame::clearLines() {
   auto lines = matrix_.getCompletedLines();
-  generatePoints(lines.size());
-  // lines.sort(Collections.reverseOrder());
-  /**int removed = 0;
-  for (const auto& line : lines) {
-    if (line > matrix_.getMinos().at(1).size() - 1 || line < 0) {
-      throw  std::logic_error("You cannot remove a line that is out of the
-  game");
-    }
-    for (size_t i = line + removed; i >= 0; --i) {
-      for (size_t j = 0; j < matrix_.getMinos().at(i).size(); ++j) {
-        matrix_.getMinos().at(i).at(j)= i != 0 ? matrix_.getMinos().at(i -
-  1).at(j) : std::vector<OptionalMino>{matrix_.width()};
+  if (!lines.empty()) {
+    generatePoints(lines.size());
+    int removed = 0;
+    qDebug() << "Lignes: " << lines.size();
+    for (long i = static_cast<long>(lines.size()) - 1; i >= 0; --i) {
+      auto line = lines.at(i);
+      qDebug() << "Ligne supprimée: " << line;
+
+      for (long j = line + removed; j >= 0; --j) {
+        for (int k = 0; k < matrix_.getMinos().at(j).size(); ++k) {
+          if (j != 0) {
+            matrix_.setLine(matrix_.getMinos().at(j - 1), j);
+          } else {
+            matrix_.removeLine(j);
+          }
+        }
       }
+      removed++;
     }
-    removed++;
-  }**/
+  }
   emit linesUpdate(lines);
 }
 
 void OngoingGame::generatePoints(size_t lines) {
   lines_ += static_cast<int>(lines);
-  if (lines != 0 && lines % 10 == 0) {
-    level_++;
-  }
-  while (lines != 0) {
-    switch (lines) {
-      case 1:
-        score(1200 * (level_ + 1));
-        lines -= 1;
-        break;
-      case 2:
-        score(1200 * (level_ + 1));
-        lines -= 2;
-        break;
-      case 3:
-        score(1200 * (level_ + 1));
-        lines -= 3;
-        break;
-      default:
-        score(1200 * (level_ + 1));
-        lines -= 4;
-        break;
-    }
+  level_ = (lines_ / 10) + 1;
+  switch (lines) {
+    case 1:
+      score(100 * (level_ + 1));
+      break;
+    case 2:
+      score(300 * (level_ + 1));
+      break;
+    case 3:
+      score(500 * (level_ + 1));
+      break;
+    case 4:
+      score(800 * (level_ + 1));
+    default:
+      break;
   }
   emit scoreUpdate(score_);
 }
