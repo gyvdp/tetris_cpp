@@ -87,7 +87,6 @@ void FallingState::hardDrop() {
     }
   }
   game_->score(linesDropped * 2);
-  game_->lock();
 }
 
 void FallingState::rotate(bool clockwise) {

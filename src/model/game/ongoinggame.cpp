@@ -178,8 +178,8 @@ void OngoingGame::lock() {
         tetrimino::createTetrimino(next().value(), getMatrix().generateMask()));
     next(pickMino());
     clearLines();
-    emit lockUpdate();
     refreshFallingTimer();
+    emit lockUpdate();
   } catch (states::exceptions::BlockedOutException& e) {
     state(new states::BlockedOutState(this));
     delete this;

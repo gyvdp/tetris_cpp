@@ -419,8 +419,8 @@ void OngoingGame::softDrop() {
 
 void OngoingGame::hardDrop() {
   try {
-    state_->hardDrop();
     emit hardDropUpdate();
+    state_->hardDrop();
   } catch (std::logic_error& ignored) {
   }
 }
