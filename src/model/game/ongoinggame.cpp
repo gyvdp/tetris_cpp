@@ -69,7 +69,6 @@ OngoingGame::OngoingGame(Player* player, std::uint_fast64_t seed, bool managed)
           falling(tetrimino::createTetrimino(next().value(),
                                              getMatrix().generateMask()));
           next(pickMino());
-          emit nextUpdate(next().value());
           clearLines();
           emit lockUpdate();
           delete state_;
@@ -181,7 +180,6 @@ void OngoingGame::lock() {
     falling(
         tetrimino::createTetrimino(next().value(), getMatrix().generateMask()));
     next(pickMino());
-    emit nextUpdate(next().value());
     clearLines();
     emit lockUpdate();
     refreshFallingTimer();
