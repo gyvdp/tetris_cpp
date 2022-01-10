@@ -45,6 +45,16 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
 
   connect(player1Game_, &model::game::OngoingGame::holdUpdate,
           [this](model::tetrimino::Mino mino) { player1_->updateHold(mino); });
+  connect(
+      player2Game_, &model::game::OngoingGame::matrixUpdate,
+      [this](MatrixArray array) { player2_->updateMatrix(std::move(array)); });
+
+  connect(player2Game_, &model::game::OngoingGame::nextUpdate,
+          [this](model::tetrimino::Mino mino) { player2_->updateNext(mino); });
+
+  connect(player2Game_, &model::game::OngoingGame::holdUpdate,
+          [this](model::tetrimino::Mino mino) { player2_->updateHold(mino); });
+
   connect(player1Game_, &model::game::OngoingGame::holdUpdate, socket,
           &Socket_Client::slot_Hold);
   connect(player1Game_, &model::game::OngoingGame::moveUpdate, socket,
