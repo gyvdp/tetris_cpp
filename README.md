@@ -43,3 +43,13 @@ $ make docs
 ```bash
 $ make test
 ```
+
+## Execution
+
+```bash
+$ ./build/release/tetris_server 127.0.0.1 9999
+$ ./build/release/tetris_client 127.0.0.1 9999 Nom1
+$ ./build/release/tetris_client 127.0.0.1 9999 Nom2
+```
+
+Le serveur doit être allumé, et deux clients doivent être connectés pour lancer une partie.

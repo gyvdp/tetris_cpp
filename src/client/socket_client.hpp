@@ -24,7 +24,6 @@
 #define ESI_ATLIR5_ATLC_PROJECT2_SRC_CLIENT_SOCKET_CLIENT_HPP_
 
 #include <QAbstractSocket>
-#include <QDebug>
 #include <QException>
 #include <QJsonDocument>
 #include <QJsonObject>

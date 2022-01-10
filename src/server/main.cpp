@@ -28,25 +28,21 @@
 #include "server/tetris_server.hpp"
 
 int main(int argc, char *argv[]) {
-  if (argc != 3 && argc != 1)
-    throw std::invalid_argument("invalid input from the start");
+  if (argc != 3) throw std::invalid_argument("invalid input from the start");
   QCoreApplication app(argc, argv);
-  if (argc == 3) {
-    // Verify ip and port
-    std::string regex = "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$";
-    if (!std::regex_match(argv[1], std::regex(regex)))
-      throw std::invalid_argument("ip address is not valid");
 
-    QString IP = argv[1];
-    QHostAddress IPAddress = QHostAddress(IP);
-    int port = 0;
+  std::string regex = "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$";
+  if (!std::regex_match(argv[1], std::regex(regex)))
+    throw std::invalid_argument("ip address is not valid");
 
-    if (!std::isdigit(std::strtol(argv[2], nullptr, 10)) &&
-        (port = std::strtol(argv[2], nullptr, 10)) <= 0 && port >= 65537)
-      throw std::invalid_argument("port is not valid");
-    tetris::server::Tetris_Server server{&app, IPAddress, port};
-  } else {
-    tetris::server::Tetris_Server server{&app};
-  }
+  QString IP = argv[1];
+  QHostAddress IPAddress = QHostAddress(IP);
+  int port = 0;
+
+  if (!std::isdigit(std::strtol(argv[2], nullptr, 10)) &&
+      (port = std::strtol(argv[2], nullptr, 10)) <= 0 && port >= 65537)
+    throw std::invalid_argument("port is not valid");
+  tetris::server::Tetris_Server server{&app, IPAddress, port};
+
   return QCoreApplication::exec();
 }

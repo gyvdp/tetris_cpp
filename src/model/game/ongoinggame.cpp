@@ -97,10 +97,9 @@ void OngoingGame::clearLines() {
   if (!lines.empty()) {
     generatePoints(lines.size());
     int removed = 0;
-    qDebug() << "Lignes: " << lines.size();
+
     for (long i = static_cast<long>(lines.size()) - 1; i >= 0; --i) {
       auto line = lines.at(i);
-      qDebug() << "Ligne supprimée: " << line;
 
       for (long j = line + removed; j >= 0; --j) {
         for (int k = 0; k < matrix_.getMinos().at(j).size(); ++k) {
