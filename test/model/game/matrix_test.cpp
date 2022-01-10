@@ -45,11 +45,5 @@ TEST_CASE("Matrix tests") {
     }
     auto lines = matrix.getCompletedLines();
     REQUIRE(lines.at(0) == 0);
-    SECTION("Remove line") {
-      matrix.removeLines(lines);
-      for (size_t i = 0; i < matrix.width(); i++) {
-        REQUIRE(matrix({0, static_cast<int>(i)}) == std::nullopt);
-      }
-    }
   }
 }

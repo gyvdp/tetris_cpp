@@ -21,14 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "model/game/state/fallingstate.hpp"
-
 #include "catch2/catch.hpp"
 #include "model/game/ongoinggame.hpp"
 #include "model/game/player.hpp"
-#include "model/game/state/exceptions/illegalstateexception.hpp"
-#include "model/game/state/exceptions/startongoinggameexception.hpp"
-#include "model/game/state/notstartedstate.hpp"
+#include "model/game/states/exceptions/illegalstateexception.hpp"
+#include "model/game/states/exceptions/startongoinggameexception.hpp"
 #include "model/tetrimino/direction.hpp"
 #include "model/tetrimino/tetrimino_logic.hpp"
 
@@ -41,10 +38,6 @@ TEST_CASE("falling state") {
   Player player("John", 123);
   std::unique_ptr<OngoingGame> game = std::make_unique<OngoingGame>(&player, 1);
   game->start();
-  SECTION("Basic errors") {
-    REQUIRE_THROWS_AS(game->start(), exceptions::StartOnGoingGameException);
-    REQUIRE_THROWS_AS(game->lock(), exceptions::IllegalStateException);
-  }
   SECTION("LEFT") {
     SECTION("S_MINO") {
       game->falling(std::make_shared<STetrimino>());
@@ -104,12 +97,5 @@ TEST_CASE("falling state") {
     game->falling(std::make_shared<LTetrimino>());
     game->getMatrix().set(T_MINO, 3, 1);
     game->rotate(true);
-    REQUIRE(game->falling()->orientation() == NORTH);
-  }
-  SECTION("COUNTERCLOCKWISE") {
-    game->falling(std::make_shared<LTetrimino>());
-    game->getMatrix().set(T_MINO, 3, 2);
-    game->rotate(false);
-    REQUIRE(game->falling()->orientation() == NORTH);
   }
 }

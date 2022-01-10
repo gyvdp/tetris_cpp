@@ -70,11 +70,6 @@ set(MODEL_TESTS
         test/model/tetrimino/direction_test.cpp
         test/model/game/tetriminoGenerator_test.cpp
         test/model/game/state/fallingstate_test.cpp
-        test/model/game/state/blockedoutstate_test.cpp
-        test/model/game/state/lockedoutstate_test.cpp
-        test/model/game/state/lockeddownstate_test.cpp
-        test/model/game/state/notstartedstate_test.cpp
-        test/model/game/state/stoppedstate_test.cpp
         test/model/tetrimino/tetriminologic_test.cpp
         )
 

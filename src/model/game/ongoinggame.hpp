@@ -182,6 +182,10 @@ class OngoingGame : public QObject {
    */
   [[nodiscard]] inline std::shared_ptr<tetrimino::Tetrimino> falling() const;
 
+  /**
+   * @brief Recuperates the falling mino inside the matrix.
+   * @return A matrix with the falling mino inside.
+   */
   std::vector<std::vector<OptionalMino>> fallingInsideMatrix();
 
   /**
@@ -367,8 +371,6 @@ void OngoingGame::score(unsigned score) {
   emit scoreUpdate(score_);
 }
 
-unsigned OngoingGame::level() const { return level_; }
-
 OptionalMino OngoingGame::next() const { return next_; }
 
 void OngoingGame::next(tetrimino::Mino mino) {
@@ -430,6 +432,8 @@ void OngoingGame::rotate(bool clockwise) {
   } catch (std::logic_error& ignored) {
   }
 }
+
+unsigned OngoingGame::level() const { return level_; }
 
 void OngoingGame::hasHeld(bool held) { hasHeld_ = held; }
 
