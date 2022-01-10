@@ -66,13 +66,31 @@ MultiplayerScene::MultiplayerScene(model::game::Player *player1,
   connect(player1Game_, &model::game::OngoingGame::scoreUpdate,
           [this](unsigned int score) { player1_->setScore(score); });
 
+  connect(player2Game_, &model::game::OngoingGame::matrixUpdate,
+          [this](MatrixArray array) {
+            emit player2_->updateMatrix(std::move(array));
+          });
+
   player1_->setHighScore(player1->highScore());
   player1Game_->start();
+  player2Game_->start();
 
   setBackgroundBrush(QColor{0, 0, 0});
 
   player2_->setPos(player1_->x() + player1_->boundingRect().width(),
                    player1_->y());
+
+  connect(socket, &Socket_Client::move,
+          [this](model::tetrimino::Direction dir) { player2Game_->move(dir); });
+
+  connect(socket, &Socket_Client::rotate,
+          [this](bool clockwise) { player2Game_->rotate(clockwise); });
+
+  connect(socket, &Socket_Client::hold,
+          [this]() { player2Game_->holdFalling(); });
+  connect(socket, &Socket_Client::lock, [this]() { player2Game_->lock(); });
+  connect(socket, &Socket_Client::harddrop,
+          [this]() { player2Game_->hardDrop(); });
 
   addItem(player1_);
   addItem(player2_);

@@ -109,6 +109,9 @@ void Socket_Client::deserialize(QByteArray& message) {
       case model::notification::ROTATE:
         emit rotate((data["clockwise"].toBool()));
         break;
+      case model::notification::LOCK:
+        emit lock();
+        break;
       default:
         throw std::invalid_argument("Unknown action");
     }

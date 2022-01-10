@@ -32,13 +32,16 @@ namespace tetris::server {
 Match::Match(Player_Socket*& player1, Player_Socket*& player2, unsigned id,
              QObject* parent)
     : QObject(parent), players_({player1, player2}), id_(id) {
-  for (const auto& player : players_) {
-    player->parent(this);
-    connect(player->socket(), &QAbstractSocket::disconnected, this,
-            &Match::slot_Disconnected);
-    connect(player->socket(), &QAbstractSocket::readyRead, this,
-            &Match::slot_Reading);
-  }
+  players_[0]->parent(this);
+  connect(players_[0]->socket(), &QAbstractSocket::disconnected, this,
+          &Match::slot_Disconnected);
+  connect(players_[0]->socket(), &QAbstractSocket::readyRead, this,
+          &Match::slot_Reading1);
+  players_[1]->parent(this);
+  connect(players_[1]->socket(), &QAbstractSocket::disconnected, this,
+          &Match::slot_Disconnected);
+  connect(players_[1]->socket(), &QAbstractSocket::readyRead, this,
+          &Match::slot_Reading2);
 
   sendStarting();
 }
@@ -56,18 +59,17 @@ void Match::slot_Disconnected() {
   if (finish) emit matchEnded(this);
 }
 
-void Match::slot_Reading() {
-  for (auto& sender : this->players_) {
-    if (sender->socket()->state() != QAbstractSocket::UnconnectedState) {
-      auto data = sender->socket()->readAll();
-      for (auto& receiver : this->players_) {
-        if (receiver->name() != sender->name() &&
-            receiver->socket()->state() != QAbstractSocket::UnconnectedState) {
-          receiver->write(data);
-          receiver->socket()->waitForBytesWritten();
-        }
-      }
-    }
+void Match::slot_Reading1() {
+  if (players_[1]->socket()->state() != QAbstractSocket::UnconnectedState) {
+    this->players_[1]->socket()->write(this->players_[0]->socket()->readAll());
+    this->players_[1]->socket()->waitForBytesWritten();
+  }
+}
+
+void Match::slot_Reading2() {
+  if (players_[0]->socket()->state() != QAbstractSocket::UnconnectedState) {
+    this->players_[0]->socket()->write(this->players_[1]->socket()->readAll());
+    this->players_[0]->socket()->waitForBytesWritten();
   }
 }
 

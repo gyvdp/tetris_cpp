@@ -67,6 +67,7 @@ class Socket_Client : public QObject {
   void harddrop();
   void rotate(bool clockwise);
   void hold();
+  void lock();
 
  public slots:
   void slot_Connected();

@@ -75,7 +75,11 @@ class Match : public QObject {
   /**
    * @brief Action when a player write to the match
    */
-  void slot_Reading();
+  void slot_Reading1();
+  /**
+   * @brief Action when a player write to the match
+   */
+  void slot_Reading2();
 };
 
 unsigned int Match::id() const { return this->id_; }
